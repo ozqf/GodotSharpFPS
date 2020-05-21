@@ -53,6 +53,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="game\player\EntPlayer.cs" />
+    <Compile Include="src\FPSInput.cs" />
+    <Compile Include="src\FPSController.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
