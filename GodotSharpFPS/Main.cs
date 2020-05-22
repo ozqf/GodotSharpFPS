@@ -2,7 +2,7 @@ using Godot;
 using System;
 using GodotSharpFps.src;
 
-public class Main : Node
+public class Main : Spatial
 {
     ///////////////////////////////////////
     // Static
@@ -14,6 +14,7 @@ public class Main : Node
     // Instance
     ///////////////////////////////////////
     public CmdConsole console;
+    public GameFactory factory;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -22,6 +23,7 @@ public class Main : Node
         _instance = this;
         console = new CmdConsole();
         console.AddObserver("test", "", ExecCmdTest);
+        factory = new GameFactory();
     }
 
     public bool ExecCmdTest(string command, string[] tokens)

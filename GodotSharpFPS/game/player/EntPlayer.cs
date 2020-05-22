@@ -8,6 +8,7 @@ public class EntPlayer : Spatial
     private const string MoveBackward = "move_backward";
     private const string MoveLeft = "move_left";
     private const string MoveRight = "move_right";
+    private const string Attack1 = "attack_1";
 
     private FPSInput _input = new FPSInput();
     
@@ -37,6 +38,16 @@ public class EntPlayer : Spatial
         if (Input.IsActionPressed(MoveRight))
         { _input.buttons |= FPSInput.BitMoveRight; }
 
-        _fpsCtrl.ProcessInput(_input, delta);
+        _fpsCtrl.ProcessMovement(_input, delta);
+
+        if (Input.IsActionJustPressed(Attack1))
+        {
+            PointProjectile prj = Main.instance.factory.SpawnPointProjectile();
+            if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
+            Transform transform = GetNode<KinematicBody>("body").GlobalTransform;
+            prj.GlobalTransform = transform;
+            Vector3 origin = transform.origin;
+            Console.WriteLine($"Prj spawned at {origin.x}, {origin.y}, {origin.z}");
+        }
     }
 }

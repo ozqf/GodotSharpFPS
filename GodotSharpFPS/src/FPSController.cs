@@ -11,7 +11,7 @@ namespace GodotSharpFps.src
 			_body = body;
 		}
 		
-    	public void ProcessInput(FPSInput input, float delta)
+    	public void ProcessMovement(FPSInput input, float delta)
     	{
     	    //Console.WriteLine($"Buttons {input.buttons} delta {delta}");
     	    Transform t = _body.GlobalTransform;
