@@ -56,6 +56,8 @@
     <Compile Include="game\player\EntPlayer.cs" />
     <Compile Include="src\FPSInput.cs" />
     <Compile Include="src\FPSController.cs" />
+    <Compile Include="src\CmdConsole.cs" />
+    <Compile Include="src\nodes\CmdConsoleUI.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

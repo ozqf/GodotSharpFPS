@@ -18,6 +18,9 @@ public class EntPlayer : Spatial
     {
         KinematicBody body = GetNode<KinematicBody>("body");
         _fpsCtrl = new FPSController(body);
+        Main m = GetNode<Main>("/root/main");
+        Console.WriteLine("Main: " + m.Name);
+        Console.WriteLine("Main via instance: " + Main.instance.Name);
     }
     
     // Called every frame. 'delta' is the elapsed time since the previous frame.
