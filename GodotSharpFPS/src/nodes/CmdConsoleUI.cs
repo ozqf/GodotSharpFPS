@@ -10,13 +10,26 @@ public class CmdConsoleUI : Node
 		_lineEdit = GetNode<LineEdit>("VBoxContainer/LineEdit");
 	}
 
-	public override void _Process(float delta)
+	public void On()
+	{
+		_lineEdit.Visible = true;
+		_lineEdit.GrabFocus();
+	}
+
+	public void Off()
+	{
+		_lineEdit.Visible = false;
+	}
+
+	public bool CustomProcess(float delta)
 	{
 		if (Input.IsActionJustReleased("ui_accept"))
 		{
 			string text = _lineEdit.Text;
 			_lineEdit.Text = string.Empty;
 			Main.instance.console.Execute(text);
+			return true;
 		}
+		return false;
 	}
 }

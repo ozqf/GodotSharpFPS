@@ -37,28 +37,30 @@ public class EntPlayer : Spatial
     }
 
     private void ApplyInputButtonBit(FPSInput input, string keyName, int bit)
-    {
-        if (Input.IsActionPressed(keyName))
-        { input.buttons |= bit; }
-    }
+    { if (Input.IsActionPressed(keyName)) { input.buttons |= bit; } }
 
     public override void _PhysicsProcess(float delta)
     {
+        // Clear all inputs and reapply
         _input.buttons = 0;
 
-        ApplyInputButtonBit(_input, MoveForward, FPSInput.BitMoveForward);
-        ApplyInputButtonBit(_input, MoveBackward, FPSInput.BitMoveBackward);
-        ApplyInputButtonBit(_input, MoveLeft, FPSInput.BitMoveLeft);
-        ApplyInputButtonBit(_input, MoveRight, FPSInput.BitMoveRight);
+        if (Main.instance.gameInputActive)
+        {
+            ApplyInputButtonBit(_input, MoveForward, FPSInput.BitMoveForward);
+            ApplyInputButtonBit(_input, MoveBackward, FPSInput.BitMoveBackward);
+            ApplyInputButtonBit(_input, MoveLeft, FPSInput.BitMoveLeft);
+            ApplyInputButtonBit(_input, MoveRight, FPSInput.BitMoveRight);
 
-        ApplyInputButtonBit(_input, LookUp, FPSInput.BitLookUp);
-        ApplyInputButtonBit(_input, LookDown, FPSInput.BitLookDown);
-        ApplyInputButtonBit(_input, LookLeft, FPSInput.BitLookLeft);
-        ApplyInputButtonBit(_input, LookRight, FPSInput.BitLookRight);
+            ApplyInputButtonBit(_input, LookUp, FPSInput.BitLookUp);
+            ApplyInputButtonBit(_input, LookDown, FPSInput.BitLookDown);
+            ApplyInputButtonBit(_input, LookLeft, FPSInput.BitLookLeft);
+            ApplyInputButtonBit(_input, LookRight, FPSInput.BitLookRight);
+        }
 
         //ApplyInputButtonBit(_input, LookRight, FPSInput.BitLookRight);
 
         _fpsCtrl.ProcessMovement(_input, delta);
+        Main.instance.SetDebugText(_fpsCtrl.debugStr);
 
         if (Input.IsActionJustPressed(Attack1))
         {
@@ -75,5 +77,13 @@ public class EntPlayer : Spatial
     public override void _Process(float delta)
     {
         
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        if (Main.instance.gameInputActive == false) { return; }
+        InputEventMouseMotion motion = @event as InputEventMouseMotion;
+        if (motion == null) { return; }
+        _fpsCtrl.ProcessMouseMotion(motion, Main.instance.GetWindowToScreenRatio());
     }
 }

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Diagnostics;
 using System.Text;
 
 namespace GodotSharpFps.src
@@ -10,7 +11,7 @@ namespace GodotSharpFps.src
 
 		const float KEYBOARD_TURN_DEGREES_PER_SECOND = 135;
 
-		const float MOUSE_SENSITIVITY = 0.15f;
+		public const float MOUSE_SENSITIVITY = 0.15f;
 		const float MOVE_SPEED = 15;
 		const float MOVE_ACCELERATION = 150;
 		const float MOVE_PUSH_STRENGTH = 0.2f;
@@ -32,6 +33,7 @@ namespace GodotSharpFps.src
 		private float pitch = 0;
 
 		private StringBuilder debugSb = new StringBuilder(1024);
+		public string debugStr { get { return debugSb.ToString(); } }
 
 		public FPSController(KinematicBody body, Spatial head)
 		{
@@ -39,9 +41,26 @@ namespace GodotSharpFps.src
 			_head = head;
 		}
 
+		public void ProcessMouseMotion(InputEventMouseMotion motion, Vector2 screenRatio)
+		{
+			float sensitivity = MOUSE_SENSITIVITY;
+
+			Vector2 ratio = Main.instance.GetWindowToScreenRatio();
+			float mouseMoveX = motion.Relative.x * sensitivity * ratio.x;
+			// flip as we want moving mouse to the right to rotate left
+			mouseMoveX = -mouseMoveX;
+			yaw += mouseMoveX;
+
+			float mouseMoveY = motion.Relative.y * sensitivity * ratio.y;
+			pitch += mouseMoveY;
+		}
+
 		private void ApplyRotations()
 		{
 			// horizontal
+			// clamp between 0 - 360
+			while (yaw > 360) { yaw -= 360; }
+			while (yaw < 0) { yaw += 360; }
 			Vector3 rot = _body.RotationDegrees;
 			rot.y = yaw;
 			_body.RotationDegrees = rot;
@@ -59,6 +78,8 @@ namespace GodotSharpFps.src
 		// Super basic test
 		public void ProcessMovement(FPSInput input, float delta)
     	{
+			debugSb.Clear();
+
 			ApplyRotations();
 			//Console.WriteLine($"Buttons {input.buttons} delta {delta}");
 			Vector3 inputDir = new Vector3();
@@ -108,12 +129,15 @@ namespace GodotSharpFps.src
 			Vector3 moveResult = _body.MoveAndSlide(velocity);
 
 			// record move info for next frame
-			lastMove = t.origin - prevPosition;
+			lastMove = _body.GlobalTransform.origin - prevPosition;
 			lastDelta = delta;
 
-			// quick n dirty for testing
-			//move *= 5;
-			//_body.MoveAndSlide(move, Vector3.Up);
+			debugSb.Append($"Pitch {pitch}\nyaw {yaw}\n");
+			debugSb.Append($"Prev delta {lastDelta}\n");
+			debugSb.Append($"Prev move {lastMove}\n");
+			debugSb.Append($"Velocity {velocity}\n");
+			debugSb.Append($"Run push {runPush}\n");
+			debugSb.Append($"Move spd {MOVE_SPEED} accel {MOVE_ACCELERATION}\n");
 		}
 
 		/// <summary>

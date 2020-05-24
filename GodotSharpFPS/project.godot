@@ -22,7 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 main="*res://main.tscn"
-mainMenu="*res://ui/main_menu.tscn"
+ui="*res://ui/ui.tscn"
 
 [input]
 

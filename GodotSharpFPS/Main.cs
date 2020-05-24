@@ -16,6 +16,10 @@ public class Main : Spatial
     public CmdConsole console;
     public GameFactory factory;
     public GameCamera cam;
+    public UI ui;
+
+    public bool _gameInputActive = true;
+    public bool gameInputActive {  get { return _gameInputActive; } }
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -26,6 +30,31 @@ public class Main : Spatial
         console.AddObserver("test", "", ExecCmdTest);
         factory = new GameFactory();
         cam = GetNode<GameCamera>("game_camera");
+        ui = GetNode<UI>("/root/ui");
+        Input.SetMouseMode(Input.MouseMode.Captured);
+    }
+
+    private void SetGameInputActive(bool isActive)
+    {
+        _gameInputActive = isActive;
+        if (isActive)
+        {
+            Input.SetMouseMode(Input.MouseMode.Captured);
+            ui.Off();
+        }
+        else
+        {
+            Input.SetMouseMode(Input.MouseMode.Visible);
+            ui.On();
+        }
+    }
+
+    public override void _Process(float delta)
+    {
+        if (Input.IsActionJustReleased("ui_cancel"))
+        {
+            SetGameInputActive(!_gameInputActive);
+        }
     }
 
     public bool ExecCmdTest(string command, string[] tokens)
@@ -35,9 +64,22 @@ public class Main : Spatial
         return true;
     }
 
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
+    public void SetDebugText(string txt)
+    {
+        ui.SetDebugtext(txt);
+    }
+
+    /*
+    func get_window_to_screen_ratio():
+    	var real: Vector2 = OS.get_real_window_size()
+    	var scr: Vector2 = OS.get_screen_size()
+    	var result: Vector2 = Vector2(real.x / scr.x, real.y / scr.y)
+    	return result
+    */
+    public Vector2 GetWindowToScreenRatio()
+    {
+        Vector2 real = OS.GetRealWindowSize();
+        Vector2 screen = OS.GetScreenSize();
+        return new Vector2(real.x / screen.x, real.y / screen.y);
+    }
 }

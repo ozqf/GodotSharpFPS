@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://ui/console.tscn" type="PackedScene" id=1]
+[ext_resource path="res://UI.cs" type="Script" id=2]
+
+[node name="ui" type="Node"]
+script = ExtResource( 2 )
+
+[node name="debug_text" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="debug_text"]
+anchor_top = 0.0368552
+anchor_bottom = 0.0388552
+margin_right = 514.0
+margin_bottom = 427.4
+text = "Line 1 abcdfeghijklmnopqrstuvwxyz
+Line 2
+Line 3
+Line 4
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="main_menu" type="CanvasLayer" parent="."]
+
+[node name="console" parent="main_menu" instance=ExtResource( 1 )]

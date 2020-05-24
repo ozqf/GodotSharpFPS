@@ -8,6 +8,7 @@ material = ExtResource( 1 )
 size = Vector3( 0.2, 0.2, 0.6 )
 
 [node name="point_projectile" type="MeshInstance"]
+cast_shadow = 0
 mesh = SubResource( 1 )
 material/0 = null
 script = ExtResource( 2 )
