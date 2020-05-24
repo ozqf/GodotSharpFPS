@@ -27,7 +27,8 @@ public class EntPlayer : Spatial
     public override void _Ready()
     {
         KinematicBody body = GetNode<KinematicBody>("body");
-        _fpsCtrl = new FPSController(body, null);
+        Spatial head = GetNode<Spatial>("body/head");
+        _fpsCtrl = new FPSController(body, head);
         Main m = GetNode<Main>("/root/main");
         Console.WriteLine("Main: " + m.Name);
         Console.WriteLine("Main via instance: " + Main.instance.Name);
@@ -53,19 +54,7 @@ public class EntPlayer : Spatial
         ApplyInputButtonBit(_input, LookLeft, FPSInput.BitLookLeft);
         ApplyInputButtonBit(_input, LookRight, FPSInput.BitLookRight);
 
-        ApplyInputButtonBit(_input, LookRight, FPSInput.BitLookRight);
-
-        //if (Input.IsActionPressed(MoveForward))
-        //{ _input.buttons |= FPSInput.BitMoveForward; }
-        //if (Input.IsActionPressed(MoveBackward))
-        //{ _input.buttons |= FPSInput.BitMoveBackward; }
-        //if (Input.IsActionPressed(MoveLeft))
-        //{ _input.buttons |= FPSInput.BitMoveLeft; }
-        //if (Input.IsActionPressed(MoveRight))
-        //{ _input.buttons |= FPSInput.BitMoveRight; }
-
-        //if (Input.IsActionPressed(LookLeft))
-        //{ _input.buttons |= FPSInput.BitLookLeft; }
+        //ApplyInputButtonBit(_input, LookRight, FPSInput.BitLookRight);
 
         _fpsCtrl.ProcessMovement(_input, delta);
 

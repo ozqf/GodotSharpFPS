@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Text;
 
 namespace GodotSharpFps.src
 {
@@ -30,7 +31,9 @@ namespace GodotSharpFps.src
 		private float yaw = 0;
 		private float pitch = 0;
 
-		public FPSController(KinematicBody body, KinematicBody head)
+		private StringBuilder debugSb = new StringBuilder(1024);
+
+		public FPSController(KinematicBody body, Spatial head)
 		{
 			_body = body;
 			_head = head;
@@ -42,13 +45,15 @@ namespace GodotSharpFps.src
 			Vector3 rot = _body.RotationDegrees;
 			rot.y = yaw;
 			_body.RotationDegrees = rot;
-			if (_head != null)
-			{
-				// vertical
-				// clamp
-				if (pitch > PITCH_CAP_DEGREES) { pitch = PITCH_CAP_DEGREES; }
-				else if (pitch < PITCH_CAP_DEGREES) { pitch = -PITCH_CAP_DEGREES; }
-			}
+
+			Vector3 headRot = _head.RotationDegrees;
+			// vertical
+			// clamp
+			if (pitch > PITCH_CAP_DEGREES) { pitch = PITCH_CAP_DEGREES; }
+			else if (pitch < -PITCH_CAP_DEGREES) { pitch = -PITCH_CAP_DEGREES; }
+			headRot.x = pitch;
+			_head.RotationDegrees = headRot;
+			Console.WriteLine($"Yaw {yaw} / Pitch {pitch}");
 		}
 
 		// Super basic test
@@ -63,15 +68,20 @@ namespace GodotSharpFps.src
 			if (input.isBitOn(FPSInput.BitMoveLeft)) { inputDir.x -= 1; }
 			if (input.isBitOn(FPSInput.BitMoveRight)) { inputDir.x += 1; }
 
-			if (input.isBitOn(FPSInput.BitLookLeft)) { inputDir.x += 1; }
-			if (input.isBitOn(FPSInput.BitLookRight)) { inputDir.x += 1; }
-
 			float mouseMoveX = 0; // horizontal turn
 			float mouseMoveY = 0; // verticla turn
 			if (input.isBitOn(FPSInput.BitLookLeft))
 			{ mouseMoveX += KEYBOARD_TURN_DEGREES_PER_SECOND; }
-			if (input.isBitOn(FPSInput.BitLookLeft))
+			if (input.isBitOn(FPSInput.BitLookRight))
 			{ mouseMoveX -= KEYBOARD_TURN_DEGREES_PER_SECOND; }
+
+			if (input.isBitOn(FPSInput.BitLookUp))
+			{ mouseMoveY += KEYBOARD_TURN_DEGREES_PER_SECOND; }
+			if (input.isBitOn(FPSInput.BitLookDown))
+			{ mouseMoveY -= KEYBOARD_TURN_DEGREES_PER_SECOND; }
+
+			yaw += mouseMoveX * delta;
+			pitch += mouseMoveY * delta;
 
 			// convert desired move to world axes
 			Transform t = _body.GlobalTransform;
