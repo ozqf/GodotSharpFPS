@@ -54,11 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\ZqfGodotUtils.cs" />
-    <Compile Include="game\player\EntPlayer.cs" />
     <Compile Include="src\FPSInput.cs" />
     <Compile Include="src\FPSController.cs" />
     <Compile Include="src\CmdConsole.cs" />
     <Compile Include="src\GameFactory.cs" />
+    <Compile Include="src\nodes\EntPlayer.cs" />
     <Compile Include="src\nodes\PointProjectile.cs" />
     <Compile Include="src\nodes\CmdConsoleUI.cs" />
     <Compile Include="Main.cs" />
