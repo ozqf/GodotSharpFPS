@@ -15,6 +15,7 @@ public class Main : Spatial
     ///////////////////////////////////////
     public CmdConsole console;
     public GameFactory factory;
+    public GameCamera cam;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -24,6 +25,7 @@ public class Main : Spatial
         console = new CmdConsole();
         console.AddObserver("test", "", ExecCmdTest);
         factory = new GameFactory();
+        cam = GetNode<GameCamera>("game_camera");
     }
 
     public bool ExecCmdTest(string command, string[] tokens)

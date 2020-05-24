@@ -53,7 +53,7 @@ namespace GodotSharpFps.src
 			else if (pitch < -PITCH_CAP_DEGREES) { pitch = -PITCH_CAP_DEGREES; }
 			headRot.x = pitch;
 			_head.RotationDegrees = headRot;
-			Console.WriteLine($"Yaw {yaw} / Pitch {pitch}");
+			//Console.WriteLine($"Yaw {yaw} / Pitch {pitch}");
 		}
 
 		// Super basic test

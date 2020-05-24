@@ -32,6 +32,8 @@ public class EntPlayer : Spatial
         Main m = GetNode<Main>("/root/main");
         Console.WriteLine("Main: " + m.Name);
         Console.WriteLine("Main via instance: " + Main.instance.Name);
+
+        m.cam.AttachToTarget(head);
     }
 
     private void ApplyInputButtonBit(FPSInput input, string keyName, int bit)

@@ -53,6 +53,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameCamera.cs" />
     <Compile Include="src\ZqfGodotUtils.cs" />
     <Compile Include="src\FPSInput.cs" />
     <Compile Include="src\FPSController.cs" />
