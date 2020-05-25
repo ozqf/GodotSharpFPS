@@ -20,20 +20,29 @@ public class EntPlayer : Spatial
     private const string Attack1 = "attack_1";
 
     private FPSInput _input = new FPSInput();
-    
     private FPSController _fpsCtrl;
+    private Spatial _head;
+    private InvWeapon _weapon;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         KinematicBody body = GetNode<KinematicBody>("body");
-        Spatial head = GetNode<Spatial>("body/head");
-        _fpsCtrl = new FPSController(body, head);
+        _head = GetNode<Spatial>("body/head");
+        _fpsCtrl = new FPSController(body, _head);
+
+        // make a weapon
+        ProjectileDef def = new ProjectileDef();
+        def.damage = 25;
+        def.launchSpeed = 35;
+        def.timeToLive = 1;
+        _weapon = new InvWeapon(_head, def);
+
         Main m = GetNode<Main>("/root/main");
         Console.WriteLine("Main: " + m.Name);
         Console.WriteLine("Main via instance: " + Main.instance.Name);
 
-        m.cam.AttachToTarget(head);
+        m.cam.AttachToTarget(_head);
     }
 
     private void ApplyInputButtonBit(FPSInput input, string keyName, int bit)
@@ -57,20 +66,18 @@ public class EntPlayer : Spatial
             ApplyInputButtonBit(_input, LookRight, FPSInput.BitLookRight);
         }
 
-        //ApplyInputButtonBit(_input, LookRight, FPSInput.BitLookRight);
-
         _fpsCtrl.ProcessMovement(_input, delta);
         Main.instance.SetDebugText(_fpsCtrl.debugStr);
 
         if (Input.IsActionJustPressed(Attack1))
         {
-            PointProjectile prj = Main.instance.factory.SpawnPointProjectile();
-            if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
-            Transform transform = GetNode<KinematicBody>("body").GlobalTransform;
-            prj.GlobalTransform = transform;
-            Vector3 origin = transform.origin;
-            Console.WriteLine($"Prj spawned at {origin.x}, {origin.y}, {origin.z}");
+            FireProjectile();
         }
+    }
+
+    private void FireProjectile()
+    {
+        _weapon.Fire();
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
