@@ -23,6 +23,7 @@ public class EntPlayer : Spatial
     private FPSController _fpsCtrl;
     private Spatial _head;
     private InvWeapon _weapon;
+    private LaserDot _laserDot;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -30,6 +31,8 @@ public class EntPlayer : Spatial
         KinematicBody body = GetNode<KinematicBody>("body");
         _head = GetNode<Spatial>("body/head");
         _fpsCtrl = new FPSController(body, _head);
+        _laserDot = GetNode<LaserDot>("laser_dot");
+        _laserDot.SetOriginNode(_head);
 
         // make a weapon
         ProjectileDef def = new ProjectileDef();

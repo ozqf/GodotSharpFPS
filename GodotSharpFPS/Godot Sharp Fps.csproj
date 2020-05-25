@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="GameCamera.cs" />
     <Compile Include="src\InvWeapon.cs" />
+    <Compile Include="src\nodes\LaserDot.cs" />
     <Compile Include="src\ProjectileDef.cs" />
     <Compile Include="src\ZqfGodotUtils.cs" />
     <Compile Include="src\FPSInput.cs" />
