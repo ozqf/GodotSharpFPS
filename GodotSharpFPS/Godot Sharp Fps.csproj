@@ -53,6 +53,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmptyMap.cs" />
     <Compile Include="GameCamera.cs" />
     <Compile Include="src\InvWeapon.cs" />
     <Compile Include="src\nodes\LaserDot.cs" />

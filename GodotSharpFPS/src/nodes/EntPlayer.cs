@@ -19,6 +19,7 @@ public class EntPlayer : Spatial
 
     private const string Attack1 = "attack_1";
 
+
     private FPSInput _input = new FPSInput();
     private FPSController _fpsCtrl;
     private Spatial _head;
@@ -28,13 +29,15 @@ public class EntPlayer : Spatial
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        // find Godot scene nodes
         KinematicBody body = GetNode<KinematicBody>("body");
         _head = GetNode<Spatial>("body/head");
-        _fpsCtrl = new FPSController(body, _head);
         _laserDot = GetNode<LaserDot>("laser_dot");
-        _laserDot.SetOriginNode(_head);
+        _laserDot.CustomInit(_head, uint.MaxValue, 1000);
 
-        // make a weapon
+        // init components
+        _fpsCtrl = new FPSController(body, _head);
+
         ProjectileDef def = new ProjectileDef();
         def.damage = 25;
         def.launchSpeed = 35;

@@ -27,7 +27,8 @@ public class Main : Spatial
         Console.WriteLine("MAIN INIT");
         _instance = this;
         console = new CmdConsole();
-        console.AddObserver("test", "", ExecCmdTest);
+        console.AddObserver("test", "", "Test console", ExecCmdTest);
+        console.AddObserver("map", "", "Load a scene from the maps folder, eg 'map test_box'", ExecCmdScene);
         factory = new GameFactory();
         cam = GetNode<GameCamera>("game_camera");
         ui = GetNode<UI>("/root/ui");
@@ -55,6 +56,19 @@ public class Main : Spatial
         {
             SetGameInputActive(!_gameInputActive);
         }
+    }
+
+    public bool ExecCmdScene(string command, string[] tokens)
+    {
+        if (tokens.Length != 2)
+        {
+            Console.WriteLine("No scene name specified");
+            return true;
+        }
+        // example path: "res://maps/test_box.tscn"
+        string path = $"res://maps/{tokens[1]}.tscn";
+        GetTree().ChangeScene(path);
+        return true;
     }
 
     public bool ExecCmdTest(string command, string[] tokens)

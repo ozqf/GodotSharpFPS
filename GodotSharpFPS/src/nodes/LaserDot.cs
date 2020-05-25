@@ -5,9 +5,13 @@ public class LaserDot : Spatial
 {
     private Spatial _originNode;
     private float _length = 1000;
-    public void SetOriginNode(Spatial origin)
+    private uint _mask = 0;
+
+    public void CustomInit(Spatial origin, uint collisionMask, float maxRange)
     {
         _originNode = origin;
+        _mask = collisionMask;
+        _length = maxRange;
     }
 
     public override void _PhysicsProcess(float delta)

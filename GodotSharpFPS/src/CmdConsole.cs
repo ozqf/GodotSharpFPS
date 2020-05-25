@@ -3,17 +3,13 @@ using System.Collections.Generic;
 
 namespace GodotSharpFps.src
 {
-	// public interface IConsoleCommand
-	// {
-	// 	bool ExecConsoleCmd(string command, string[] tokens);
-	// }
-
 	public delegate bool ExecConsoleCmd(string command, string[] tokens);
 
 	internal class CmdConsoleObserver
 	{
 		public string name = "";
 		public string signature = "";
+		public string helpText = "";
 		public ExecConsoleCmd callback;
 	}
 
@@ -21,11 +17,14 @@ namespace GodotSharpFps.src
 	{
 		private List<CmdConsoleObserver> _observers = new List<CmdConsoleObserver>();
 
-		public void AddObserver(string name, string signature, ExecConsoleCmd callback)
+		public void AddObserver(string name, string signature, string helpText, ExecConsoleCmd callback)
 		{
 			_observers.Add(new CmdConsoleObserver
 			{
-				name = name, signature = signature, callback = callback
+				name = name,
+				signature = signature,
+				helpText = helpText,
+				callback = callback
 			});
 		}
 
