@@ -25,15 +25,21 @@ public class EntPlayer : Spatial
     private Spatial _head;
     private InvWeapon _weapon;
     private LaserDot _laserDot;
+    private ThrownSword _thrownSword;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        Main m = GetNode<Main>("/root/main");
+
         // find Godot scene nodes
         KinematicBody body = GetNode<KinematicBody>("body");
         _head = GetNode<Spatial>("body/head");
         _laserDot = GetNode<LaserDot>("laser_dot");
         _laserDot.CustomInit(_head, uint.MaxValue, 1000);
+
+        _thrownSword = m.factory.SpawnThrownSword(false);
+        m.AddOrphanNode(_thrownSword);
 
         // init components
         _fpsCtrl = new FPSController(body, _head);
@@ -41,10 +47,9 @@ public class EntPlayer : Spatial
         ProjectileDef def = new ProjectileDef();
         def.damage = 25;
         def.launchSpeed = 35;
-        def.timeToLive = 1;
-        _weapon = new InvWeapon(_head, def);
+        def.timeToLive = 4;
+        _weapon = new InvWeapon(_head, def, body);
 
-        Main m = GetNode<Main>("/root/main");
         Console.WriteLine("Main: " + m.Name);
         Console.WriteLine("Main via instance: " + Main.instance.Name);
 
