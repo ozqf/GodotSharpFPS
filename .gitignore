@@ -1,5 +1,6 @@
 .vs
 .vscode
+*.csproj.user
 
 # Godot-specific ignores
 # .import/ # fs this is necessary!

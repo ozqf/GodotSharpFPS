@@ -9,12 +9,7 @@ public class PointProjectile : Spatial
 	private float _tick = 0;
 	private bool _isDead = false;
 
-	private PhysicsBody _ignoreBody;
-
-	public override void _Ready()
-	{
-		
-	}
+	private PhysicsBody _ignoreBody = null;
 
 	private void Die()
 	{

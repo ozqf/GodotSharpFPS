@@ -2,6 +2,7 @@ using Godot;
 using System;
 using GodotSharpFps.src;
 using System.Collections.Generic;
+using System.Reflection;
 
 public class Main : Spatial
 {
@@ -14,6 +15,8 @@ public class Main : Spatial
     ///////////////////////////////////////
     // Instance
     ///////////////////////////////////////
+    
+    // Services
     public CmdConsole console;
     public GameFactory factory;
     public GameCamera cam;
@@ -25,7 +28,6 @@ public class Main : Spatial
     // Orphan nodes are nodes not currently in the scene tree.
     private List<Node> _orphanNodes = new List<Node>();
 
-    // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         Console.WriteLine("MAIN INIT");
@@ -33,10 +35,40 @@ public class Main : Spatial
         console = new CmdConsole();
         console.AddObserver("test", "", "Test console", ExecCmdTest);
         console.AddObserver("map", "", "Load a scene from the maps folder, eg 'map test_box'", ExecCmdScene);
+
+        // init services
         factory = new GameFactory(this);
         cam = GetNode<GameCamera>("game_camera");
         ui = GetNode<UI>("/root/ui");
         Input.SetMouseMode(Input.MouseMode.Captured);
+
+        // test stuff
+        ZqfXml.ListAllAssemblyResources(Assembly.GetExecutingAssembly());
+        TestReadTextFile();
+    }
+
+    private void TestReadTextFile()
+    {
+        // Ready from Godot asset file
+        /*
+        string path = "res://txt/game_stats.xml";
+        File f = new File();
+        Error err = f.Open(path, File.ModeFlags.Read);
+        if (err != Error.Ok)
+        {
+            Console.WriteLine($"Error loading text file '{path}'");
+            f.Close();
+            return;
+        }
+        string txt = f.GetAsText();
+        Console.WriteLine($"Reading {txt.Length} chars from '{path}'");
+        ZqfXml.TestReadXml(txt);
+        f.Close();
+        */
+
+        // Read from mono embedded resource
+        string str = ZqfXml.ReadAssemblyEmbeddedText("GodotSharpFps.txt.game_stats.xml");
+        ZqfXml.TestReadXml(str);
     }
 
     private void SetGameInputActive(bool isActive)
@@ -122,13 +154,10 @@ public class Main : Spatial
         ui.SetDebugtext(txt);
     }
 
-    /*
-    func get_window_to_screen_ratio():
-    	var real: Vector2 = OS.get_real_window_size()
-    	var scr: Vector2 = OS.get_screen_size()
-    	var result: Vector2 = Vector2(real.x / scr.x, real.y / scr.y)
-    	return result
-    */
+    /// <summary>
+    /// TODO Replace with proper usage of Godot Viewports
+    /// </summary>
+    /// <returns></returns>
     public Vector2 GetWindowToScreenRatio()
     {
         Vector2 real = OS.GetRealWindowSize();

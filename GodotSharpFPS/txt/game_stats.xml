@@ -1,0 +1,8 @@
+<GameStats>
+	<MobDefs>
+		<Mob n="base">
+			<s n="mob_hp" v="100" />
+			<s n="mob_walk_speed" v="10" />
+		</Mob>
+	</MobDefs>
+</GameStats>
