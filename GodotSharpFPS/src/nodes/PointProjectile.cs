@@ -11,6 +11,11 @@ public class PointProjectile : Spatial
 
 	private PhysicsBody _ignoreBody = null;
 
+	public void Respawn()
+	{
+		_isDead = false;
+	}
+
 	private void Die()
 	{
 		_isDead = true;
@@ -35,8 +40,17 @@ public class PointProjectile : Spatial
 		Dictionary hitResult = space.IntersectRay(origin, dest, arr, mask);
 		if (hitResult.Keys.Count > 0)
 		{
-			Node hitObj = (hitResult["collider"] as Node).GetParent();
-			Console.WriteLine($"Prj hit {hitObj.Name}");
+			IActorProvider actorProvider = hitResult["collider"] as IActorProvider;
+			if (actorProvider != null)
+			{
+				IActor actor = actorProvider.GetActor();
+				Console.WriteLine($"Prj hit actor!");
+			}
+			else
+			{
+				Node hitObj = (hitResult["collider"] as Node);
+				Console.WriteLine($"Prj hit non-actor node {hitObj.Name}");
+			}
 			Die();
 			return;
 		}

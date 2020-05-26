@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://game/actor_base.tscn" type="PackedScene" id=1]
+
+[node name="ent_mob" type="Spatial"]
+
+[node name="actor_base" parent="." instance=ExtResource( 1 )]

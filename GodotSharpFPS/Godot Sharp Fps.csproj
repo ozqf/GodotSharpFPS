@@ -56,8 +56,11 @@
   <ItemGroup>
     <Compile Include="EmptyMap.cs" />
     <Compile Include="GameCamera.cs" />
+    <Compile Include="src\InteractionTypes.cs" />
     <Compile Include="src\IOrphanNodeUpdater.cs" />
     <Compile Include="src\InvWeapon.cs" />
+    <Compile Include="src\nodes\ActorProvider.cs" />
+    <Compile Include="src\nodes\EntMob.cs" />
     <Compile Include="src\nodes\LaserDot.cs" />
     <Compile Include="src\nodes\ThrownSword.cs" />
     <Compile Include="src\ProjectileDef.cs" />

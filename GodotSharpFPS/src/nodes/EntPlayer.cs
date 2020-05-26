@@ -33,8 +33,8 @@ public class EntPlayer : Spatial
         Main m = GetNode<Main>("/root/main");
 
         // find Godot scene nodes
-        KinematicBody body = GetNode<KinematicBody>("body");
-        _head = GetNode<Spatial>("body/head");
+        KinematicBody body = GetNode<KinematicBody>("actor_base");
+        _head = GetNode<Spatial>("actor_base/head");
         _laserDot = GetNode<LaserDot>("laser_dot");
         _laserDot.CustomInit(_head, uint.MaxValue, 1000);
 
