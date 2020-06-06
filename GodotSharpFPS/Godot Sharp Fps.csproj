@@ -61,6 +61,7 @@
     <Compile Include="src\InvWeapon.cs" />
     <Compile Include="src\nodes\ActorProvider.cs" />
     <Compile Include="src\nodes\EntMob.cs" />
+    <Compile Include="src\nodes\KinematicWrapper.cs" />
     <Compile Include="src\nodes\LaserDot.cs" />
     <Compile Include="src\nodes\ThrownSword.cs" />
     <Compile Include="src\ProjectileDef.cs" />

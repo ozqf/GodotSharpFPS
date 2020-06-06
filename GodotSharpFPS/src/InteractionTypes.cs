@@ -8,7 +8,7 @@ namespace GodotSharpFps.src
 
     public enum TouchResponseType
     {
-        Damaged, Killed
+        None, Damaged, Killed
     }
 
     public class TouchData
