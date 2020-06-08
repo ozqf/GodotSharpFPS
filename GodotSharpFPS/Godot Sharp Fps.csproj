@@ -62,7 +62,6 @@
     <Compile Include="src\nodes\ActorProvider.cs" />
     <Compile Include="src\nodes\EntitySpawn.cs" />
     <Compile Include="src\nodes\EntMob.cs" />
-    <Compile Include="src\nodes\EntitySpawn.cs" />
     <Compile Include="src\nodes\KinematicWrapper.cs" />
     <Compile Include="src\nodes\LaserDot.cs" />
     <Compile Include="src\nodes\ThrownSword.cs" />
