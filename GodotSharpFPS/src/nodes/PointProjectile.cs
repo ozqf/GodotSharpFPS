@@ -76,13 +76,31 @@ public class PointProjectile : Spatial
 		//GlobalTransform = t;
 	}
 
-	public void Launch(Transform globalOrigin, ProjectileDef def, PhysicsBody ignoreBody)
+	/*public void Launch(Transform globalOrigin, ProjectileDef def, PhysicsBody ignoreBody)
 	{
 		_ignoreBody = ignoreBody;
 		_def = def;
 		Vector3 origin = globalOrigin.origin;
 		Console.WriteLine($"Prj spawned at {origin.x}, {origin.y}, {origin.z}");
 		GlobalTransform = globalOrigin;
+		_tick = def.timeToLive;
+	}*/
+
+	public void Launch(Vector3 origin, Vector3 forward, ProjectileDef def, PhysicsBody ignoreBody)
+	{
+		_ignoreBody = ignoreBody;
+		_def = def;
+
+		Transform t = GlobalTransform;
+		t.origin = new Vector3();
+		GlobalTransform = t;
+		Vector3 lookPos = t.origin + forward;
+		this.LookAt(lookPos, Vector3.Up);
+
+		//Vector3 origin = globalOrigin.origin;
+		t.origin = origin;
+		Console.WriteLine($"Prj spawned at {origin.x}, {origin.y}, {origin.z}");
+		GlobalTransform = t;
 		_tick = def.timeToLive;
 	}
 }

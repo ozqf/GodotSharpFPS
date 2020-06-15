@@ -1,5 +1,6 @@
 ﻿using Godot;
 using System;
+using System.Collections.Generic;
 
 namespace GodotSharpFps.src
 {
@@ -19,6 +20,8 @@ namespace GodotSharpFps.src
         protected float _primaryRefireTime;
         protected float _secondaryRefireTime;
 
+        protected List<Vector3> _spread = new List<Vector3>();
+
         public InvWeapon(
             Spatial launchNode,
             WeaponDef weaponDef,
@@ -32,15 +35,29 @@ namespace GodotSharpFps.src
             _weaponDef = weaponDef;
             _primaryPrjDef = primaryDef;
             _secondaryPrjDef = secondaryDef;
+            for (int i = 0; i < 12; ++i)
+            {
+                _spread.Add(new Vector3());
+            }
         }
 
         public void FirePrimary()
         {
             if (_primaryPrjDef == null) { return; }
-            PointProjectile prj = Main.instance.factory.SpawnPointProjectile();
-            if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
-            prj.Launch(_launchNode.GlobalTransform, _primaryPrjDef, _ignoreBody);
-            _tick = _weaponDef.primaryRefireTime;
+            Transform t = _launchNode.GlobalTransform;
+
+            ZqfGodotUtils.FillSpreadAngles(t, _spread);
+            for (int i = 0; i < _spread.Count; ++i)
+            {
+                PointProjectile prj = Main.instance.factory.SpawnPointProjectile();
+                if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
+                //prj.Launch(_launchNode.GlobalTransform, _primaryPrjDef, _ignoreBody);
+
+                prj.Launch(t.origin, _spread[i], _primaryPrjDef, _ignoreBody);
+                _tick = _weaponDef.primaryRefireTime;
+            }
+
+            
         }
 
         public void FireSecondary()
@@ -48,8 +65,9 @@ namespace GodotSharpFps.src
             if (_secondaryPrjDef == null) { return; }
             PointProjectile prj = Main.instance.factory.SpawnPointProjectile();
             if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
-            prj.Launch(_launchNode.GlobalTransform, _primaryPrjDef, _ignoreBody);
-            _tick = _weaponDef.secondaryRefireTime;
+            Transform t = _launchNode.GlobalTransform;
+            prj.Launch(t.origin, -t.basis.z, _primaryPrjDef, _ignoreBody);
+            _tick = _weaponDef.primaryRefireTime;
         }
 
         protected void CheckTriggers(bool primaryOn, bool secondaryOn)
