@@ -24,6 +24,7 @@ public class EntPlayer : Spatial
 	private FPSInput _input = new FPSInput();
 	private FPSController _fpsCtrl;
 	private Spatial _head;
+	private ActorInventory _inventory;
 	private InvWeapon _weapon;
 	private LaserDot _laserDot;
 	private ThrownSword _thrownSword;
@@ -46,6 +47,11 @@ public class EntPlayer : Spatial
 		// init components
 		_fpsCtrl = new FPSController(body, _head);
 
+		// Inventory
+		_inventory = new ActorInventory();
+		_inventory.Init(_head, 1);
+
+		// Create weapons
 		WeaponDef weapDef = new WeaponDef();
 		weapDef.primaryRefireTime = 0.1f;
 		weapDef.secondaryRefireTime = 0.5f;
@@ -55,6 +61,10 @@ public class EntPlayer : Spatial
 		def.launchSpeed = 35;
 		def.timeToLive = 4;
 		_weapon = new InvWeapon(_head, weapDef, def, null, body);
+
+		// Add weapons
+		_inventory.AddWeapon(_weapon);
+
 
 		Console.WriteLine("Main: " + m.Name);
 		Console.WriteLine("Main via instance: " + Main.instance.Name);
@@ -89,11 +99,17 @@ public class EntPlayer : Spatial
 		_fpsCtrl.ProcessMovement(_input, delta);
 		Main.instance.SetDebugText(_fpsCtrl.debugStr);
 
-		_weapon.Tick(
+		_inventory.Tick(
 			delta,
 			(_input.buttons & FPSInput.BitAttack1) != 0,
 			(_input.buttons & FPSInput.BitAttack2) != 0
-		);
+			);
+
+		//_weapon.Tick(
+		//	delta,
+		//	(_input.buttons & FPSInput.BitAttack1) != 0,
+		//	(_input.buttons & FPSInput.BitAttack2) != 0
+		//);
 
 		//if (Input.IsActionJustPressed(Attack1))
 		//{
