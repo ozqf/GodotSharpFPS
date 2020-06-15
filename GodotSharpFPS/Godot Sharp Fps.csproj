@@ -62,10 +62,12 @@
     <Compile Include="src\nodes\ActorProvider.cs" />
     <Compile Include="src\nodes\EntitySpawn.cs" />
     <Compile Include="src\nodes\EntMob.cs" />
+    <Compile Include="src\nodes\SwordThrowProjectile.cs" />
     <Compile Include="src\nodes\KinematicWrapper.cs" />
     <Compile Include="src\nodes\LaserDot.cs" />
     <Compile Include="src\nodes\ThrownSword.cs" />
     <Compile Include="src\ProjectileDef.cs" />
+    <Compile Include="src\WeaponSword.cs" />
     <Compile Include="src\ZqfGodotUtils.cs" />
     <Compile Include="src\FPSInput.cs" />
     <Compile Include="src\FPSController.cs" />

@@ -19,7 +19,7 @@ public class EntPlayer : Spatial
 	private const string LookDown = "ui_down";
 
 	private const string Attack1 = "attack_1";
-
+	private const string Attack2 = "attack_2";
 
 	private FPSInput _input = new FPSInput();
 	private FPSController _fpsCtrl;
@@ -46,11 +46,15 @@ public class EntPlayer : Spatial
 		// init components
 		_fpsCtrl = new FPSController(body, _head);
 
+		WeaponDef weapDef = new WeaponDef();
+		weapDef.primaryRefireTime = 0.1f;
+		weapDef.secondaryRefireTime = 0.5f;
+
 		ProjectileDef def = new ProjectileDef();
 		def.damage = 25;
 		def.launchSpeed = 35;
 		def.timeToLive = 4;
-		_weapon = new InvWeapon(_head, def, body);
+		_weapon = new InvWeapon(_head, weapDef, def, null, body);
 
 		Console.WriteLine("Main: " + m.Name);
 		Console.WriteLine("Main via instance: " + Main.instance.Name);
@@ -77,20 +81,29 @@ public class EntPlayer : Spatial
 			ApplyInputButtonBit(_input, LookDown, FPSInput.BitLookDown);
 			ApplyInputButtonBit(_input, LookLeft, FPSInput.BitLookLeft);
 			ApplyInputButtonBit(_input, LookRight, FPSInput.BitLookRight);
+
+			ApplyInputButtonBit(_input, Attack1, FPSInput.BitAttack1);
+			ApplyInputButtonBit(_input, Attack2, FPSInput.BitAttack2);
 		}
 
 		_fpsCtrl.ProcessMovement(_input, delta);
 		Main.instance.SetDebugText(_fpsCtrl.debugStr);
 
-		if (Input.IsActionJustPressed(Attack1))
-		{
-			FireProjectile();
-		}
+		_weapon.Tick(
+			delta,
+			(_input.buttons & FPSInput.BitAttack1) != 0,
+			(_input.buttons & FPSInput.BitAttack2) != 0
+		);
+
+		//if (Input.IsActionJustPressed(Attack1))
+		//{
+		//	FireProjectile();
+		//}
 	}
 
 	private void FireProjectile()
 	{
-		_weapon.Fire();
+		_weapon.FirePrimary();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

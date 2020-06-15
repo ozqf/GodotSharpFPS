@@ -17,6 +17,9 @@ namespace GodotSharpFps.src
         public const int BitMoveUp = (1 << 8);
         public const int BitMoveDown = (1 << 9);
 
+        public const int BitAttack1 = (1 << 10);
+        public const int BitAttack2 = (1 << 11);
+
         public int buttons;
         public Vector3 rotation;
 
