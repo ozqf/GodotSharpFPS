@@ -1,5 +1,5 @@
 using Godot;
-using System;
+using GodotSharpFps.src.nodes;
 
 public class GameFactory
 {
@@ -32,9 +32,9 @@ public class GameFactory
         return ZqfGodotUtils.CreateInstance<PointProjectile>(Path_PointProjectile, parent);
     }
 
-    public ThrownSword SpawnThrownSword(bool addToTree = true, Node overrideParent = null)
+    public SwordThrowProjectile SpawnThrownSword(bool addToTree = true, Node overrideParent = null)
     {
         Node parent = SelectParent(addToTree, overrideParent);
-        return ZqfGodotUtils.CreateInstance<ThrownSword>(Path_ThrownSword, parent);
+        return ZqfGodotUtils.CreateInstance<SwordThrowProjectile>(Path_ThrownSword, parent);
     }
 }

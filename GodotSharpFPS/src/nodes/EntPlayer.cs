@@ -27,7 +27,7 @@ public class EntPlayer : Spatial
 	private ActorInventory _inventory;
 	private InvWeapon _weapon;
 	private LaserDot _laserDot;
-	private ThrownSword _thrownSword;
+	private SwordThrowProjectile _thrownSword;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -55,11 +55,12 @@ public class EntPlayer : Spatial
 		WeaponDef weapDef = new WeaponDef();
 		weapDef.primaryRefireTime = 0.1f;
 		weapDef.secondaryRefireTime = 0.5f;
+		weapDef.primaryPrjCount = 7;
 
 		ProjectileDef def = new ProjectileDef();
 		def.damage = 25;
 		def.launchSpeed = 35;
-		def.timeToLive = 4;
+		def.timeToLive = 1;
 		_weapon = new InvWeapon(_head, weapDef, def, null, body);
 
 		// Add weapons

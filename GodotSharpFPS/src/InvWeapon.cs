@@ -29,19 +29,21 @@ namespace GodotSharpFps.src
             ProjectileDef secondaryDef,
             PhysicsBody ignoreBody)
         {
+            weaponDef.Validate();
+
             _launchNode = launchNode;
             _ignoreBody = ignoreBody;
 
             _weaponDef = weaponDef;
             _primaryPrjDef = primaryDef;
             _secondaryPrjDef = secondaryDef;
-            for (int i = 0; i < 12; ++i)
+            for (int i = 0; i < weaponDef.primaryPrjCount; ++i)
             {
                 _spread.Add(new Vector3());
             }
         }
 
-        public void FirePrimary()
+        virtual public void FirePrimary()
         {
             if (_primaryPrjDef == null) { return; }
             Transform t = _launchNode.GlobalTransform;
@@ -56,11 +58,9 @@ namespace GodotSharpFps.src
                 prj.Launch(t.origin, _spread[i], _primaryPrjDef, _ignoreBody);
                 _tick = _weaponDef.primaryRefireTime;
             }
-
-            
         }
 
-        public void FireSecondary()
+        virtual public void FireSecondary()
         {
             if (_secondaryPrjDef == null) { return; }
             PointProjectile prj = Main.instance.factory.SpawnPointProjectile();
@@ -70,7 +70,7 @@ namespace GodotSharpFps.src
             _tick = _weaponDef.primaryRefireTime;
         }
 
-        protected void CheckTriggers(bool primaryOn, bool secondaryOn)
+        virtual protected void CheckTriggers(bool primaryOn, bool secondaryOn)
         {
             if (primaryOn)
             { FirePrimary(); }
@@ -78,13 +78,13 @@ namespace GodotSharpFps.src
             { FireSecondary(); }
         }
 
-        protected void CommonTick(float delta, bool primaryOn, bool secondaryOn)
+        virtual protected void CommonTick(float delta, bool primaryOn, bool secondaryOn)
         {
             if (_tick > 0) { _tick -= delta; }
             else { CheckTriggers(primaryOn, secondaryOn); }
         }
 
-        public void Tick(float delta, bool primaryOn, bool secondaryOn)
+        virtual public void Tick(float delta, bool primaryOn, bool secondaryOn)
         {
             CommonTick(delta, primaryOn, secondaryOn);
         }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GodotSharpFps.src.nodes
 {
-    public class SwordThrowProjectile
+    public class SwordThrowProjectile : Spatial
     {
         const float ThrowRecallDelay = 0.25f;
         const float RecallFinishDistance = 2;

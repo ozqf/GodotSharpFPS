@@ -5,6 +5,15 @@ using Godot;
 
 public class ZqfGodotUtils
 {
+	private static Random _random = new Random();
+
+	public static float RandomRange(float min, float max)
+	{
+		float r = (float)_random.NextDouble();
+		r = r * (max - min) + min;
+		return r;
+	}
+
 	public static T CreateInstance<T>(string path, Node parentNode = null)
 	{
 		PackedScene scene = (PackedScene)ResourceLoader.Load(path);
@@ -43,9 +52,11 @@ public class ZqfGodotUtils
 		results[0] = forward;
 		for (int i = 1; i < len; ++i)
 		{
+			float rSpreadH = RandomRange(-spreadH, spreadH);
+			float rSpreadV = RandomRange(-spreadV, spreadV);
 			Vector3 end = VectorMA(origin, 8192, forward);
-			end = VectorMA(end, (float)spreadH * (float)r.NextDouble(), right);
-			end = VectorMA(end, (float)spreadV * (float)r.NextDouble(), up);
+			end = VectorMA(end, rSpreadH, right);
+			end = VectorMA(end, rSpreadV, up);
 			results[i] = (end - origin).Normalized();
 		}
 	}

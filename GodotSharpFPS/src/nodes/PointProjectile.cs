@@ -48,8 +48,8 @@ public class PointProjectile : Spatial
 			}
 			else
 			{
-				Node hitObj = (hitResult["collider"] as Node);
-				Console.WriteLine($"Prj hit non-actor node {hitObj.Name}");
+				//Node hitObj = (hitResult["collider"] as Node);
+				//Console.WriteLine($"Prj hit non-actor node {hitObj.Name}");
 			}
 			Die();
 			return;
