@@ -47,6 +47,16 @@ namespace GodotSharpFps.src
                 _secondarySpread.Add(new Vector3());
             }
         }
+        
+        public string GetDisplayName()
+        {
+            return _weaponDef.name;
+        }
+
+        public int GetLoadedAmmo()
+        {
+            return 999;
+        }
 
         virtual public void FirePrimary()
         {

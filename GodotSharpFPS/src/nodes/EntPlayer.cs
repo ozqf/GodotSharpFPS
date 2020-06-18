@@ -52,8 +52,9 @@ public class EntPlayer : Spatial
 		_inventory.Init(_head, 1);
 
 		// Add weapons
-		InvWeapon weapon = AttackFactory.CreatePlayerShotgun(_head, body);
-		_inventory.AddWeapon(weapon);
+		//InvWeapon weapon = AttackFactory.CreatePlayerShotgun(_head, body);
+		_inventory.AddWeapon(AttackFactory.CreatePlayerShotgun(_head, body));
+		_inventory.AddWeapon(AttackFactory.CreateStakegun(_head, body));
 
 		m.cam.AttachToTarget(_head);
 	}

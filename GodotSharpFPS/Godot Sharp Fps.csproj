@@ -58,8 +58,9 @@
     <Compile Include="GameCamera.cs" />
     <Compile Include="src\ActorInventory.cs" />
     <Compile Include="src\AttackFactory.cs" />
+    <Compile Include="src\extended\InvWeapShotgun.cs" />
     <Compile Include="src\InteractionTypes.cs" />
-    <Compile Include="src\InvStakegun.cs" />
+    <Compile Include="src\extended\InvWeapStakegun.cs" />
     <Compile Include="src\IOrphanNodeUpdater.cs" />
     <Compile Include="src\InvWeapon.cs" />
     <Compile Include="src\MiscDataTypes.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="src\nodes\KinematicWrapper.cs" />
     <Compile Include="src\nodes\LaserDot.cs" />
     <Compile Include="src\ProjectileDef.cs" />
-    <Compile Include="src\WeaponSword.cs" />
+    <Compile Include="src\extended\InvWeapDisc.cs" />
     <Compile Include="src\ZqfGodotUtils.cs" />
     <Compile Include="src\FPSInput.cs" />
     <Compile Include="src\FPSController.cs" />
@@ -88,5 +89,6 @@
   <ItemGroup>
     <EmbeddedResource Include="txt\game_stats.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,16 +1,15 @@
 ﻿using Godot;
-using GodotSharpFps.src.nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GodotSharpFps.src
+namespace GodotSharpFps.src.extended
 {
-    public class WeaponSword : InvWeapon
+    public class InvWeapShotgun : InvWeapon
     {
-        public WeaponSword(
+        public InvWeapShotgun(
             Spatial launchNode,
             WeaponDef weaponDef,
             ProjectileDef primaryDef,
@@ -18,16 +17,7 @@ namespace GodotSharpFps.src
             PhysicsBody ignoreBody)
             : base(launchNode, weaponDef, primaryDef, secondaryDef, ignoreBody)
         {
-        }
 
-        public void SetSwordProjectile(SwordThrowProjectile proj)
-        {
-
-        }
-
-        public override void FirePrimary()
-        {
-            base.FirePrimary();
         }
     }
 }

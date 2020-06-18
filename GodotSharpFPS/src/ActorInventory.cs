@@ -1,9 +1,6 @@
 ﻿using Godot;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GodotSharpFps.src
 {
@@ -45,6 +42,19 @@ namespace GodotSharpFps.src
                 return null;
             }
             return _weapons[_currentWeaponIndex];
+        }
+
+        public void FillHudStatus(HUDPlayerState state)
+        {
+            InvWeapon weap = GetCurrentWeapon();
+            if (weap == null)
+            {
+                state.ammoLoaded = 999;
+                state.weaponName = "None";
+                return;
+            }
+            state.weaponName = weap.GetDisplayName();
+            state.ammoLoaded = weap.GetLoadedAmmo();
         }
 
         #endregion
