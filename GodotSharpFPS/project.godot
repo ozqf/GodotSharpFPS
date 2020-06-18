@@ -24,6 +24,11 @@ config/icon="res://icon.png"
 main="*res://main.tscn"
 ui="*res://ui/ui.tscn"
 
+[display]
+
+window/size/width=1600
+window/size/height=900
+
 [input]
 
 ui_accept={

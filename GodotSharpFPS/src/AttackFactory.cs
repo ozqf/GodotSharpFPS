@@ -21,7 +21,7 @@ namespace GodotSharpFps.src
 
 			ProjectileDef secondaryPrjDef = new ProjectileDef();
 			secondaryPrjDef.damage = 25;
-			secondaryPrjDef.launchSpeed = 35;
+			secondaryPrjDef.launchSpeed = 10000;
 			secondaryPrjDef.timeToLive = 1;
 			secondaryPrjDef.prefabPath = GameFactory.Path_StakeProjectile;
 

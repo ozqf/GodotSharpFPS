@@ -60,19 +60,19 @@ shadow_enabled = true
 [node name="actors" type="Spatial" parent="."]
 
 [node name="ent_mob" parent="actors" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -10 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -1 )
 
 [node name="ent_player" parent="actors" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -1 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 10, 16 )
 visible = false
 
 [node name="ent_spawn" parent="." instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.75723, 1, 9.11845 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.15723, 1, -0.28155 )
 entityType = "player"
 
 [node name="ent_spawn2" parent="." instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.71358, 1, 9.54921 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.31358, 1, 0.149209 )
 entityType = "mob"

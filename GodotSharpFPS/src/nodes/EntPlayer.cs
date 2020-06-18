@@ -28,6 +28,7 @@ public class EntPlayer : Spatial
 	private LaserDot _laserDot;
 	private SwordThrowProjectile _thrownSword;
 	private HUDPlayerState _hudState = new HUDPlayerState();
+	private KinematicWrapper _body;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -35,7 +36,8 @@ public class EntPlayer : Spatial
 		Main m = GetNode<Main>("/root/main");
 
 		// find Godot scene nodes
-		var body = GetNode<KinematicBody>("actor_base");
+		_body = GetNode<KinematicWrapper>("actor_base");
+		_body.HideModels();
 		//ActorProvider body = GetNode<ActorProvider>("actor_base");
 		_head = GetNode<Spatial>("actor_base/head");
 		_laserDot = GetNode<LaserDot>("laser_dot");
@@ -45,7 +47,7 @@ public class EntPlayer : Spatial
 		m.AddOrphanNode(_thrownSword);
 
 		// init components
-		_fpsCtrl = new FPSController(body, _head);
+		_fpsCtrl = new FPSController(_body, _head);
 
 		// Inventory
 		_inventory = new ActorInventory();
@@ -53,8 +55,8 @@ public class EntPlayer : Spatial
 
 		// Add weapons
 		//InvWeapon weapon = AttackFactory.CreatePlayerShotgun(_head, body);
-		_inventory.AddWeapon(AttackFactory.CreatePlayerShotgun(_head, body));
-		_inventory.AddWeapon(AttackFactory.CreateStakegun(_head, body));
+		_inventory.AddWeapon(AttackFactory.CreatePlayerShotgun(_head, _body));
+		_inventory.AddWeapon(AttackFactory.CreateStakegun(_head, _body));
 
 		m.cam.AttachToTarget(_head);
 	}
