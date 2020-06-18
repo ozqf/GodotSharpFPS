@@ -25,9 +25,9 @@ public class EntPlayer : Spatial
 	private FPSController _fpsCtrl;
 	private Spatial _head;
 	private ActorInventory _inventory;
-	private InvWeapon _weapon;
 	private LaserDot _laserDot;
 	private SwordThrowProjectile _thrownSword;
+	private HUDPlayerState _hudState = new HUDPlayerState();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -51,24 +51,9 @@ public class EntPlayer : Spatial
 		_inventory = new ActorInventory();
 		_inventory.Init(_head, 1);
 
-		// Create weapons
-		WeaponDef weapDef = new WeaponDef();
-		weapDef.primaryRefireTime = 0.1f;
-		weapDef.secondaryRefireTime = 0.5f;
-		weapDef.primaryPrjCount = 7;
-
-		ProjectileDef def = new ProjectileDef();
-		def.damage = 25;
-		def.launchSpeed = 35;
-		def.timeToLive = 1;
-		_weapon = new InvWeapon(_head, weapDef, def, null, body);
-
 		// Add weapons
-		_inventory.AddWeapon(_weapon);
-
-
-		Console.WriteLine("Main: " + m.Name);
-		Console.WriteLine("Main via instance: " + Main.instance.Name);
+		InvWeapon weapon = AttackFactory.CreatePlayerShotgun(_head, body);
+		_inventory.AddWeapon(weapon);
 
 		m.cam.AttachToTarget(_head);
 	}
@@ -81,7 +66,7 @@ public class EntPlayer : Spatial
 		// Clear all inputs and reapply
 		_input.buttons = 0;
 
-		if (Main.instance.gameInputActive)
+		if (Main.i.gameInputActive)
 		{
 			ApplyInputButtonBit(_input, MoveForward, FPSInput.BitMoveForward);
 			ApplyInputButtonBit(_input, MoveBackward, FPSInput.BitMoveBackward);
@@ -98,7 +83,7 @@ public class EntPlayer : Spatial
 		}
 
 		_fpsCtrl.ProcessMovement(_input, delta);
-		Main.instance.SetDebugText(_fpsCtrl.debugStr);
+		Main.i.SetDebugText(_fpsCtrl.debugStr);
 
 		_inventory.Tick(
 			delta,
@@ -106,22 +91,16 @@ public class EntPlayer : Spatial
 			(_input.buttons & FPSInput.BitAttack2) != 0
 			);
 
-		//_weapon.Tick(
-		//	delta,
-		//	(_input.buttons & FPSInput.BitAttack1) != 0,
-		//	(_input.buttons & FPSInput.BitAttack2) != 0
-		//);
-
-		//if (Input.IsActionJustPressed(Attack1))
-		//{
-		//	FireProjectile();
-		//}
+		_hudState.health = 80;
+		_hudState.ammoLoaded = 999;
+		_hudState.weaponName = "Stakegun";
+		Main.i.ui.SetHudState(_hudState);
 	}
 
-	private void FireProjectile()
-	{
-		_weapon.FirePrimary();
-	}
+	//private void FireProjectile()
+	//{
+	//	_weapon.FirePrimary();
+	//}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(float delta)
@@ -131,9 +110,9 @@ public class EntPlayer : Spatial
 
 	public override void _Input(InputEvent @event)
 	{
-		if (Main.instance.gameInputActive == false) { return; }
+		if (Main.i.gameInputActive == false) { return; }
 		InputEventMouseMotion motion = @event as InputEventMouseMotion;
 		if (motion == null) { return; }
-		_fpsCtrl.ProcessMouseMotion(motion, Main.instance.GetWindowToScreenRatio());
+		_fpsCtrl.ProcessMouseMotion(motion, Main.i.GetWindowToScreenRatio());
 	}
 }

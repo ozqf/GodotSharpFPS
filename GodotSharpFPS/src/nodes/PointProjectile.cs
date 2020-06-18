@@ -9,6 +9,9 @@ public class PointProjectile : Spatial
 	private float _tick = 0;
 	private bool _isDead = false;
 
+	private int _hideTicksMax = 3;
+	private int _hideTicks = 2;
+
 	private PhysicsBody _ignoreBody = null;
 
 	public void Respawn()
@@ -68,6 +71,12 @@ public class PointProjectile : Spatial
 		}
 		_tick -= delta;
 
+		_hideTicks--;
+		if (_hideTicks <= 0)
+		{
+			Show();
+		}
+
 		MoveAsRay(delta);
 
 		//Transform t = GlobalTransform;
@@ -99,8 +108,11 @@ public class PointProjectile : Spatial
 
 		//Vector3 origin = globalOrigin.origin;
 		t.origin = origin;
-		Console.WriteLine($"Prj spawned at {origin.x}, {origin.y}, {origin.z}");
+		//Console.WriteLine($"Prj spawned at {origin.x}, {origin.y}, {origin.z}");
 		GlobalTransform = t;
 		_tick = def.timeToLive;
+		//Console.WriteLine($"Prj TTL {_tick}");
+		_hideTicks = _hideTicksMax;
+		Hide();
 	}
 }

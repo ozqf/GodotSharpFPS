@@ -27,7 +27,7 @@ public class CmdConsoleUI : Node
 		{
 			string text = _lineEdit.Text;
 			_lineEdit.Text = string.Empty;
-			Main.instance.console.Execute(text);
+			Main.i.console.Execute(text);
 			return true;
 		}
 		return false;

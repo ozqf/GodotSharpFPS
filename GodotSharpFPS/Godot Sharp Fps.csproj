@@ -57,9 +57,12 @@
     <Compile Include="EmptyMap.cs" />
     <Compile Include="GameCamera.cs" />
     <Compile Include="src\ActorInventory.cs" />
+    <Compile Include="src\AttackFactory.cs" />
     <Compile Include="src\InteractionTypes.cs" />
+    <Compile Include="src\InvStakegun.cs" />
     <Compile Include="src\IOrphanNodeUpdater.cs" />
     <Compile Include="src\InvWeapon.cs" />
+    <Compile Include="src\MiscDataTypes.cs" />
     <Compile Include="src\nodes\ActorProvider.cs" />
     <Compile Include="src\nodes\EntitySpawn.cs" />
     <Compile Include="src\nodes\EntMob.cs" />

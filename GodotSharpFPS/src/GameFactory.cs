@@ -3,9 +3,10 @@ using GodotSharpFps.src.nodes;
 
 public class GameFactory
 {
-    const string Path_PointProjectile = "res://game/projectiles/point_projectile.tscn";
+    public const string Path_PointProjectile = "res://game/projectiles/point_projectile.tscn";
+    public const string Path_StakeProjectile = "res://game/projectiles/stake_projectile.tscn";
 
-    const string Path_ThrownSword = "res://game/projectiles/prj_thrown_sword.tscn";
+    public const string Path_ThrownSword = "res://game/projectiles/prj_thrown_sword.tscn";
 
     private Node _root;
 
@@ -24,6 +25,16 @@ public class GameFactory
             else { parent = _root; }
         }
         return parent;
+    }
+
+    public PointProjectile SpawnPrefab(string path, bool addToTree = true, Node overrideParent = null)
+    {
+        if (string.IsNullOrEmpty(path))
+        {
+            path = Path_PointProjectile;
+        }
+        Node parent = SelectParent(addToTree, overrideParent);
+        return ZqfGodotUtils.CreateInstance<PointProjectile>(path, parent);
     }
 
     public PointProjectile SpawnPointProjectile(bool addToTree = true, Node overrideParent = null)

@@ -10,7 +10,7 @@ public class Main : Spatial
 	// Static
 	///////////////////////////////////////
 	private static Main _instance = null;
-	public static Main instance { get { return _instance; } }
+	public static Main i { get { return _instance; } }
 	
 	///////////////////////////////////////
 	// Instance

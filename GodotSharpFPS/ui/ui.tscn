@@ -11,13 +11,31 @@ script = ExtResource( 2 )
 [node name="Label" type="Label" parent="debug_text"]
 anchor_top = 0.0368552
 anchor_bottom = 0.0388552
-margin_right = 514.0
+margin_left = -8.55002
+margin_right = 505.45
 margin_bottom = 427.4
 text = "Line 1 abcdfeghijklmnopqrstuvwxyz
 Line 2
 Line 3
 Line 4
 "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="player_status" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="player_status"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -160.0
+margin_right = 324.0
+text = "Line 1 abcdfeghijklmnopqrstuvwxyz
+Line 2
+Line 3
+Line 4
+"
+valign = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }

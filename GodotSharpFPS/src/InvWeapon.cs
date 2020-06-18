@@ -20,7 +20,8 @@ namespace GodotSharpFps.src
         protected float _primaryRefireTime;
         protected float _secondaryRefireTime;
 
-        protected List<Vector3> _spread = new List<Vector3>();
+        protected List<Vector3> _primarySpread = new List<Vector3>();
+        protected List<Vector3> _secondarySpread = new List<Vector3>();
 
         public InvWeapon(
             Spatial launchNode,
@@ -39,7 +40,11 @@ namespace GodotSharpFps.src
             _secondaryPrjDef = secondaryDef;
             for (int i = 0; i < weaponDef.primaryPrjCount; ++i)
             {
-                _spread.Add(new Vector3());
+                _primarySpread.Add(new Vector3());
+            }
+            for (int i = 0; i < weaponDef.secondaryPrjCount; ++i)
+            {
+                _secondarySpread.Add(new Vector3());
             }
         }
 
@@ -48,14 +53,14 @@ namespace GodotSharpFps.src
             if (_primaryPrjDef == null) { return; }
             Transform t = _launchNode.GlobalTransform;
 
-            ZqfGodotUtils.FillSpreadAngles(t, _spread);
-            for (int i = 0; i < _spread.Count; ++i)
+            ZqfGodotUtils.FillSpreadAngles(t, _primarySpread);
+            for (int i = 0; i < _primarySpread.Count; ++i)
             {
-                PointProjectile prj = Main.instance.factory.SpawnPointProjectile();
+                PointProjectile prj = Main.i.factory.SpawnPrefab(_primaryPrjDef.prefabPath);
                 if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
                 //prj.Launch(_launchNode.GlobalTransform, _primaryPrjDef, _ignoreBody);
 
-                prj.Launch(t.origin, _spread[i], _primaryPrjDef, _ignoreBody);
+                prj.Launch(t.origin, _primarySpread[i], _primaryPrjDef, _ignoreBody);
                 _tick = _weaponDef.primaryRefireTime;
             }
         }
@@ -63,11 +68,18 @@ namespace GodotSharpFps.src
         virtual public void FireSecondary()
         {
             if (_secondaryPrjDef == null) { return; }
-            PointProjectile prj = Main.instance.factory.SpawnPointProjectile();
-            if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
             Transform t = _launchNode.GlobalTransform;
-            prj.Launch(t.origin, -t.basis.z, _primaryPrjDef, _ignoreBody);
-            _tick = _weaponDef.primaryRefireTime;
+
+            ZqfGodotUtils.FillSpreadAngles(t, _secondarySpread);
+            for (int i = 0; i < _secondarySpread.Count; ++i)
+            {
+                PointProjectile prj = Main.i.factory.SpawnPrefab(_secondaryPrjDef.prefabPath);
+                if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
+                //prj.Launch(_launchNode.GlobalTransform, _primaryPrjDef, _ignoreBody);
+
+                prj.Launch(t.origin, _secondarySpread[i], _secondaryPrjDef, _ignoreBody);
+                _tick = _weaponDef.secondaryRefireTime;
+            }
         }
 
         virtual protected void CheckTriggers(bool primaryOn, bool secondaryOn)
