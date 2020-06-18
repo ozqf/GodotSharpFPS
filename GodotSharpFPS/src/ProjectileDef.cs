@@ -5,7 +5,7 @@ namespace GodotSharpFps.src
     {
         public string prefabPath = string.Empty;
         public float launchSpeed = 20;
-        public float damage = 10;
+        public int damage = 10;
         public float timeToLive = 4;
         
         public void Validate()

@@ -3,7 +3,7 @@ using System;
 using GodotSharpFps.src;
 using GodotSharpFps.src.nodes;
 
-public class EntPlayer : Spatial
+public class EntPlayer : Spatial, IActor, IActorProvider
 {
 	private const string MoveForward = "move_forward";
 	private const string MoveBackward = "move_backward";
@@ -30,6 +30,8 @@ public class EntPlayer : Spatial
 	private HUDPlayerState _hudState = new HUDPlayerState();
 	private KinematicWrapper _body;
 
+	public IActor GetActor() => this;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -37,6 +39,7 @@ public class EntPlayer : Spatial
 
 		// find Godot scene nodes
 		_body = GetNode<KinematicWrapper>("actor_base");
+		_body.actor = this;
 		_body.HideModels();
 		//ActorProvider body = GetNode<ActorProvider>("actor_base");
 		_head = GetNode<Spatial>("actor_base/head");
@@ -117,5 +120,14 @@ public class EntPlayer : Spatial
 		InputEventMouseMotion motion = @event as InputEventMouseMotion;
 		if (motion == null) { return; }
 		_fpsCtrl.ProcessMouseMotion(motion, Main.i.GetWindowToScreenRatio());
+	}
+
+	public TouchResponseData ActorTouch(TouchData touchData)
+	{
+		Console.WriteLine($"Player hit for {touchData.damage}");
+		TouchResponseData result;
+		result.damageTaken = touchData.damage;
+		result.responseType = TouchResponseType.Damaged;
+		return result;
 	}
 }

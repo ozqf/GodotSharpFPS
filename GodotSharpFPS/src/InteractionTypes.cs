@@ -11,17 +11,29 @@ namespace GodotSharpFps.src
         None, Damaged, Killed
     }
 
-    public class TouchData
+    public struct TouchData
     {
         public TouchType touchType;
         public int teamId;
         public int damage;
     }
 
-    public class TouchResponseData
+    public struct TouchResponseData
     {
         public TouchResponseType responseType;
         public int damageTaken;
+
+        public static TouchResponseData empty
+        {
+            get
+            {
+                return new TouchResponseData
+                {
+                    responseType = TouchResponseType.None,
+                    damageTaken = 0
+                };
+            }
+        }
     }
 
     public interface IActor

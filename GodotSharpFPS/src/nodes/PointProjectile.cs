@@ -15,6 +15,8 @@ public class PointProjectile : Spatial
 
 	private PhysicsBody _ignoreBody = null;
 
+	private TouchData _touch = new TouchData();
+
 	public void Respawn()
 	{
 		_isDead = false;
@@ -44,11 +46,23 @@ public class PointProjectile : Spatial
 		Dictionary hitResult = space.IntersectRay(origin, dest, arr, mask);
 		if (hitResult.Keys.Count > 0)
 		{
+			_touch.damage = _def.damage;
+			_touch.teamId = 0;
+			_touch.touchType = TouchType.Bullet;
 			IActorProvider actorProvider = hitResult["collider"] as IActorProvider;
 			if (actorProvider != null)
 			{
 				IActor actor = actorProvider.GetActor();
-				Console.WriteLine($"Prj hit actor!");
+				if (actor != null)
+				{
+					TouchResponseData response = actor.ActorTouch(_touch);
+					Console.WriteLine($"Prj hit actor for {response.damageTaken}");
+				}
+				else
+				{
+					Console.WriteLine($"Prj hit provider but actor is null!");
+				}
+				
 			}
 			else
 			{
