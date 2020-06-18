@@ -56,7 +56,7 @@ namespace GodotSharpFps.src
             ZqfGodotUtils.FillSpreadAngles(t, _primarySpread);
             for (int i = 0; i < _primarySpread.Count; ++i)
             {
-                PointProjectile prj = Main.i.factory.SpawnPrefab(_primaryPrjDef.prefabPath);
+                PointProjectile prj = Main.i.factory.SpawnProjectile(_primaryPrjDef.prefabPath);
                 if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
                 //prj.Launch(_launchNode.GlobalTransform, _primaryPrjDef, _ignoreBody);
 
@@ -73,7 +73,7 @@ namespace GodotSharpFps.src
             ZqfGodotUtils.FillSpreadAngles(t, _secondarySpread);
             for (int i = 0; i < _secondarySpread.Count; ++i)
             {
-                PointProjectile prj = Main.i.factory.SpawnPrefab(_secondaryPrjDef.prefabPath);
+                PointProjectile prj = Main.i.factory.SpawnProjectile(_secondaryPrjDef.prefabPath);
                 if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
                 //prj.Launch(_launchNode.GlobalTransform, _primaryPrjDef, _ignoreBody);
 

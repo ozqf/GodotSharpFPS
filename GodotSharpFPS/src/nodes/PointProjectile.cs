@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using GodotSharpFps.src;
+using GodotSharpFps.src.nodes;
 using System;
 
 public class PointProjectile : Spatial
@@ -54,6 +55,9 @@ public class PointProjectile : Spatial
 				//Node hitObj = (hitResult["collider"] as Node);
 				//Console.WriteLine($"Prj hit non-actor node {hitObj.Name}");
 			}
+			Vector3 gfxOrigin = (Vector3)hitResult["position"];
+			GFXQuick gfx = Main.i.factory.SpawnGFX(GameFactory.Path_GFXImpact);
+			gfx.Spawn(gfxOrigin);
 			Die();
 			return;
 		}

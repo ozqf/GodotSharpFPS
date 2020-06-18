@@ -8,6 +8,8 @@ public class GameFactory
 
     public const string Path_ThrownSword = "res://game/projectiles/prj_thrown_sword.tscn";
 
+    public const string Path_GFXImpact = "res://gfx/gfx_impact.tscn";
+
     private Node _root;
 
     public GameFactory(Spatial root)
@@ -27,7 +29,7 @@ public class GameFactory
         return parent;
     }
 
-    public PointProjectile SpawnPrefab(string path, bool addToTree = true, Node overrideParent = null)
+    public PointProjectile SpawnProjectile(string path, bool addToTree = true, Node overrideParent = null)
     {
         if (string.IsNullOrEmpty(path))
         {
@@ -35,6 +37,16 @@ public class GameFactory
         }
         Node parent = SelectParent(addToTree, overrideParent);
         return ZqfGodotUtils.CreateInstance<PointProjectile>(path, parent);
+    }
+
+    public GFXQuick SpawnGFX(string path, bool addToTree = true, Node overrideParent = null)
+    {
+        if (string.IsNullOrEmpty(path))
+        {
+            path = Path_PointProjectile;
+        }
+        Node parent = SelectParent(addToTree, overrideParent);
+        return ZqfGodotUtils.CreateInstance<GFXQuick>(path, parent);
     }
 
     public PointProjectile SpawnPointProjectile(bool addToTree = true, Node overrideParent = null)
