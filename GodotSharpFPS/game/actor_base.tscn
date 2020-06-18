@@ -3,13 +3,13 @@
 [ext_resource path="res://src/nodes/KinematicWrapper.cs" type="Script" id=1]
 
 [sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.6, 1.7, 0.6 )
+extents = Vector3( 0.75, 1.7, 0.75 )
 
 [sub_resource type="CubeMesh" id=2]
-size = Vector3( 1, 2.6, 1 )
+size = Vector3( 1.5, 2.6, 1.5 )
 
 [sub_resource type="CubeMesh" id=3]
-size = Vector3( 0.75, 0.75, 0.75 )
+size = Vector3( 0.9, 0.75, 0.9 )
 
 [sub_resource type="CubeMesh" id=4]
 size = Vector3( 0.25, 0.25, 1 )
@@ -36,7 +36,7 @@ mesh = SubResource( 3 )
 material/0 = null
 
 [node name="weapon" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 1.4, -0.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 1.2, -1.1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="weapon"]
 mesh = SubResource( 4 )
