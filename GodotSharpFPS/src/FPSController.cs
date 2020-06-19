@@ -10,7 +10,7 @@ namespace GodotSharpFps.src
 
 		const float KEYBOARD_TURN_DEGREES_PER_SECOND = 135;
 
-		public const float MOUSE_SENSITIVITY = 0.15f;
+		public const float MOUSE_SENSITIVITY = 0.1f;
 		const float MOVE_SPEED = 15;
 		const float MOVE_ACCELERATION = 150;
 		const float MOVE_PUSH_STRENGTH = 0.2f;
