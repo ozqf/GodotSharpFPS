@@ -21,6 +21,11 @@ namespace GodotSharpFps.src
         protected float _secondaryRefireTime;
         protected bool _isEquipped = false;
 
+        protected bool _isReloading = false;
+        protected int _roundsLoaded = 1;
+
+
+
         protected List<Vector3> _primarySpread = new List<Vector3>();
         protected List<Vector3> _secondarySpread = new List<Vector3>();
 
@@ -49,17 +54,17 @@ namespace GodotSharpFps.src
             }
         }
 
-        public void SetEquipped(bool flag)
+        virtual public void SetEquipped(bool flag)
         {
             _isEquipped = flag;
         }
-        
-        public string GetDisplayName()
+
+        virtual public string GetDisplayName()
         {
             return _weaponDef.name;
         }
 
-        public int GetLoadedAmmo()
+        virtual public int GetLoadedAmmo()
         {
             return 999;
         }
@@ -69,12 +74,21 @@ namespace GodotSharpFps.src
             return true;
         }
 
+        virtual public bool CanSwitchAway()
+        {
+            if (_primaryRefireTime > 0 || _secondaryRefireTime > 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
         virtual public void FirePrimary()
         {
             if (_primaryPrjDef == null) { return; }
             Transform t = _launchNode.GlobalTransform;
 
-            ZqfGodotUtils.FillSpreadAngles(t, _primarySpread);
+            ZqfGodotUtils.FillSpreadAngles(t, _primarySpread, 2000, 1200);
             for (int i = 0; i < _primarySpread.Count; ++i)
             {
                 PointProjectile prj = Main.i.factory.SpawnProjectile(_primaryPrjDef.prefabPath);
@@ -91,7 +105,7 @@ namespace GodotSharpFps.src
             if (_secondaryPrjDef == null) { return; }
             Transform t = _launchNode.GlobalTransform;
 
-            ZqfGodotUtils.FillSpreadAngles(t, _secondarySpread);
+            ZqfGodotUtils.FillSpreadAngles(t, _secondarySpread, 2000, 1200);
             for (int i = 0; i < _secondarySpread.Count; ++i)
             {
                 PointProjectile prj = Main.i.factory.SpawnProjectile(_secondaryPrjDef.prefabPath);
@@ -114,7 +128,16 @@ namespace GodotSharpFps.src
         virtual protected void CommonTick(float delta, bool primaryOn, bool secondaryOn)
         {
             if (_tick > 0) { _tick -= delta; }
-            else { CheckTriggers(primaryOn, secondaryOn); }
+            else
+            {
+                // check for reloading finish
+                if (_isReloading == true)
+                {
+                    _isReloading = false;
+                    _roundsLoaded = _weaponDef.magazineSize;
+                }
+                CheckTriggers(primaryOn, secondaryOn);
+            }
         }
 
         virtual public void Tick(float delta, bool primaryOn, bool secondaryOn)

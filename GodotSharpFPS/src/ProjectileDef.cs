@@ -23,6 +23,8 @@ namespace GodotSharpFps.src
         public float secondaryRefireTime;
         public int secondaryPrjCount;
         public string name;
+        public int magazineSize = 1;
+        public float magazineReloadTime = 2;
 
         public void Validate()
         {

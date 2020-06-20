@@ -36,19 +36,23 @@ public class ZqfGodotUtils
 		return dest;
 	}
 
-	public static void FillSpreadAngles(Transform tran, List<Vector3> results)
+	public static void FillSpreadAngles(
+		Transform tran,
+		List<Vector3> results,
+		float spreadH,
+		float spreadV)
 	{
 		if (results == null) { return; }
+		// Check capacity
 		int len = results.Count;
 		if (len == 0) { return; }
+
 		Vector3 origin = tran.origin;
 		Vector3 forward = -tran.basis.z;
 		Vector3 up = tran.basis.y;
 		Vector3 right = tran.basis.x;
 		Random r = new Random();
-		float spreadH = 2000;
-		float spreadV = 1200;
-
+		
 		results[0] = forward;
 		for (int i = 1; i < len; ++i)
 		{

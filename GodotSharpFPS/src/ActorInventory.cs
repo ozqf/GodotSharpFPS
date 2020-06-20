@@ -82,8 +82,8 @@ namespace GodotSharpFps.src
         {
             int numSlots = _weapons.Count;
             if (index < 0 || index >= numSlots) { return; }
-            Console.WriteLine($"Queue switch to {_queuedWeaponSwitchIndex}");
             _queuedWeaponSwitchIndex = index;
+            Console.WriteLine($"Queue switch to {_queuedWeaponSwitchIndex}");
         }
 
         public void SelectNextWeapon()
@@ -111,24 +111,33 @@ namespace GodotSharpFps.src
             state.ammoLoaded = weap.GetLoadedAmmo();
         }
 
-        private void SetWeaponIndex(int index)
+        private void CheckQueuedSwitch()
         {
-
+            if (_queuedWeaponSwitchIndex >= 0)
+            {
+                InvWeapon cur = GetCurrentWeapon();
+                if (cur != null)
+                {
+                    // check that current weapon is okay
+                    if (!cur.CanSwitchAway())
+                    {
+                        return;
+                    }
+                    cur.SetEquipped(false);
+                }
+                
+                _currentWeaponIndex = _queuedWeaponSwitchIndex;
+                _queuedWeaponSwitchIndex = -1;
+                cur = GetCurrentWeapon();
+                cur.SetEquipped(true);
+            }
         }
 
         #endregion
 
         public void Tick(float delta, bool primaryOn, bool secondaryOn)
         {
-            if (_queuedWeaponSwitchIndex >= 0)
-            {
-                InvWeapon cur = GetCurrentWeapon();
-                if (cur != null) { cur.SetEquipped(false); }
-                _currentWeaponIndex = _queuedWeaponSwitchIndex;
-                _queuedWeaponSwitchIndex = -1;
-                cur = GetCurrentWeapon();
-                cur.SetEquipped(true);
-            }
+            CheckQueuedSwitch();
             InvWeapon weap = GetCurrentWeapon();
             // Tick
             if (weap != null)
