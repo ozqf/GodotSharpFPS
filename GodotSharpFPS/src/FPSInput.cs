@@ -25,6 +25,10 @@ namespace GodotSharpFps.src
 
         private const string Attack1 = "attack_1";
         private const string Attack2 = "attack_2";
+        private const string Offhand1 = "offhand_1";
+
+        private const string NextSlot = "next_slot";
+        private const string PrevSlot = "prev_slot";
 
         private const string Slot1 = "slot_1";
         private const string Slot2 = "slot_2";
@@ -47,12 +51,15 @@ namespace GodotSharpFps.src
 
         public const int BitAttack1 = (1 << 10);
         public const int BitAttack2 = (1 << 11);
+        public const int BitOffhand1 = (1 << 12);
 
-        public const int BitSlot1 = (1 << 12);
-        public const int BitSlot2 = (1 << 13);
-        public const int BitSlot3 = (1 << 14);
-        public const int BitSlot4 = (1 << 15);
+        public const int BitNextSlot = (1 << 13);
+        public const int BitPrevSlot = (1 << 14);
 
+        public const int BitSlot1 = (1 << 15);
+        public const int BitSlot2 = (1 << 16);
+        public const int BitSlot3 = (1 << 17);
+        public const int BitSlot4 = (1 << 18);
 
         public int buttons;
         public Vector3 rotation;
@@ -68,6 +75,10 @@ namespace GodotSharpFps.src
 
             AddInput(Attack1, BitAttack1);
             AddInput(Attack2, BitAttack2);
+            AddInput(Offhand1, BitOffhand1);
+
+            AddInput(NextSlot, BitNextSlot);
+            AddInput(PrevSlot, BitPrevSlot);
 
             AddInput(Slot1, BitSlot1);
             AddInput(Slot2, BitSlot2);

@@ -16,12 +16,12 @@ namespace GodotSharpFps.src
 
 			ProjectileDef primaryPrjDef = new ProjectileDef();
 			primaryPrjDef.damage = 25;
-			primaryPrjDef.launchSpeed = 35;
+			primaryPrjDef.launchSpeed = 50;
 			primaryPrjDef.timeToLive = 1;
 
 			ProjectileDef secondaryPrjDef = new ProjectileDef();
 			secondaryPrjDef.damage = 25;
-			secondaryPrjDef.launchSpeed = 10000;
+			secondaryPrjDef.launchSpeed = 50;
 			secondaryPrjDef.timeToLive = 1;
 			secondaryPrjDef.prefabPath = GameFactory.Path_StakeProjectile;
 
@@ -32,7 +32,7 @@ namespace GodotSharpFps.src
 		public static InvWeapon CreateStakegun(Spatial launchNode, PhysicsBody ignoreBody)
 		{
 			WeaponDef weapDef = new WeaponDef();
-			weapDef.name = "Launcher";
+			weapDef.name = "Stakegun";
 			weapDef.primaryRefireTime = 0.02f;
 			weapDef.secondaryRefireTime = 0.75f;
 			weapDef.primaryPrjCount = 1;

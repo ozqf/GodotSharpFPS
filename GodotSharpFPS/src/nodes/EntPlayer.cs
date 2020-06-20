@@ -5,13 +5,13 @@ using GodotSharpFps.src.nodes;
 
 public class EntPlayer : Spatial, IActor, IActorProvider
 {
-	private FPSInput _input = new FPSInput();
+	private FPSInput _input;
 	private FPSController _fpsCtrl;
 	private Spatial _head;
 	private ActorInventory _inventory;
 	private LaserDot _laserDot;
 	private SwordThrowProjectile _thrownSword;
-	private HUDPlayerState _hudState = new HUDPlayerState();
+	private HUDPlayerState _hudState;
 	private KinematicWrapper _body;
 
 	public IActor GetActor() => this;
@@ -20,6 +20,13 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 	public override void _Ready()
 	{
 		Main m = GetNode<Main>("/root/main");
+
+		_input = new FPSInput();
+
+		_hudState = new HUDPlayerState();
+		_hudState.health = 80;
+		_hudState.ammoLoaded = 999;
+		_hudState.weaponName = "Stakegun";
 
 		// find Godot scene nodes
 		_body = GetNode<KinematicWrapper>("actor_base");
@@ -36,6 +43,7 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 
 		// init components
 		_fpsCtrl = new FPSController(_body, _head);
+
 
 		// Inventory
 		_inventory = new ActorInventory();
@@ -56,10 +64,35 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 		if (Main.i.gameInputActive)
 		{
 			_input.ReadGodotInputs();
+			// TODO - replace this with stuff in FPSInput
+			// bleh, mouse wheel events are ONLY on just release...?
+			// https://godotengine.org/qa/30666/how-do-i-get-input-from-the-mouse-wheel
+			if (Input.IsActionJustReleased("next_slot"))
+			{
+				_input.buttons |= FPSInput.BitNextSlot;
+			}
+			if (Input.IsActionJustReleased("prev_slot"))
+			{
+				_input.buttons |= FPSInput.BitPrevSlot;
+			}
 		}
 
 		_fpsCtrl.ProcessMovement(_input, delta);
 		Main.i.SetDebugText(_fpsCtrl.debugStr);
+
+		if (_input.isBitOn(FPSInput.BitNextSlot))
+		{ _inventory.SelectNextWeapon(); }
+		if (_input.isBitOn(FPSInput.BitPrevSlot))
+		{ _inventory.SelectPrevWeapon(); }
+
+		if (_input.isBitOn(FPSInput.BitSlot1))
+		{ _inventory.SelectWeaponByIndex(0); }
+		if (_input.isBitOn(FPSInput.BitSlot2))
+		{ _inventory.SelectWeaponByIndex(1); }
+		if (_input.isBitOn(FPSInput.BitSlot3))
+		{ _inventory.SelectWeaponByIndex(2); }
+		if (_input.isBitOn(FPSInput.BitSlot4))
+		{ _inventory.SelectWeaponByIndex(3); }
 
 		_inventory.Tick(
 			delta,
@@ -67,9 +100,7 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 			_input.isBitOn(FPSInput.BitAttack2)
 			);
 
-		_hudState.health = 80;
-		_hudState.ammoLoaded = 999;
-		_hudState.weaponName = "Stakegun";
+		_inventory.FillHudStatus(_hudState);
 		Main.i.ui.SetHudState(_hudState);
 	}
 

@@ -19,6 +19,7 @@ namespace GodotSharpFps.src
         protected float _tick;
         protected float _primaryRefireTime;
         protected float _secondaryRefireTime;
+        protected bool _isEquipped = false;
 
         protected List<Vector3> _primarySpread = new List<Vector3>();
         protected List<Vector3> _secondarySpread = new List<Vector3>();
@@ -47,6 +48,11 @@ namespace GodotSharpFps.src
                 _secondarySpread.Add(new Vector3());
             }
         }
+
+        public void SetEquipped(bool flag)
+        {
+            _isEquipped = flag;
+        }
         
         public string GetDisplayName()
         {
@@ -56,6 +62,11 @@ namespace GodotSharpFps.src
         public int GetLoadedAmmo()
         {
             return 999;
+        }
+
+        virtual public bool CanEquip()
+        {
+            return true;
         }
 
         virtual public void FirePrimary()
