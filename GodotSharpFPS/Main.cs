@@ -22,8 +22,7 @@ public class Main : Spatial
 	public GameCamera cam;
 	public UI ui;
 
-	public bool _gameInputActive = true;
-	public bool gameInputActive {  get { return _gameInputActive; } }
+	public bool gameInputActive {  get { return ui.GetGameInputEnabled(); } }
 
 	// Orphan nodes are nodes not currently in the scene tree.
 	private List<Node> _orphanNodes = new List<Node>();
@@ -71,21 +70,6 @@ public class Main : Spatial
 		ZqfXml.TestReadXml(str);
 	}
 
-	private void SetGameInputActive(bool isActive)
-	{
-		_gameInputActive = isActive;
-		if (isActive)
-		{
-			Input.SetMouseMode(Input.MouseMode.Captured);
-			ui.Off();
-		}
-		else
-		{
-			Input.SetMouseMode(Input.MouseMode.Visible);
-			ui.On();
-		}
-	}
-
 	private void SwapMap()
 	{
 		/*
@@ -115,10 +99,7 @@ public class Main : Spatial
 
 	public override void _Process(float delta)
 	{
-		if (Input.IsActionJustReleased("ui_cancel"))
-		{
-			SetGameInputActive(!_gameInputActive);
-		}
+		
 		for (int i = _orphanNodes.Count - 1; i >= 0; --i)
 		{
 			IOrphanNodeUpdate updater = _orphanNodes[i] as IOrphanNodeUpdate;

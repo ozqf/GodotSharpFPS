@@ -58,6 +58,7 @@
     <Compile Include="GameCamera.cs" />
     <Compile Include="src\ActorInventory.cs" />
     <Compile Include="src\AttackFactory.cs" />
+    <Compile Include="src\extended\InvWeapGodhand.cs" />
     <Compile Include="src\extended\InvWeapShotgun.cs" />
     <Compile Include="src\InteractionTypes.cs" />
     <Compile Include="src\extended\InvWeapStakegun.cs" />
