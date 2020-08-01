@@ -66,6 +66,7 @@
     <Compile Include="src\InvWeapon.cs" />
     <Compile Include="src\MiscDataTypes.cs" />
     <Compile Include="src\nodes\ActorProvider.cs" />
+    <Compile Include="src\nodes\BulkSpawner.cs" />
     <Compile Include="src\nodes\EntitySpawn.cs" />
     <Compile Include="src\nodes\EntMob.cs" />
     <Compile Include="src\nodes\GFXQuick.cs" />

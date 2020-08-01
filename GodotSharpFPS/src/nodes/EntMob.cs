@@ -10,12 +10,26 @@ namespace GodotSharpFps.src.nodes
         private int _health = 100;
         public IActor GetActor() => this;
 
+        private int _entId = 0;
+
         public override void _Ready()
         {
             // find Godot scene nodes
             _body = GetNode<KinematicWrapper>("actor_base");
             _body.actor = this;
         }
+
+        public void SetActorId(int newId)
+        {
+            _entId = newId;
+        }
+
+        public int ParentActorId { get; set; }
+
+        public int actorId { get { return _entId; } }
+
+        public void ChildActorRemoved(int id) { }
+
         public TouchResponseData ActorTouch(TouchData touchData)
         {
             Console.WriteLine($"Mob hit for {touchData.damage}");
@@ -31,6 +45,7 @@ namespace GodotSharpFps.src.nodes
             {
                 result.responseType = TouchResponseType.Killed;
                 _dead = true;
+                Main.i.factory.DeregisterActor(this);
                 QueueFree();
             }
             else

@@ -1,6 +1,6 @@
 ﻿using Godot;
 using GodotSharpFps.src;
-using System.Runtime.Remoting.Messaging;
+using System;
 
 public class UI : Node
 {
@@ -25,7 +25,30 @@ public class UI : Node
         SetConsoleOn(false);
         SetMainMenuOn(false);
 
+        Button btn = _mainMenuContainer.GetNode<Button>("root_menu/start");
+        if (btn == null)
+        {
+            Console.WriteLine($"Couldn't find button");
+        }
+        else
+        {
+            btn.Connect("pressed", this, "OnRootStartClicked");
+        }
+    }
 
+    public void OnRootStartClicked()
+    {
+        Console.WriteLine($"Root Start button clicked");
+    }
+
+    public void OnOptionsClicked()
+    {
+        Console.WriteLine($"Options button clicked");
+    }
+
+    public void OnQuitClicked()
+    {
+        Console.WriteLine($"Quit button clicked");
     }
 
     public void SetDebugtext(string text)
@@ -59,11 +82,13 @@ public class UI : Node
     {
         _mainMenuOn = flag;
         _mainMenuContainer.Visible = flag;
+        RefreshMouseState();
     }
 
     private void SetGameMenuOn(bool flag)
     {
         _gameMenuOn = flag;
+        RefreshMouseState();
     }
 
     private void SetConsoleOn(bool flag)
@@ -72,6 +97,7 @@ public class UI : Node
         if (flag)
         { _console.On(); }
         else { _console.Off(); }
+        RefreshMouseState();
     }
 
     public override void _Process(float delta)

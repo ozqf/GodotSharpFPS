@@ -15,7 +15,7 @@ namespace GodotSharpFps.src.nodes
         public void Spawn(Vector3 origin)
         {
             _dead = false;
-            _tick = 1.5f;
+            _tick = 1;
             Transform t = GlobalTransform;
             t.origin = origin;
             GlobalTransform = t;

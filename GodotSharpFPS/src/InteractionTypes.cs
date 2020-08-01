@@ -38,6 +38,10 @@ namespace GodotSharpFps.src
 
     public interface IActor
     {
+        void SetActorId(int newId);
+        int actorId { get; }
+        int ParentActorId { get; set; }
+        void ChildActorRemoved(int id);
         TouchResponseData ActorTouch(TouchData touchData);
     }
 

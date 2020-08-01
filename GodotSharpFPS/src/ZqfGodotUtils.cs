@@ -13,6 +13,13 @@ public class ZqfGodotUtils
 		r = r * (max - min) + min;
 		return r;
 	}
+	
+	public static void Teleport(Spatial node, Vector3 pos)
+	{
+		Transform t = node.GlobalTransform;
+		t.origin = pos;
+		node.GlobalTransform = t;
+	}
 
 	public static T CreateInstance<T>(string path, Node parentNode = null)
 	{

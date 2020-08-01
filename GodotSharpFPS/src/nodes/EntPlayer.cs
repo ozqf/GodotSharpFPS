@@ -14,6 +14,9 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 	private HUDPlayerState _hudState;
 	private KinematicWrapper _body;
 
+	private int _entId = 0;
+	public int ParentActorId { get; set; }
+
 	public IActor GetActor() => this;
 
 	// Called when the node enters the scene tree for the first time.
@@ -116,6 +119,15 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 		if (motion == null) { return; }
 		_fpsCtrl.ProcessMouseMotion(motion, Main.i.GetWindowToScreenRatio());
 	}
+
+	public void SetActorId(int newId)
+	{
+		_entId = newId;
+	}
+
+	public int actorId { get { return _entId; } }
+
+	public void ChildActorRemoved(int id) { }
 
 	public TouchResponseData ActorTouch(TouchData touchData)
 	{
