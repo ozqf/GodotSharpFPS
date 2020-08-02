@@ -6,6 +6,8 @@ using System;
 
 public class PointProjectile : Spatial
 {
+	private string impactGFX = GameFactory.Path_GFXBulletImpact;
+
 	private ProjectileDef _def = null; // def should be readonly
 	private float _tick = 0;
 	private bool _isDead = false;
@@ -70,8 +72,9 @@ public class PointProjectile : Spatial
 				//Console.WriteLine($"Prj hit non-actor node {hitObj.Name}");
 			}
 			Vector3 gfxOrigin = (Vector3)hitResult["position"];
-			GFXQuick gfx = Main.i.factory.SpawnGFX(GameFactory.Path_GFXImpact);
-			gfx.Spawn(gfxOrigin);
+			Vector3 gfxNormal = (Vector3)hitResult["normal"];
+			GFXQuick gfx = Main.i.factory.SpawnGFX(impactGFX);
+			gfx.Spawn(gfxOrigin, gfxNormal);
 			Die();
 			return;
 		}

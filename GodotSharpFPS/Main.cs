@@ -48,10 +48,10 @@ public class Main : Spatial
 		Console.WriteLine("MAIN INIT");
 		_instance = this;
 		console = new CmdConsole();
-		console.AddObserver("test", "", "Test console", ExecCmdTest);
-		console.AddObserver("map", "", "Load a scene from the maps folder, eg 'map test_box'", ExecCmdScene);
-		console.AddObserver("quit", "", "Close application", ExecCmdQuit);
-		console.AddObserver("exit", "", "Close application", ExecCmdQuit);
+		console.AddCommand("test", "", "Test console", ExecCmdTest);
+		console.AddCommand("map", "", "Load a scene from the maps folder, eg 'map test_box'", ExecCmdScene);
+		console.AddCommand("quit", "", "Close application", ExecCmdQuit);
+		console.AddCommand("exit", "", "Close application", ExecCmdQuit);
 
 		// init services
 		factory = new GameFactory(this);

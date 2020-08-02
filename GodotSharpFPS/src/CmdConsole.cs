@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GodotSharpFps.src
 {
@@ -17,8 +18,25 @@ namespace GodotSharpFps.src
 	{
 		private List<CmdConsoleObserver> _observers = new List<CmdConsoleObserver>();
 
-		public void AddObserver(string name, string signature, string helpText, ExecConsoleCmd callback)
+		public CmdConsole()
 		{
+			AddCommand("help", "", "List all registered commands", ExecHelp);
+		}
+
+		private bool ExecHelp(string command, string[] tokens)
+		{
+			Console.WriteLine($"=== Cmd List ===");
+			foreach(var ob in _observers)
+			{
+				Console.WriteLine($"{ob.name}: {ob.helpText}");
+			}
+			return true;
+		}
+
+		public void AddCommand(string name, string signature, string helpText, ExecConsoleCmd callback)
+		{
+			if (_observers.Any(x => x.name == name))
+			{ throw new ArgumentException($"Command name {name} already taken!"); }
 			_observers.Add(new CmdConsoleObserver
 			{
 				name = name,

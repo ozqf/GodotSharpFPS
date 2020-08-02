@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://game/world/world_block.tscn" type="PackedScene" id=1]
 [ext_resource path="res://game/player/ent_player.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://game/ent_mob.tscn" type="PackedScene" id=4]
 [ext_resource path="res://game/spawners/ent_spawn.tscn" type="PackedScene" id=5]
 [ext_resource path="res://game/spawners/BulkSpawner.tscn" type="PackedScene" id=6]
+[ext_resource path="res://gfx/gfx_bullet_impact.tscn" type="PackedScene" id=7]
 
 [node name="map" type="Spatial"]
 
@@ -29,6 +30,9 @@ transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, 8, 0, 8 )
 transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, -8, 0, 8 )
 
 [node name="world_block5" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 5, 0 )
+
+[node name="world_block13" parent="world/geometry" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, -17, 5, 8 )
 
 [node name="world_block6" parent="world/geometry" instance=ExtResource( 1 )]
@@ -64,19 +68,22 @@ shadow_enabled = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -11 )
 
 [node name="ent_mob" parent="actors" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -1 )
 
 [node name="ent_player" parent="actors" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 0 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 10, 16 )
 visible = false
 
 [node name="ent_spawn" parent="." instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.15723, 1, -0.28155 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.15723, 1, -0.28155 )
 entityType = "player"
 
 [node name="ent_spawn2" parent="." instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.31358, 1, 0.149209 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.31358, 1, 0.149209 )
 entityType = "mob"
+
+[node name="gfx_bullet_impact" parent="." instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 3, -3 )

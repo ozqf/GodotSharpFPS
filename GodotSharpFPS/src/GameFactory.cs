@@ -13,6 +13,7 @@ public class GameFactory
     public const string Path_ThrownSword = "res://game/projectiles/prj_thrown_sword.tscn";
 
     public const string Path_GFXImpact = "res://gfx/gfx_impact.tscn";
+    public const string Path_GFXBulletImpact = "res://gfx/gfx_bullet_impact.tscn";
 
     private Node _root;
     private int _nextEntId = 1;
@@ -23,7 +24,7 @@ public class GameFactory
     public GameFactory(Spatial root)
     {
         _root = root;
-        Main.i.console.AddObserver("actors", "", "Print actor list", Cmd_PrintActorRegister);
+        Main.i.console.AddCommand("actors", "", "Print actor list", Cmd_PrintActorRegister);
 
         Main.i.AddObserver(ObserveGlobalEvent, this, false, "GameFactory");
     }

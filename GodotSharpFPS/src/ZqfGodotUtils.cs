@@ -42,6 +42,25 @@ public class ZqfGodotUtils
 		T instance = (T)Convert.ChangeType(instanceNode, typeof(T));
 		return instance;
 	}
+	
+	/// <summary>
+	/// Calculate pitch and yaw angles based on a flat plane.
+	/// </summary>
+	/// <param name="v"></param>
+	/// <returns></returns>
+	public static Vector3 CalcEulerDegrees(Vector3 v)
+	{
+		// yaw
+		float yawRadians = (float)Math.Atan2(-v.x, -v.z);
+		// pitch
+		Vector3 flat = new Vector3(v.x, 0, v.z);
+		float flatMag = flat.Length();
+		float pitchRadians = (float)Math.Atan2(v.y, flatMag);
+		return new Vector3(
+			Godot.Mathf.Rad2Deg(pitchRadians),
+			Mathf.Rad2Deg(yawRadians),
+			0);
+	}
 
 	public static Vector3 VectorMA(
 		Vector3 start, float scale, Vector3 dir)
