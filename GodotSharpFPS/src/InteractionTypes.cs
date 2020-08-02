@@ -1,6 +1,10 @@
 ﻿
+using Godot;
+
 namespace GodotSharpFps.src
 {
+    public enum Team { None, Player, Mobs, NonCombatant };
+
     public enum TouchType
     {
         None, Solid, Bullet, Thrown, Explosion
@@ -38,11 +42,13 @@ namespace GodotSharpFps.src
 
     public interface IActor
     {
+        Team GetTeam();
         void SetActorId(int newId);
         //void ActorDescription();
         int actorId { get; }
         int ParentActorId { get; set; }
         void ChildActorRemoved(int id);
+        Transform GetActorTransform();
         TouchResponseData ActorTouch(TouchData touchData);
     }
 

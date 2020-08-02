@@ -8,6 +8,7 @@ namespace GodotSharpFps.src.nodes
         private KinematicWrapper _body;
         private bool _dead = false;
         private int _health = 100;
+        private int _targetActorId = Game.NullActorId;
         public IActor GetActor() => this;
 
         private int _entId = 0;
@@ -22,8 +23,8 @@ namespace GodotSharpFps.src.nodes
             {
                 // no id previous set, request one
                 Console.WriteLine($"EntMob - no id set - registering self");
-                _entId = Main.i.factory.ReserveActorId(1);
-                Main.i.factory.RegisterActor(this);
+                _entId = Main.i.game.ReserveActorId(1);
+                Main.i.game.RegisterActor(this);
             }
         }
 
@@ -36,6 +37,10 @@ namespace GodotSharpFps.src.nodes
         public int ParentActorId { get; set; }
 
         public int actorId { get { return _entId; } }
+
+        public Team GetTeam() { return Team.Mobs; }
+
+        public Transform GetActorTransform() { return _body.GlobalTransform; }
 
         public void ChildActorRemoved(int id) { }
 
@@ -54,7 +59,7 @@ namespace GodotSharpFps.src.nodes
             {
                 result.responseType = TouchResponseType.Killed;
                 _dead = true;
-                Main.i.factory.DeregisterActor(this);
+                Main.i.game.DeregisterActor(this);
                 QueueFree();
             }
             else
@@ -62,6 +67,29 @@ namespace GodotSharpFps.src.nodes
                 result.responseType = TouchResponseType.Damaged;
             }
             return result;
+        }
+
+        private float yaw = 0;
+        public override void _Process(float delta)
+        {
+            base._Process(delta);
+            IActor actor = Main.i.game.CheckTarget(_targetActorId, GetTeam());
+            if (actor == null)
+            {
+                _targetActorId = Game.NullActorId;
+                return;
+            }
+            _targetActorId = actor.actorId;
+            Vector3 self = GetActorTransform().origin;
+            Vector3 tar = actor.GetActorTransform().origin;
+            float yawDeg = ZqfGodotUtils.FlatYawDegreesBetween(
+                self, tar);
+            RotationDegrees = new Vector3(0, yawDeg, 0);
+            if (yaw != yawDeg)
+            {
+                yaw = yawDeg;
+                Console.WriteLine($"Yaw {yaw} between {self} and {tar}");
+            }
         }
     }
 }

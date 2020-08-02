@@ -13,6 +13,8 @@ namespace GodotSharpFps.src.nodes
 		public void SetActorId(int newId) { _entId = newId; }
 		public int ParentActorId { get; set; }
 		public int actorId { get { return _entId; } }
+		public Team GetTeam() { return Team.NonCombatant; }
+		public Transform GetActorTransform() { return GlobalTransform; }
 		public void ChildActorRemoved(int id) { _numLiveChildren--; }
 
 		public TouchResponseData ActorTouch(TouchData touchData)
@@ -33,7 +35,7 @@ namespace GodotSharpFps.src.nodes
 		public override void _Ready()
 		{
 			base._Ready();
-			Main.i.factory.RegisterActor(this);
+			Main.i.game.RegisterActor(this);
 		}
 
 		public override void _Process(float delta)

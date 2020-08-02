@@ -57,9 +57,17 @@ public class ZqfGodotUtils
 		float flatMag = flat.Length();
 		float pitchRadians = (float)Math.Atan2(v.y, flatMag);
 		return new Vector3(
-			Godot.Mathf.Rad2Deg(pitchRadians),
+			Mathf.Rad2Deg(pitchRadians),
 			Mathf.Rad2Deg(yawRadians),
 			0);
+	}
+
+	public static float FlatYawDegreesBetween(Vector3 origin, Vector3 target)
+	{
+		// I always screw this stuff up or get it in the wrong order :(
+		float dx = origin.x - target.x;
+		float dz = origin.z - target.z;
+		return Mathf.Rad2Deg(Mathf.Atan2(dx, dz));
 	}
 
 	public static Vector3 VectorMA(

@@ -19,6 +19,10 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 
 	public IActor GetActor() => this;
 
+	public Team GetTeam() { return Team.Player; }
+
+	public Transform GetActorTransform() { return _body.GlobalTransform; }
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -61,8 +65,8 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 		if (_entId == 0)
 		{
 			// no id previous set, request one
-			_entId = m.factory.ReserveActorId(1);
-			m.factory.RegisterActor(this);
+			_entId = m.game.ReserveActorId(1);
+			m.game.RegisterActor(this);
 		}
 	}
 

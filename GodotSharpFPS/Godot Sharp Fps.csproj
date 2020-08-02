@@ -60,6 +60,7 @@
     <Compile Include="src\AttackFactory.cs" />
     <Compile Include="src\extended\InvWeapGodhand.cs" />
     <Compile Include="src\extended\InvWeapShotgun.cs" />
+    <Compile Include="src\Game.cs" />
     <Compile Include="src\InteractionTypes.cs" />
     <Compile Include="src\extended\InvWeapStakegun.cs" />
     <Compile Include="src\IOrphanNodeUpdater.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="src\nodes\EntitySpawn.cs" />
     <Compile Include="src\nodes\EntMob.cs" />
     <Compile Include="src\nodes\GFXQuick.cs" />
+    <Compile Include="src\nodes\PlayerStartNode.cs" />
     <Compile Include="src\nodes\SwordThrowProjectile.cs" />
     <Compile Include="src\nodes\KinematicWrapper.cs" />
     <Compile Include="src\nodes\LaserDot.cs" />

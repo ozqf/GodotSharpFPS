@@ -34,6 +34,7 @@ public class Main : Spatial
 	// Services
 	public CmdConsole console;
 	public GameFactory factory;
+	public Game game;
 	public GameCamera cam;
 	public UI ui;
 
@@ -59,11 +60,18 @@ public class Main : Spatial
 		ui = GetNode<UI>("/root/ui");
 		Input.SetMouseMode(Input.MouseMode.Captured);
 
+		game = new Game(this);
+
 		// test stuff
 		ZqfXml.ListAllAssemblyResources(Assembly.GetExecutingAssembly());
 		TestReadTextFile();
 	}
 
+	public override void _Process(float delta)
+	{
+		game.Tick();
+		ProcessOrphanNodes(delta);
+	}
 
 	/*******************************************************/
 	#region Global event broadcast
@@ -110,7 +118,7 @@ public class Main : Spatial
 		_orphanNodes.Remove(node);
 	}
 
-	public override void _Process(float delta)
+	private void ProcessOrphanNodes(float delta)
 	{
 		
 		for (int i = _orphanNodes.Count - 1; i >= 0; --i)
@@ -124,7 +132,6 @@ public class Main : Spatial
 	}
 
 	#endregion
-
 
 	/*******************************************************/
 	#region Console commands
