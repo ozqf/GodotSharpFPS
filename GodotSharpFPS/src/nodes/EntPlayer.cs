@@ -113,11 +113,16 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 		if (_input.isBitOn(FPSInput.BitSlot4))
 		{ _inventory.SelectWeaponByIndex(3); }
 
+		AttackSource src = new AttackSource();
+		src.team = GetTeam();
+		src.ignoreBody = _body;
+		src.actorId = _entId;
+
 		_inventory.Tick(
 			delta,
 			_input.isBitOn(FPSInput.BitAttack1),
-			_input.isBitOn(FPSInput.BitAttack2)
-			);
+			_input.isBitOn(FPSInput.BitAttack2),
+			src);
 
 		_inventory.FillHudStatus(_hudState);
 		Main.i.ui.SetHudState(_hudState);

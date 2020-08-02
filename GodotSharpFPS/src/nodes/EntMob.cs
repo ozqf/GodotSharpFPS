@@ -6,9 +6,11 @@ namespace GodotSharpFps.src.nodes
     public class EntMob : Spatial, IActor, IActorProvider
     {
         private KinematicWrapper _body;
+        private ProjectileDef _prjDef;
         private bool _dead = false;
         private int _health = 100;
         private int _targetActorId = Game.NullActorId;
+        private float _attackTick = 0;
         public IActor GetActor() => this;
 
         private int _entId = 0;
@@ -26,6 +28,10 @@ namespace GodotSharpFps.src.nodes
                 _entId = Main.i.game.ReserveActorId(1);
                 Main.i.game.RegisterActor(this);
             }
+            _prjDef = new ProjectileDef();
+            _prjDef.damage = 5;
+            _prjDef.launchSpeed = 10;
+            _prjDef.prefabPath = GameFactory.Path_PointProjectile;
         }
 
         public void SetActorId(int newId)
@@ -69,7 +75,7 @@ namespace GodotSharpFps.src.nodes
             return result;
         }
 
-        private float yaw = 0;
+        //private float yaw = 0;
         public override void _Process(float delta)
         {
             base._Process(delta);
@@ -80,16 +86,29 @@ namespace GodotSharpFps.src.nodes
                 return;
             }
             _targetActorId = actor.actorId;
-            Vector3 self = GetActorTransform().origin;
+            Transform self = GetActorTransform();
             Vector3 tar = actor.GetActorTransform().origin;
             float yawDeg = ZqfGodotUtils.FlatYawDegreesBetween(
-                self, tar);
+                self.origin, tar);
             RotationDegrees = new Vector3(0, yawDeg, 0);
-            if (yaw != yawDeg)
+
+            if (_attackTick <= 0)
             {
-                yaw = yawDeg;
-                Console.WriteLine($"Yaw {yaw} between {self} and {tar}");
+                _attackTick = 1;
+                PointProjectile prj = Main.i.factory.SpawnPointProjectile();
+                prj.Launch(self.origin, -self.basis.z, _prjDef, _body, Team.Mobs);
+
             }
+            else
+            {
+                _attackTick -= delta;
+            }
+
+            //if (yaw != yawDeg)
+            //{
+            //    yaw = yawDeg;
+            //    Console.WriteLine($"Yaw {yaw} between {self} and {tar}");
+            //}
         }
     }
 }

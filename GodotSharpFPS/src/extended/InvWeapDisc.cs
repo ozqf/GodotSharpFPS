@@ -27,9 +27,9 @@ namespace GodotSharpFps.src.extended
             _projectile = proj;
         }
 
-        public override void FirePrimary()
+        public override void FirePrimary(AttackSource src)
         {
-            base.FirePrimary();
+            base.FirePrimary(src);
         }
     }
 }

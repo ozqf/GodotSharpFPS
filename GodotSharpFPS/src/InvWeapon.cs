@@ -25,7 +25,6 @@ namespace GodotSharpFps.src
         protected int _roundsLoaded = 1;
 
 
-
         protected List<Vector3> _primarySpread = new List<Vector3>();
         protected List<Vector3> _secondarySpread = new List<Vector3>();
 
@@ -83,7 +82,7 @@ namespace GodotSharpFps.src
             return true;
         }
 
-        virtual public void FirePrimary()
+        virtual public void FirePrimary(AttackSource src)
         {
             if (_primaryPrjDef == null) { return; }
             Transform t = _launchNode.GlobalTransform;
@@ -95,12 +94,12 @@ namespace GodotSharpFps.src
                 if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
                 //prj.Launch(_launchNode.GlobalTransform, _primaryPrjDef, _ignoreBody);
 
-                prj.Launch(t.origin, _primarySpread[i], _primaryPrjDef, _ignoreBody);
+                prj.Launch(t.origin, _primarySpread[i], _primaryPrjDef, src.ignoreBody, src.team);
                 _tick = _weaponDef.primaryRefireTime;
             }
         }
 
-        virtual public void FireSecondary()
+        virtual public void FireSecondary(AttackSource src)
         {
             if (_secondaryPrjDef == null) { return; }
             Transform t = _launchNode.GlobalTransform;
@@ -112,20 +111,20 @@ namespace GodotSharpFps.src
                 if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
                 //prj.Launch(_launchNode.GlobalTransform, _primaryPrjDef, _ignoreBody);
 
-                prj.Launch(t.origin, _secondarySpread[i], _secondaryPrjDef, _ignoreBody);
+                prj.Launch(t.origin, _secondarySpread[i], _secondaryPrjDef, src.ignoreBody, src.team);
                 _tick = _weaponDef.secondaryRefireTime;
             }
         }
 
-        virtual protected void CheckTriggers(bool primaryOn, bool secondaryOn)
+        virtual protected void CheckTriggers(bool primaryOn, bool secondaryOn, AttackSource src)
         {
             if (primaryOn)
-            { FirePrimary(); }
+            { FirePrimary(src); }
             else if (secondaryOn)
-            { FireSecondary(); }
+            { FireSecondary(src); }
         }
 
-        virtual protected void CommonTick(float delta, bool primaryOn, bool secondaryOn)
+        virtual protected void CommonTick(float delta, bool primaryOn, bool secondaryOn, AttackSource src)
         {
             if (_tick > 0) { _tick -= delta; }
             else
@@ -136,13 +135,13 @@ namespace GodotSharpFps.src
                     _isReloading = false;
                     _roundsLoaded = _weaponDef.magazineSize;
                 }
-                CheckTriggers(primaryOn, secondaryOn);
+                CheckTriggers(primaryOn, secondaryOn, src);
             }
         }
 
-        virtual public void Tick(float delta, bool primaryOn, bool secondaryOn)
+        virtual public void Tick(float delta, bool primaryOn, bool secondaryOn, AttackSource src)
         {
-            CommonTick(delta, primaryOn, secondaryOn);
+            CommonTick(delta, primaryOn, secondaryOn, src);
         }
     }
 }

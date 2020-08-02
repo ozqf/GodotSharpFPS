@@ -135,14 +135,14 @@ namespace GodotSharpFps.src
 
         #endregion
 
-        public void Tick(float delta, bool primaryOn, bool secondaryOn)
+        public void Tick(float delta, bool primaryOn, bool secondaryOn, AttackSource src)
         {
             CheckQueuedSwitch();
             InvWeapon weap = GetCurrentWeapon();
             // Tick
             if (weap != null)
             {
-                weap.Tick(delta, primaryOn, secondaryOn);
+                weap.Tick(delta, primaryOn, secondaryOn, src);
             }
         }
     }

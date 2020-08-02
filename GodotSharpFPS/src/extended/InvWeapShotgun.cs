@@ -25,9 +25,9 @@ namespace GodotSharpFps.src.extended
             return _roundsLoaded;
         }
 
-        public override void FirePrimary()
+        public override void FirePrimary(AttackSource src)
         {
-            base.FirePrimary();
+            base.FirePrimary(src);
             _roundsLoaded--;
             if (_roundsLoaded <= 0)
             {
@@ -36,7 +36,7 @@ namespace GodotSharpFps.src.extended
             }
         }
 
-        public override void FireSecondary()
+        public override void FireSecondary(AttackSource src)
         {
             int numShots = _roundsLoaded;
             _roundsLoaded = 0;
@@ -52,7 +52,7 @@ namespace GodotSharpFps.src.extended
             {
                 PointProjectile prj = Main.i.factory.SpawnProjectile(_secondaryPrjDef.prefabPath);
                 if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
-                prj.Launch(t.origin, _secondarySpread[i], _secondaryPrjDef, _ignoreBody);
+                prj.Launch(t.origin, _secondarySpread[i], _secondaryPrjDef, src.ignoreBody, src.team);
                 _tick = _weaponDef.secondaryRefireTime;
             }
         }

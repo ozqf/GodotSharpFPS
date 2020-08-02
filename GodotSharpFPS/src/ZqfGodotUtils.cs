@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.ExceptionServices;
 using Godot;
 
 public class ZqfGodotUtils
@@ -44,7 +43,7 @@ public class ZqfGodotUtils
 	}
 	
 	/// <summary>
-	/// Calculate pitch and yaw angles based on a flat plane.
+	/// Calculate pitch and yaw angles based on a flat x/z plane.
 	/// </summary>
 	/// <param name="v"></param>
 	/// <returns></returns>

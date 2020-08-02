@@ -116,7 +116,12 @@ public class PointProjectile : Spatial
 		_tick = def.timeToLive;
 	}*/
 
-	public void Launch(Vector3 origin, Vector3 forward, ProjectileDef def, PhysicsBody ignoreBody)
+	public void Launch(
+		Vector3 origin,
+		Vector3 forward,
+		ProjectileDef def,
+		PhysicsBody ignoreBody,
+		Team team)
 	{
 		_ignoreBody = ignoreBody;
 		_def = def;

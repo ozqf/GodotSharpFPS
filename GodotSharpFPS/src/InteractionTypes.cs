@@ -18,7 +18,7 @@ namespace GodotSharpFps.src
     public struct TouchData
     {
         public TouchType touchType;
-        public int teamId;
+        public Team teamId;
         public int damage;
     }
 
@@ -40,11 +40,20 @@ namespace GodotSharpFps.src
         }
     }
 
+    public struct AttackSource
+    {
+        public Team team;
+        public int actorId;
+        public PhysicsBody ignoreBody;
+    }
+
+    /// <summary>
+    /// Interface for primary game objects and their interactions
+    /// </summary>
     public interface IActor
     {
         Team GetTeam();
         void SetActorId(int newId);
-        //void ActorDescription();
         int actorId { get; }
         int ParentActorId { get; set; }
         void ChildActorRemoved(int id);
