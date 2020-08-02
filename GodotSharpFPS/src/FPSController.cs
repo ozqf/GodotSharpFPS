@@ -44,7 +44,7 @@ namespace GodotSharpFps.src
 		{
 			float sensitivity = MOUSE_SENSITIVITY;
 
-			Vector2 ratio = Main.i.GetWindowToScreenRatio();
+			Vector2 ratio = ZqfGodotUtils.GetWindowToScreenRatio();
 			float mouseMoveX = motion.Relative.x * sensitivity * ratio.x;
 			// flip as we want moving mouse to the right to rotate left
 			mouseMoveX = -mouseMoveX;

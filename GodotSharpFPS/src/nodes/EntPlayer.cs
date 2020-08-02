@@ -57,6 +57,18 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 		_inventory.AddWeapon(AttackFactory.CreateStakegun(_head, _body));
 
 		m.cam.AttachToTarget(_head);
+
+		if (_entId == 0)
+		{
+			// no id previous set, request one
+			_entId = m.factory.ReserveActorId(1);
+			m.factory.RegisterActor(this);
+		}
+	}
+
+	public override void _ExitTree()
+	{
+		base._ExitTree();
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -117,7 +129,7 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 		if (Main.i.gameInputActive == false) { return; }
 		InputEventMouseMotion motion = @event as InputEventMouseMotion;
 		if (motion == null) { return; }
-		_fpsCtrl.ProcessMouseMotion(motion, Main.i.GetWindowToScreenRatio());
+		_fpsCtrl.ProcessMouseMotion(motion, ZqfGodotUtils.GetWindowToScreenRatio());
 	}
 
 	public void SetActorId(int newId)

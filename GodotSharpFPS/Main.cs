@@ -4,6 +4,21 @@ using GodotSharpFps.src;
 using System.Collections.Generic;
 using System.Reflection;
 
+public enum GlobalEventType
+{
+	None, MapChange
+}
+
+public class GlobalEventObserver
+{
+	public delegate void ObserveEvent(GlobalEventType type, object obj);
+
+	public ObserveEvent callback;
+	public object subject;
+	public bool clearOnMapChange;
+	public string label;
+}
+
 public class Main : Spatial
 {
 	///////////////////////////////////////
@@ -26,6 +41,7 @@ public class Main : Spatial
 
 	// Orphan nodes are nodes not currently in the scene tree.
 	private List<Node> _orphanNodes = new List<Node>();
+	private List<GlobalEventObserver> _observers = new List<GlobalEventObserver>();
 
 	public override void _Ready()
 	{
@@ -34,6 +50,8 @@ public class Main : Spatial
 		console = new CmdConsole();
 		console.AddObserver("test", "", "Test console", ExecCmdTest);
 		console.AddObserver("map", "", "Load a scene from the maps folder, eg 'map test_box'", ExecCmdScene);
+		console.AddObserver("quit", "", "Close application", ExecCmdQuit);
+		console.AddObserver("exit", "", "Close application", ExecCmdQuit);
 
 		// init services
 		factory = new GameFactory(this);
@@ -46,7 +64,118 @@ public class Main : Spatial
 		TestReadTextFile();
 	}
 
-	private void TestReadTextFile()
+
+	/*******************************************************/
+	#region Global event broadcast
+	public void AddObserver(
+		GlobalEventObserver.ObserveEvent callback,
+		object subject,
+		bool clearOnMapChange,
+		string label)
+	{
+		if (callback == null) { throw new ArgumentNullException(nameof(callback)); }
+		if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
+		if (label == null) { throw new ArgumentNullException(nameof(label)); }
+
+		GlobalEventObserver ob = new GlobalEventObserver();
+		ob.callback = callback;
+		ob.subject = subject;
+		ob.clearOnMapChange = clearOnMapChange;
+		ob.label = label;
+		_observers.Add(ob);
+	}
+
+	public void Broadcast(GlobalEventType type, object obj)
+	{
+		Console.WriteLine($"Broadcast global event type {type}");
+		for (int i = _observers.Count - 1; i >= 0; --i)
+		{
+			_observers[i].callback(type, obj);
+		}
+	}
+
+	#endregion
+
+	/*******************************************************/
+	#region Orphan Nodes
+	public void AddOrphanNode(Node node)
+	{
+		Console.WriteLine($"Added orphan node {node.Name}");
+		_orphanNodes.Add(node);
+	}
+
+	public void RemoveOrphanNode(Node node)
+	{
+		Console.WriteLine($"Remove orphan node {node.Name}");
+		_orphanNodes.Remove(node);
+	}
+
+	public override void _Process(float delta)
+	{
+		
+		for (int i = _orphanNodes.Count - 1; i >= 0; --i)
+		{
+			IOrphanNodeUpdate updater = _orphanNodes[i] as IOrphanNodeUpdate;
+			if (updater != null)
+			{
+				updater.OrphanNodeUpdate(delta);
+			}
+		}
+	}
+
+	#endregion
+
+
+	/*******************************************************/
+	#region Console commands
+	public bool ExecCmdScene(string command, string[] tokens)
+	{
+		if (tokens.Length != 2)
+		{
+			Console.WriteLine("No scene name specified");
+			return true;
+		}
+
+		// example path: "res://maps/test_box.tscn"
+		string path = $"res://maps/{tokens[1]}.tscn";
+		// Check the scene exists!
+		Directory dir = new Directory();
+		if (!dir.FileExists(path))
+		{
+			Console.WriteLine($"No map scene \"{path}\" found");
+			return true;
+		}
+		// Cleanup
+		cam.Reset();
+		Broadcast(GlobalEventType.MapChange, null);
+		// Change
+		GetTree().ChangeScene(path);
+		return true;
+	}
+
+	public bool ExecCmdTest(string command, string[] tokens)
+	{
+		Console.WriteLine($"MAIN Exec cmd test \"{command}\"");
+		Console.WriteLine($"\tTokenised: {string.Join(", ", tokens)}");
+		return true;
+	}
+
+	public bool ExecCmdQuit(string command, string[] tokens)
+	{
+		GetTree().Quit();
+		return true;
+	}
+
+	#endregion
+
+	/*******************************************************/
+	#region misc crap
+	public void SetDebugText(string txt)
+	{
+		ui.SetDebugtext(txt);
+	}
+
+    private void TestReadTextFile()
 	{
 		// Ready from Godot asset file
 		/*
@@ -84,65 +213,5 @@ public class Main : Spatial
 		root.add_child(next_level)
 		*/
 	}
-
-	public void AddOrphanNode(Node node)
-	{
-		Console.WriteLine($"Added orphan node {node.Name}");
-		_orphanNodes.Add(node);
-	}
-
-	public void RemoveOrphanNode(Node node)
-	{
-		Console.WriteLine($"Remove orphan node {node.Name}");
-		_orphanNodes.Remove(node);
-	}
-
-	public override void _Process(float delta)
-	{
-		
-		for (int i = _orphanNodes.Count - 1; i >= 0; --i)
-		{
-			IOrphanNodeUpdate updater = _orphanNodes[i] as IOrphanNodeUpdate;
-			if (updater != null)
-			{
-				updater.OrphanNodeUpdate(delta);
-			}
-		}
-	}
-
-	public bool ExecCmdScene(string command, string[] tokens)
-	{
-		if (tokens.Length != 2)
-		{
-			Console.WriteLine("No scene name specified");
-			return true;
-		}
-		// example path: "res://maps/test_box.tscn"
-		string path = $"res://maps/{tokens[1]}.tscn";
-		GetTree().ChangeScene(path);
-		return true;
-	}
-
-	public bool ExecCmdTest(string command, string[] tokens)
-	{
-		Console.WriteLine($"MAIN Exec cmd test \"{command}\"");
-		Console.WriteLine($"\tTokenised: {string.Join(", ", tokens)}");
-		return true;
-	}
-
-	public void SetDebugText(string txt)
-	{
-		ui.SetDebugtext(txt);
-	}
-
-	/// <summary>
-	/// TODO Replace with proper usage of Godot Viewports
-	/// </summary>
-	/// <returns></returns>
-	public Vector2 GetWindowToScreenRatio()
-	{
-		Vector2 real = OS.GetRealWindowSize();
-		Vector2 screen = OS.GetScreenSize();
-		return new Vector2(real.x / screen.x, real.y / screen.y);
-	}
+	#endregion
 }

@@ -17,10 +17,19 @@ namespace GodotSharpFps.src.nodes
             // find Godot scene nodes
             _body = GetNode<KinematicWrapper>("actor_base");
             _body.actor = this;
+
+            if (_entId == 0)
+            {
+                // no id previous set, request one
+                Console.WriteLine($"EntMob - no id set - registering self");
+                _entId = Main.i.factory.ReserveActorId(1);
+                Main.i.factory.RegisterActor(this);
+            }
         }
 
         public void SetActorId(int newId)
         {
+            if (_entId != 0) { throw new Exception($"EntMob already has an actor Id"); }
             _entId = newId;
         }
 

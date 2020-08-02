@@ -42,13 +42,9 @@ __meta__ = {
 }
 
 [node name="debug_text" type="Label" parent="hud"]
-anchor_left = 0.00069252
-anchor_top = 0.0343929
-anchor_right = 0.000692539
-anchor_bottom = 0.0363929
-margin_left = -8.55002
+margin_top = -0.698334
 margin_right = 505.45
-margin_bottom = 427.4
+margin_bottom = 426.702
 text = "Line 1 abcdfeghijklmnopqrstuvwxyz
 Line 2
 Line 3
@@ -76,8 +72,18 @@ __meta__ = {
 [node name="main_menu_canvas" type="CanvasLayer" parent="."]
 
 [node name="console" parent="main_menu_canvas" instance=ExtResource( 1 )]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -240.0
+margin_top = 6.681
+margin_right = -240.0
+margin_bottom = 6.681
 
 [node name="main_menu" type="Control" parent="main_menu_canvas"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -85,14 +91,10 @@ __meta__ = {
 }
 
 [node name="root_menu" type="VBoxContainer" parent="main_menu_canvas/main_menu"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 563.834
-margin_top = 169.574
-margin_right = 1075.83
-margin_bottom = 681.574
+margin_left = -255.028
+margin_top = -241.182
+margin_right = 256.968
+margin_bottom = 270.818
 custom_constants/separation = 90
 alignment = 1
 __meta__ = {
@@ -101,18 +103,18 @@ __meta__ = {
 
 [node name="start" type="Button" parent="main_menu_canvas/main_menu/root_menu"]
 margin_top = 135.0
-margin_right = 512.0
+margin_right = 511.0
 margin_bottom = 155.0
 text = "START"
 
 [node name="options" type="Button" parent="main_menu_canvas/main_menu/root_menu"]
 margin_top = 245.0
-margin_right = 512.0
+margin_right = 511.0
 margin_bottom = 265.0
 text = "OPTIONS"
 
 [node name="quit" type="Button" parent="main_menu_canvas/main_menu/root_menu"]
 margin_top = 355.0
-margin_right = 512.0
+margin_right = 511.0
 margin_bottom = 375.0
 text = "QUIT"

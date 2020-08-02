@@ -7,6 +7,16 @@ public class ZqfGodotUtils
 {
 	private static Random _random = new Random();
 
+	/// <summary>
+	/// TODO Replace with proper usage of Godot Viewports
+	/// </summary>
+	/// <returns></returns>
+	public static Vector2 GetWindowToScreenRatio()
+	{
+		Vector2 real = OS.GetRealWindowSize();
+		Vector2 screen = OS.GetScreenSize();
+		return new Vector2(real.x / screen.x, real.y / screen.y);
+	}
 	public static float RandomRange(float min, float max)
 	{
 		float r = (float)_random.NextDouble();

@@ -39,6 +39,7 @@ namespace GodotSharpFps.src
     public interface IActor
     {
         void SetActorId(int newId);
+        //void ActorDescription();
         int actorId { get; }
         int ParentActorId { get; set; }
         void ChildActorRemoved(int id);

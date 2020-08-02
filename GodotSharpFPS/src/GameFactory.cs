@@ -1,5 +1,4 @@
 using Godot;
-using Godot.Collections;
 using GodotSharpFps.src;
 using GodotSharpFps.src.nodes;
 using System;
@@ -18,24 +17,47 @@ public class GameFactory
     private Node _root;
     private int _nextEntId = 1;
 
-    //private Dictionary<int, IActor> _ents = new Dictionary<int, IActor>();
-    private List<IActor> _ents = new List<IActor>();
+    // teehee check this is a .net dictionary and not a godot dictionary...
+    private Dictionary<int, IActor> _ents = new Dictionary<int, IActor>();
 
     public GameFactory(Spatial root)
     {
         _root = root;
+        Main.i.console.AddObserver("actors", "", "Print actor list", Cmd_PrintActorRegister);
+
+        Main.i.AddObserver(ObserveGlobalEvent, this, false, "GameFactory");
+    }
+
+    public void ObserveGlobalEvent(GlobalEventType type, object obj)
+    {
+        if (type == GlobalEventType.MapChange)
+        {
+            Console.WriteLine($"GameFactory - clearing Actor register");
+            _ents.Clear();
+            _nextEntId = 1;
+        }
+    }
+
+    #region Actor Register
+
+    public bool Cmd_PrintActorRegister(string command, string[] tokens)
+    {
+        Console.WriteLine($"=== Actor Register ===");
+        foreach(int key in _ents.Keys)
+        {
+            IActor a = _ents[key];
+            Console.WriteLine($"{key} - {a} - {a.GetType()}");
+        }
+        return true;
     }
 
     public IActor GetActor(int id)
     {
-        // Sigh, are dictionaries broken here? ffs...
-        // https://github.com/godotengine/godot/issues/36351
-        //if (_ents.ContainsKey(id))
-        //{
-        //    return _ents[id];
-        //}
-        //return null;
-        return _ents.First(x => x.actorId == id);
+        if (_ents.ContainsKey(id))
+        {
+            return _ents[id];
+        }
+        return null;
     }
 
     public int ReserveActorId(int numIdsToReserve)
@@ -53,9 +75,8 @@ public class GameFactory
         //if (_ents.ContainsKey(actor.actorId))
         //{ throw new ArgumentException($"Actor Id {actor.actorId} already registered"); }
 
-        Console.WriteLine($"Register actor {actor.actorId}");
-        _ents.Add(actor);
-        //_ents.Add(actor.actorId, actor);
+        Console.WriteLine($"Register actor {actor.actorId} - {actor}");
+        _ents.Add(actor.actorId, actor);
     }
 
     public void DeregisterActor(IActor actor)
@@ -71,9 +92,12 @@ public class GameFactory
                 parent.ChildActorRemoved(actor.actorId);
             }
         }
-        //_ents.Remove(actor.actorId);
-        _ents.Remove(actor);
+        _ents.Remove(actor.actorId);
     }
+
+    #endregion
+
+    #region Spawning
 
     private Node SelectParent(bool addToTree, Node overrideParent)
     {
@@ -91,8 +115,8 @@ public class GameFactory
     {
         string path = "game/ent_mob.tscn";
         EntMob mob = ZqfGodotUtils.CreateInstance<EntMob>(path, _root);
-        mob.SetActorId(ReserveActorId(1));
-        RegisterActor(mob);
+        //mob.SetActorId(ReserveActorId(1));
+        //RegisterActor(mob);
         return mob;
     }
 
@@ -129,4 +153,6 @@ public class GameFactory
         // RegisterEnt() // not currently an actor.
         return result;
     }
+
+    #endregion
 }
