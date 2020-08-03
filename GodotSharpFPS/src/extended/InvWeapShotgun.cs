@@ -1,9 +1,5 @@
 ﻿using Godot;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GodotSharpFps.src.extended
 {
@@ -43,8 +39,7 @@ namespace GodotSharpFps.src.extended
             _isReloading = true;
             _tick = _weaponDef.magazineReloadTime;
             int numPellets = _weaponDef.primaryPrjCount * numShots;
-            Console.WriteLine($"Fire {numShots} shots ({numPellets} pellets)");
-
+            
             Transform t = _launchNode.GlobalTransform;
             // fill all angles, although we may be using less anyway.
             ZqfGodotUtils.FillSpreadAngles(t, _secondarySpread, 2000, 1200);

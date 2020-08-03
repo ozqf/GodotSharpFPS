@@ -9,6 +9,7 @@ namespace GodotSharpFps.src.nodes
 
 		// Gather display elements
 		private List<Spatial> _displayNodes = new List<Spatial>();
+		private CollisionShape _shape = null;
 
 		public void ShowModels()
 		{
@@ -26,11 +27,18 @@ namespace GodotSharpFps.src.nodes
 			}
 		}
 
+		public Transform GetTransformForTarget()
+		{
+			return _shape.GlobalTransform;
+		}
+
 		public override void _Ready()
 		{
 			_displayNodes.Add(GetNode<Spatial>("MeshInstance"));
 			_displayNodes.Add(GetNode<Spatial>("head/MeshInstance"));
 			_displayNodes.Add(GetNode<Spatial>("weapon/MeshInstance"));
+			// Need shape so we can report its position.
+			_shape = GetNode<CollisionShape>("CollisionShape");
 		}
 
 		public IActor GetActor()

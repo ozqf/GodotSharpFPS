@@ -46,7 +46,12 @@ namespace GodotSharpFps.src.nodes
 
         public Team GetTeam() { return Team.Mobs; }
 
-        public Transform GetActorTransform() { return _body.GlobalTransform; }
+        public Transform GetTransformForTarget() { return _body.GetTransformForTarget(); }
+
+        public void ActorTeleport(Transform t)
+        {
+            _body.GlobalTransform = t;
+        }
 
         public void ChildActorRemoved(int id) { }
 
@@ -86,8 +91,8 @@ namespace GodotSharpFps.src.nodes
                 return;
             }
             _targetActorId = actor.actorId;
-            Transform self = GetActorTransform();
-            Vector3 tar = actor.GetActorTransform().origin;
+            Transform self = GetTransformForTarget();
+            Vector3 tar = actor.GetTransformForTarget().origin;
             float yawDeg = ZqfGodotUtils.FlatYawDegreesBetween(
                 self.origin, tar);
             RotationDegrees = new Vector3(0, yawDeg, 0);

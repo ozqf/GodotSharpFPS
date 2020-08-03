@@ -21,7 +21,12 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 
 	public Team GetTeam() { return Team.Player; }
 
-	public Transform GetActorTransform() { return _body.GlobalTransform; }
+	public void ActorTeleport(Transform t)
+	{
+		_body.GlobalTransform = t;
+	}
+
+	public Transform GetTransformForTarget() { return _body.GetTransformForTarget(); }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()

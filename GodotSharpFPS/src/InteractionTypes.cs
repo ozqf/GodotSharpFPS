@@ -57,7 +57,8 @@ namespace GodotSharpFps.src
         int actorId { get; }
         int ParentActorId { get; set; }
         void ChildActorRemoved(int id);
-        Transform GetActorTransform();
+        Transform GetTransformForTarget();
+        void ActorTeleport(Transform newTransform);
         TouchResponseData ActorTouch(TouchData touchData);
     }
 
