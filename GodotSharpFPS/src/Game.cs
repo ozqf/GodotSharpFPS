@@ -75,7 +75,7 @@ namespace GodotSharpFps.src
             {
                 case State.Pregame:
                     if (_main.gameInputActive
-                        && Input.IsActionJustPressed("ui_accept")
+                        && Input.IsActionJustPressed("attack_1")
                         && _playerStarts.Any())
                     {
                         PlayerStartNode node = _playerStarts[0];
@@ -89,7 +89,7 @@ namespace GodotSharpFps.src
                     uint diff = OS.GetTicksMsec() - _stateTimestamp;
                     if (diff < 1000) { break; }
                     if (_main.gameInputActive
-                        && Input.IsActionJustPressed("ui_accept"))
+                        && Input.IsActionJustPressed("attack_1"))
                     {
                         string cmd = $"map {_mapName}";
                         Console.WriteLine($"Restart map: {cmd}");
@@ -104,6 +104,13 @@ namespace GodotSharpFps.src
             if (victim == Team.None) { return true; }
             if (victim == Team.NonCombatant) { return false; }
             return attacker != victim;
+        }
+        
+        public static IActor ExtractActor(object obj)
+        {
+            IActorProvider provider = obj as IActorProvider;
+            if (provider == null) { return null; }
+            return provider.GetActor();
         }
 
         public IActor CheckTarget(int currentTargetActorId, Team attacker)

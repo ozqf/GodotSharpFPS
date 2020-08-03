@@ -75,6 +75,7 @@
     <Compile Include="src\nodes\SwordThrowProjectile.cs" />
     <Compile Include="src\nodes\KinematicWrapper.cs" />
     <Compile Include="src\nodes\LaserDot.cs" />
+    <Compile Include="src\nodes\TriggerTouch.cs" />
     <Compile Include="src\ProjectileDef.cs" />
     <Compile Include="src\extended\InvWeapDisc.cs" />
     <Compile Include="src\ZqfGodotUtils.cs" />

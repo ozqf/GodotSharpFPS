@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://game/world/world_block.tscn" type="PackedScene" id=1]
 [ext_resource path="res://game/spawners/player_start.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://game/spawners/ent_spawn.tscn" type="PackedScene" id=5]
 [ext_resource path="res://game/spawners/BulkSpawner.tscn" type="PackedScene" id=6]
 [ext_resource path="res://gfx/gfx_bullet_impact.tscn" type="PackedScene" id=7]
+[ext_resource path="res://game/triggers/trigger_touch.tscn" type="PackedScene" id=8]
 
 [node name="map" type="Spatial"]
 
@@ -87,3 +88,6 @@ entityType = "mob"
 
 [node name="gfx_bullet_impact" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 3, -3 )
+
+[node name="trigger_touch" parent="." instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 2 )

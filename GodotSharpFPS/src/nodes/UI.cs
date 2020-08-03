@@ -49,7 +49,7 @@ public class UI : Node
                     playerStatus.Hide();
                     break;
                 case Game.State.Pregame:
-                    _gameMessage.Text = "Press Enter to start";
+                    _gameMessage.Text = "Press fire to start";
                     playerStatus.Hide();
                     break;
                 case Game.State.Gamplay:
@@ -61,7 +61,7 @@ public class UI : Node
                     playerStatus.Hide();
                     break;
                 case Game.State.GameOver:
-                    _gameMessage.Text = "You are dead.";
+                    _gameMessage.Text = "Press fire to reload";
                     playerStatus.Hide();
                     break;
             }

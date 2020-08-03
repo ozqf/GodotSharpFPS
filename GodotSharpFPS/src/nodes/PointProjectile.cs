@@ -45,13 +45,21 @@ public class PointProjectile : Spatial
 			arr = new Godot.Collections.Array();
 			arr.Add(_ignoreBody);
 		}
+		// Set origin back slightly as otherwise rays seem to tunnel
+		// (perhaps due to ray starting inside collider...?)
+		origin -= (forward * 0.25f);
 		Dictionary hitResult = space.IntersectRay(origin, dest, arr, mask);
 		if (hitResult.Keys.Count > 0)
 		{
 			_touch.damage = _def.damage;
 			_touch.teamId = 0;
 			_touch.touchType = TouchType.Bullet;
-			IActorProvider actorProvider = hitResult["collider"] as IActorProvider;
+			IActor actor = Game.ExtractActor(hitResult["collider"]);
+			if (actor != null)
+			{
+				TouchResponseData response = actor.ActorTouch(_touch);
+			}
+			/*IActorProvider actorProvider = hitResult["collider"] as IActorProvider;
 			if (actorProvider != null)
 			{
 				IActor actor = actorProvider.GetActor();
@@ -70,7 +78,7 @@ public class PointProjectile : Spatial
 			{
 				//Node hitObj = (hitResult["collider"] as Node);
 				//Console.WriteLine($"Prj hit non-actor node {hitObj.Name}");
-			}
+			}*/
 			Vector3 gfxOrigin = (Vector3)hitResult["position"];
 			Vector3 gfxNormal = (Vector3)hitResult["normal"];
 			GFXQuick gfx = Main.i.factory.SpawnGFX(impactGFX);
@@ -99,22 +107,7 @@ public class PointProjectile : Spatial
 		}
 
 		MoveAsRay(delta);
-
-		//Transform t = GlobalTransform;
-		//Vector3 velocity = -t.basis.z * _def.launchSpeed;
-		//t.origin += velocity * delta;
-		//GlobalTransform = t;
 	}
-
-	/*public void Launch(Transform globalOrigin, ProjectileDef def, PhysicsBody ignoreBody)
-	{
-		_ignoreBody = ignoreBody;
-		_def = def;
-		Vector3 origin = globalOrigin.origin;
-		Console.WriteLine($"Prj spawned at {origin.x}, {origin.y}, {origin.z}");
-		GlobalTransform = globalOrigin;
-		_tick = def.timeToLive;
-	}*/
 
 	public void Launch(
 		Vector3 origin,
