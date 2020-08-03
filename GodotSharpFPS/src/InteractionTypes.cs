@@ -60,6 +60,7 @@ namespace GodotSharpFps.src
         Transform GetTransformForTarget();
         void ActorTeleport(Transform newTransform);
         TouchResponseData ActorTouch(TouchData touchData);
+        void RemoveActor();
     }
 
     public interface IActorProvider

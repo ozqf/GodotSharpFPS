@@ -6,7 +6,7 @@ using System.Reflection;
 
 public enum GlobalEventType
 {
-	None, MapChange, GameStateChange, PlayerSpawned, PlayerDied
+	None, MapChange, GameStateChange, PlayerSpawned, PlayerDied, LevelComplete
 }
 
 public class GlobalEventObserver
@@ -154,7 +154,7 @@ public class Main : Spatial
 		}
 		// Cleanup
 		cam.Reset();
-		Broadcast(GlobalEventType.MapChange, null);
+		Broadcast(GlobalEventType.MapChange, tokens[1]);
 		// Change
 		GetTree().ChangeScene(path);
 		return true;

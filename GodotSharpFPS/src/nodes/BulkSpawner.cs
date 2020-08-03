@@ -14,6 +14,7 @@ namespace GodotSharpFps.src.nodes
 		public int ParentActorId { get; set; }
 		public int actorId { get { return _entId; } }
 		public Team GetTeam() { return Team.NonCombatant; }
+		public void RemoveActor() { this.QueueFree(); }
 		public Transform GetTransformForTarget() { return GlobalTransform; }
 		public void ActorTeleport(Transform t) { GlobalTransform = t; }
 		public void ChildActorRemoved(int id) { _numLiveChildren--; }

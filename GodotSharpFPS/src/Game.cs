@@ -14,13 +14,14 @@ namespace GodotSharpFps.src
 
         public enum State { Limbo, Pregame, Gamplay, GameOver, PostGame };
         private State _state = State.Limbo;
+        private uint _stateTimestamp = 0;
+        private string _mapName = string.Empty;
 
         private int _nextEntId = 1;
 
         // teehee check this is a .net dictionary and not a godot dictionary...
         private Dictionary<int, IActor> _ents = new Dictionary<int, IActor>();
         private List<PlayerStartNode> _playerStarts = new List<PlayerStartNode>();
-        //private EntPlayer _player = null;
         private int _plyrId = NullActorId;
 
         public Game(Main main)
@@ -37,6 +38,7 @@ namespace GodotSharpFps.src
             if (_state != newState)
             {
                 _state = newState;
+                _stateTimestamp = OS.GetTicksMsec();
                 _main.Broadcast(GlobalEventType.GameStateChange, _state);
             }
         }
@@ -46,10 +48,15 @@ namespace GodotSharpFps.src
             switch (type)
             {
                 case GlobalEventType.MapChange:
+                    _mapName = obj as string;
                     // Clear any records of entities as they are about to be freed
-                    _playerStarts.Clear();
+                    foreach (int key in _ents.Keys)
+                    {
+                        IActor a = _ents[key];
+                        a.RemoveActor();
+                    }
                     _ents.Clear();
-                    //_player = null;
+                    _playerStarts.Clear();
                     _plyrId = NullActorId;
                     _nextEntId = 1;
                     // Enter a 'no game rules' state.
@@ -57,7 +64,7 @@ namespace GodotSharpFps.src
                     break;
                 case GlobalEventType.PlayerDied:
                     _main.cam.Reset();
-                    _main.Broadcast(GlobalEventType.GameStateChange, _state);
+                    SetGameState(State.GameOver);
                     break;
             }
         }
@@ -67,14 +74,26 @@ namespace GodotSharpFps.src
             switch (GetGameState())
             {
                 case State.Pregame:
-                    if (Input.IsActionJustPressed("ui_accept") && _playerStarts.Any())
+                    if (_main.gameInputActive
+                        && Input.IsActionJustPressed("ui_accept")
+                        && _playerStarts.Any())
                     {
                         PlayerStartNode node = _playerStarts[0];
                         EntPlayer plyr = _main.factory.SpawnPlayer();
-                        //_player = plyr;
                         _plyrId = plyr.actorId;
                         plyr.GlobalTransform = node.GlobalTransform;
                         SetGameState(State.Gamplay);
+                    }
+                    break;
+                case State.GameOver:
+                    uint diff = OS.GetTicksMsec() - _stateTimestamp;
+                    if (diff < 1000) { break; }
+                    if (_main.gameInputActive
+                        && Input.IsActionJustPressed("ui_accept"))
+                    {
+                        string cmd = $"map {_mapName}";
+                        Console.WriteLine($"Restart map: {cmd}");
+                        _main.console.Execute(cmd);
                     }
                     break;
             }
@@ -156,10 +175,10 @@ namespace GodotSharpFps.src
 
         public void RegisterActor(IActor actor)
         {
-            if (actor.actorId == 0)
+            if (actor.actorId == NullActorId)
             { actor.SetActorId(ReserveActorId(1)); }
-            //if (_ents.ContainsKey(actor.actorId))
-            //{ throw new ArgumentException($"Actor Id {actor.actorId} already registered"); }
+            if (_ents.ContainsKey(actor.actorId))
+            { throw new ArgumentException($"Actor Id {actor.actorId} already registered"); }
 
             Console.WriteLine($"Register actor {actor.actorId} - {actor}");
             _ents.Add(actor.actorId, actor);

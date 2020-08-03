@@ -41,13 +41,10 @@ namespace GodotSharpFps.src.nodes
 		}
 
 		public int ParentActorId { get; set; }
-
 		public int actorId { get { return _entId; } }
-
 		public Team GetTeam() { return Team.Mobs; }
-
 		public Transform GetTransformForTarget() { return _body.GetTransformForTarget(); }
-
+		public void RemoveActor() { this.QueueFree(); }
 		public void ActorTeleport(Transform t)
 		{
 			_body.GlobalTransform = t;

@@ -18,17 +18,11 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 
 	private int _entId = 0;
 	public int ParentActorId { get; set; }
-
 	public IActor GetActor() => this;
-
 	public Team GetTeam() { return _team; }
-
-	public void ActorTeleport(Transform t)
-	{
-		_body.GlobalTransform = t;
-	}
-
+	public void ActorTeleport(Transform t) { _body.GlobalTransform = t; }
 	public Transform GetTransformForTarget() { return _body.GetTransformForTarget(); }
+	public void RemoveActor() { this.QueueFree(); }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
