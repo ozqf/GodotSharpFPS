@@ -6,7 +6,7 @@ using System.Reflection;
 
 public enum GlobalEventType
 {
-	None, MapChange
+	None, MapChange, GameStateChange, PlayerSpawned, PlayerDied
 }
 
 public class GlobalEventObserver

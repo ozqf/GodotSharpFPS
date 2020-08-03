@@ -69,6 +69,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="gameplay_message" type="Label" parent="hud"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.6
+margin_left = -256.0
+margin_right = 260.0
+margin_bottom = 256.0
+rect_pivot_offset = Vector2( 256, 256 )
+rect_clip_content = true
+text = "PRESS ENTER TO START"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="main_menu_canvas" type="CanvasLayer" parent="."]
 
 [node name="console" parent="main_menu_canvas" instance=ExtResource( 1 )]
@@ -91,10 +108,10 @@ __meta__ = {
 }
 
 [node name="root_menu" type="VBoxContainer" parent="main_menu_canvas/main_menu"]
-margin_left = -255.028
-margin_top = -241.182
-margin_right = 256.968
-margin_bottom = 270.818
+margin_left = -253.736
+margin_top = -245.059
+margin_right = 258.26
+margin_bottom = 266.941
 custom_constants/separation = 90
 alignment = 1
 __meta__ = {

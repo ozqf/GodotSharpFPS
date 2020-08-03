@@ -1,9 +1,5 @@
 using Godot;
-using GodotSharpFps.src;
 using GodotSharpFps.src.nodes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 public class GameFactory
 {
@@ -23,16 +19,6 @@ public class GameFactory
     public GameFactory(Spatial root)
     {
         _root = root;
-        Main.i.AddObserver(ObserveGlobalEvent, this, false, "GameFactory");
-    }
-
-    public void ObserveGlobalEvent(GlobalEventType type, object obj)
-    {
-        if (type == GlobalEventType.MapChange)
-        {
-            Console.WriteLine($"GameFactory - clearing Actor register");
-            
-        }
     }
 
     #region Spawning
@@ -58,8 +44,6 @@ public class GameFactory
     public EntMob SpawnMob()
     {
         EntMob mob = ZqfGodotUtils.CreateInstance<EntMob>(Path_EntMob, _root);
-        //mob.SetActorId(ReserveActorId(1));
-        //RegisterActor(mob);
         return mob;
     }
 
@@ -93,7 +77,6 @@ public class GameFactory
     {
         Node parent = SelectParent(addToTree, overrideParent);
         SwordThrowProjectile result = ZqfGodotUtils.CreateInstance<SwordThrowProjectile>(Path_ThrownSword, parent);
-        // RegisterEnt() // not currently an actor.
         return result;
     }
 

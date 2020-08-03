@@ -13,13 +13,15 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 	private SwordThrowProjectile _thrownSword;
 	private HUDPlayerState _hudState;
 	private KinematicWrapper _body;
+	private int _health = 100;
+	private Team _team = Team.Player;
 
 	private int _entId = 0;
 	public int ParentActorId { get; set; }
 
 	public IActor GetActor() => this;
 
-	public Team GetTeam() { return Team.Player; }
+	public Team GetTeam() { return _team; }
 
 	public void ActorTeleport(Transform t)
 	{
@@ -73,6 +75,8 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 			_entId = m.game.ReserveActorId(1);
 			m.game.RegisterActor(this);
 		}
+
+		m.Broadcast(GlobalEventType.PlayerSpawned, this);
 	}
 
 	public override void _ExitTree()
@@ -130,6 +134,7 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 			src);
 
 		_inventory.FillHudStatus(_hudState);
+		_hudState.health = _health;
 		Main.i.ui.SetHudState(_hudState);
 	}
 
@@ -157,10 +162,27 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 
 	public TouchResponseData ActorTouch(TouchData touchData)
 	{
-		Console.WriteLine($"Player hit for {touchData.damage}");
+		
 		TouchResponseData result;
+		if (!Game.CheckTeamVsTeam(touchData.teamId, _team))
+		{
+			return TouchResponseData.empty;
+		}
+		Console.WriteLine($"Player hit for {touchData.damage}");
 		result.damageTaken = touchData.damage;
-		result.responseType = TouchResponseType.Damaged;
+		_health -= touchData.damage;
+		if (_health <= 0)
+		{
+			_team = Team.NonCombatant;
+			Main.i.game.DeregisterActor(this);
+			Main.i.Broadcast(GlobalEventType.PlayerDied, this);
+			QueueFree();
+			result.responseType = TouchResponseType.Killed;
+		}
+		else
+		{
+			result.responseType = TouchResponseType.Damaged;
+		}
 		return result;
 	}
 }

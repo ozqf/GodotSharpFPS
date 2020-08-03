@@ -3,8 +3,6 @@ using GodotSharpFps.src.nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GodotSharpFps.src
 {
@@ -14,7 +12,7 @@ namespace GodotSharpFps.src
 
         private readonly Main _main;
 
-        private enum State { Limbo, Pregame, Gamplay, GameOver, PostGame };
+        public enum State { Limbo, Pregame, Gamplay, GameOver, PostGame };
         private State _state = State.Limbo;
 
         private int _nextEntId = 1;
@@ -22,7 +20,8 @@ namespace GodotSharpFps.src
         // teehee check this is a .net dictionary and not a godot dictionary...
         private Dictionary<int, IActor> _ents = new Dictionary<int, IActor>();
         private List<PlayerStartNode> _playerStarts = new List<PlayerStartNode>();
-        private EntPlayer _player = null;
+        //private EntPlayer _player = null;
+        private int _plyrId = NullActorId;
 
         public Game(Main main)
         {
@@ -31,38 +30,57 @@ namespace GodotSharpFps.src
             _main.console.AddCommand("actors", "", "Print actor list", Cmd_PrintActorRegister);
         }
 
+        public State GetGameState() { return _state; }
+
+        private void SetGameState(State newState)
+        {
+            if (_state != newState)
+            {
+                _state = newState;
+                _main.Broadcast(GlobalEventType.GameStateChange, _state);
+            }
+        }
+
         public void OnGlobalEvent(GlobalEventType type, object obj)
         {
-            if (type == GlobalEventType.MapChange)
+            switch (type)
             {
-                // Clear any records of entities as they are about to be freed
-                _playerStarts.Clear();
-                _ents.Clear();
-                _player = null;
-                _nextEntId = 1;
-                // Enter a 'no game rules' state.
-                _state = State.Limbo;
+                case GlobalEventType.MapChange:
+                    // Clear any records of entities as they are about to be freed
+                    _playerStarts.Clear();
+                    _ents.Clear();
+                    //_player = null;
+                    _plyrId = NullActorId;
+                    _nextEntId = 1;
+                    // Enter a 'no game rules' state.
+                    SetGameState(State.Limbo);
+                    break;
+                case GlobalEventType.PlayerDied:
+                    _main.cam.Reset();
+                    _main.Broadcast(GlobalEventType.GameStateChange, _state);
+                    break;
             }
         }
 
         public void Tick()
         {
-            switch (_state)
+            switch (GetGameState())
             {
                 case State.Pregame:
                     if (Input.IsActionJustPressed("ui_accept") && _playerStarts.Any())
                     {
-                        _state = State.Gamplay;
                         PlayerStartNode node = _playerStarts[0];
                         EntPlayer plyr = _main.factory.SpawnPlayer();
-                        _player = plyr;
+                        //_player = plyr;
+                        _plyrId = plyr.actorId;
                         plyr.GlobalTransform = node.GlobalTransform;
+                        SetGameState(State.Gamplay);
                     }
                     break;
             }
         }
 
-        public bool CheckTeamVsTeam(Team attacker, Team victim)
+        public static bool CheckTeamVsTeam(Team attacker, Team victim)
         {
             if (victim == Team.None) { return true; }
             if (victim == Team.NonCombatant) { return false; }
@@ -87,29 +105,26 @@ namespace GodotSharpFps.src
                 }
             }
             // Acquire a target
-            if (attacker == Team.Mobs && _player != null)
+            if (attacker == Team.Mobs && _plyrId != NullActorId)
             {
-                actor = _player;
+                // try and retrieve player
+                actor = GetActor(_plyrId);
             }
             return actor;
         }
 
-        #region Register misc static objects
+        #region Actor Register
 
         public void RegisterPlayerStart(PlayerStartNode node)
         {
             Vector3 p = node.GlobalTransform.origin;
             Console.WriteLine($"Register player start at {p}");
-            if (_playerStarts.Count == 0)
-            {
-                _state = State.Pregame;
-            }
             _playerStarts.Add(node);
+            if (_playerStarts.Count == 1)
+            {
+                SetGameState(State.Pregame);
+            }
         }
-
-        #endregion
-
-        #region Actor Register
 
         public bool Cmd_PrintActorRegister(string command, string[] tokens)
         {

@@ -4,11 +4,13 @@ using System;
 
 public class UI : Node
 {
+    private Main _main;
     private CanvasLayer _hudContainer;
     private Control _mainMenuContainer;
 
     private Label debugtext;
     private Label playerStatus;
+    private Label _gameMessage;
     private CmdConsoleUI _console;
 
     private bool _consoleOn = false;
@@ -21,18 +23,48 @@ public class UI : Node
         _mainMenuContainer = GetNode<Control>("main_menu_canvas/main_menu");
         debugtext = GetNode<Label>("hud/debug_text");
         playerStatus = GetNode<Label>("hud/player_status");
+        _gameMessage = GetNode<Label>("hud/gameplay_message");
         _console = GetNode<CmdConsoleUI>("main_menu_canvas/console");
         SetConsoleOn(false);
         SetMainMenuOn(false);
+        _main = Main.i;
+        _main.AddObserver(OnGlobalEvent, this, false, "UI");
 
         Button btn = _mainMenuContainer.GetNode<Button>("root_menu/start");
-        if (btn == null)
+        if (btn == null) { Console.WriteLine($"Couldn't find button"); }
+        else { btn.Connect("pressed", this, "OnRootStartClicked"); }
+    }
+
+    public void OnGlobalEvent(GlobalEventType type, object obj)
+    {
+        if (type == GlobalEventType.GameStateChange)
         {
-            Console.WriteLine($"Couldn't find button");
-        }
-        else
-        {
-            btn.Connect("pressed", this, "OnRootStartClicked");
+            if (!(obj is Game.State)) { return; }
+            Game.State state = (Game.State)obj;
+
+            switch (state)
+            {
+                case Game.State.Limbo:
+                    _gameMessage.Text = string.Empty;
+                    playerStatus.Hide();
+                    break;
+                case Game.State.Pregame:
+                    _gameMessage.Text = "Press Enter to start";
+                    playerStatus.Hide();
+                    break;
+                case Game.State.Gamplay:
+                    _gameMessage.Text = string.Empty;
+                    playerStatus.Show();
+                    break;
+                case Game.State.PostGame:
+                    _gameMessage.Text = "Level complete.";
+                    playerStatus.Hide();
+                    break;
+                case Game.State.GameOver:
+                    _gameMessage.Text = "You are dead.";
+                    playerStatus.Hide();
+                    break;
+            }
         }
     }
 
