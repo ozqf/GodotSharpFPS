@@ -54,8 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmptyMap.cs" />
-    <Compile Include="GameCamera.cs" />
+    <Compile Include="src\nodes\EmptyMap.cs" />
     <Compile Include="src\ActorInventory.cs" />
     <Compile Include="src\AttackFactory.cs" />
     <Compile Include="src\extended\InvWeapGodhand.cs" />
@@ -70,6 +69,7 @@
     <Compile Include="src\nodes\BulkSpawner.cs" />
     <Compile Include="src\nodes\EntitySpawn.cs" />
     <Compile Include="src\nodes\EntMob.cs" />
+    <Compile Include="src\nodes\GameCamera.cs" />
     <Compile Include="src\nodes\GFXQuick.cs" />
     <Compile Include="src\nodes\PlayerStartNode.cs" />
     <Compile Include="src\nodes\SwordThrowProjectile.cs" />
@@ -88,7 +88,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\ZqfXml.cs" />
-    <Compile Include="UI.cs" />
+    <Compile Include="src\nodes\UI.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="txt\game_stats.xml" />

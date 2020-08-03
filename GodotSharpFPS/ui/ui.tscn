@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://ui/console.tscn" type="PackedScene" id=1]
-[ext_resource path="res://UI.cs" type="Script" id=2]
+[ext_resource path="res://src/nodes/UI.cs" type="Script" id=2]
 [ext_resource path="res://assets/textures/crosshair01.png" type="Texture" id=3]
 
 [node name="ui" type="Node"]
@@ -102,19 +102,19 @@ __meta__ = {
 }
 
 [node name="start" type="Button" parent="main_menu_canvas/main_menu/root_menu"]
-margin_top = 135.0
+margin_top = 136.0
 margin_right = 511.0
-margin_bottom = 155.0
+margin_bottom = 156.0
 text = "START"
 
 [node name="options" type="Button" parent="main_menu_canvas/main_menu/root_menu"]
-margin_top = 245.0
+margin_top = 246.0
 margin_right = 511.0
-margin_bottom = 265.0
+margin_bottom = 266.0
 text = "OPTIONS"
 
 [node name="quit" type="Button" parent="main_menu_canvas/main_menu/root_menu"]
-margin_top = 355.0
+margin_top = 356.0
 margin_right = 511.0
-margin_bottom = 375.0
+margin_bottom = 376.0
 text = "QUIT"
