@@ -1,13 +1,14 @@
 ﻿using Godot;
 using GodotSharpFps.src.nodes;
+using System;
 
 namespace GodotSharpFps.src.extended
 {
-    public class InvWeapDisc : InvWeapon
+    public class InvWeapMelee : InvWeapon
     {
-        private SwordThrowProjectile _projectile;
+        private MeleeHitVolume _volume = null;
 
-        public InvWeapDisc(
+        public InvWeapMelee(
             Spatial launchNode,
             WeaponDef weaponDef,
             ProjectileDef primaryDef,
@@ -17,14 +18,19 @@ namespace GodotSharpFps.src.extended
         {
         }
 
-        public void SetDiscProjectile(SwordThrowProjectile proj)
+        public void SetMeleeVolume(MeleeHitVolume volume)
         {
-            _projectile = proj;
+            _volume = volume;
         }
 
         public override void FirePrimary(AttackSource src)
         {
-            base.FirePrimary(src);
+            if (_volume == null)
+            {
+                throw new NullReferenceException($"Melee weapon has no melee volume");
+            }
+            _tick = _weaponDef.primaryRefireTime;
+            _volume.Fire(src);
         }
     }
 }

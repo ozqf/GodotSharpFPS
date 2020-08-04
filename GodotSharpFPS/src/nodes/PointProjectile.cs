@@ -37,18 +37,22 @@ public class PointProjectile : Spatial
 		Vector3 forward = -t.basis.z;
 		Vector3 dest = origin;
 		dest += (forward * _def.launchSpeed) * delta;
+		// Set origin back slightly as otherwise rays seem to tunnel
+		// (perhaps due to ray starting inside collider...?)
+		origin -= (forward * 0.25f);
 		uint mask = uint.MaxValue;
-		PhysicsDirectSpaceState space = GetWorld().DirectSpaceState;
+
+		/*PhysicsDirectSpaceState space = GetWorld().DirectSpaceState;
 		Godot.Collections.Array arr = null;
 		if (_ignoreBody != null)
 		{
 			arr = new Godot.Collections.Array();
 			arr.Add(_ignoreBody);
 		}
-		// Set origin back slightly as otherwise rays seem to tunnel
-		// (perhaps due to ray starting inside collider...?)
-		origin -= (forward * 0.25f);
-		Dictionary hitResult = space.IntersectRay(origin, dest, arr, mask);
+		Dictionary hitResult = space.IntersectRay(origin, dest, arr, mask);*/
+
+		Dictionary hitResult = ZqfGodotUtils.CastRay(this, origin, dest, mask, _ignoreBody);
+
 		if (hitResult.Keys.Count > 0)
 		{
 			_touch.damage = _def.damage;
@@ -59,26 +63,6 @@ public class PointProjectile : Spatial
 			{
 				TouchResponseData response = actor.ActorTouch(_touch);
 			}
-			/*IActorProvider actorProvider = hitResult["collider"] as IActorProvider;
-			if (actorProvider != null)
-			{
-				IActor actor = actorProvider.GetActor();
-				if (actor != null)
-				{
-					TouchResponseData response = actor.ActorTouch(_touch);
-					Console.WriteLine($"Prj hit actor for {response.damageTaken}");
-				}
-				else
-				{
-					Console.WriteLine($"Prj hit provider but actor is null!");
-				}
-				
-			}
-			else
-			{
-				//Node hitObj = (hitResult["collider"] as Node);
-				//Console.WriteLine($"Prj hit non-actor node {hitObj.Name}");
-			}*/
 			Vector3 gfxOrigin = (Vector3)hitResult["position"];
 			Vector3 gfxNormal = (Vector3)hitResult["normal"];
 			GFXQuick gfx = Main.i.factory.SpawnGFX(impactGFX);

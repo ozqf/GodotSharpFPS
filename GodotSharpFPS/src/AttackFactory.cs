@@ -1,10 +1,25 @@
 ﻿using Godot;
 using GodotSharpFps.src.extended;
+using GodotSharpFps.src.nodes;
 
 namespace GodotSharpFps.src
 {
     public class AttackFactory
     {
+		public static InvWeapon CreatePlayerMelee(MeleeHitVolume volume, PhysicsBody ignoreBody)
+		{
+			WeaponDef weapDef = new WeaponDef();
+			weapDef.name = "Melee";
+			weapDef.magazineSize = 9999;
+			weapDef.primaryRefireTime = 0.75f;
+			
+
+			InvWeapMelee weapon = new InvWeapMelee(
+				null, weapDef, null, null, ignoreBody);
+			weapon.SetMeleeVolume(volume);
+			return weapon;
+		}
+
         public static InvWeapon CreatePlayerShotgun(Spatial launchNode, PhysicsBody ignoreBody)
         {
 			WeaponDef weapDef = new WeaponDef();
@@ -25,7 +40,8 @@ namespace GodotSharpFps.src
 
 			// No secondary def, use primary twice
 
-			InvWeapShotgun weapon = new InvWeapShotgun(launchNode, weapDef, primaryPrjDef, primaryPrjDef, ignoreBody);
+			InvWeapShotgun weapon = new InvWeapShotgun(
+				launchNode, weapDef, primaryPrjDef, primaryPrjDef, ignoreBody);
 			return weapon;
 		}
 

@@ -3,6 +3,8 @@ using GodotSharpFps.src.nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+// alias .net namespace for dictionary
+using DotNet = System.Collections.Generic;
 
 namespace GodotSharpFps.src
 {
@@ -20,7 +22,8 @@ namespace GodotSharpFps.src
         private int _nextEntId = 1;
 
         // teehee check this is a .net dictionary and not a godot dictionary...
-        private Dictionary<int, IActor> _ents = new Dictionary<int, IActor>();
+        // ...godot dictionaries cannot store non-godot types!
+        private DotNet.Dictionary<int, IActor> _ents = new DotNet.Dictionary<int, IActor>();
         private List<PlayerStartNode> _playerStarts = new List<PlayerStartNode>();
         private int _plyrId = NullActorId;
 

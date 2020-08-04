@@ -8,6 +8,7 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 	private FPSInput _input;
 	private FPSController _fpsCtrl;
 	private Spatial _head;
+	private MeleeHitVolume _meleeVolume;
 	private ActorInventory _inventory;
 	private LaserDot _laserDot;
 	private SwordThrowProjectile _thrownSword;
@@ -42,6 +43,7 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 		_body.HideModels();
 
 		_head = GetNode<Spatial>("actor_base/head");
+		_meleeVolume = _head.GetNode<MeleeHitVolume>("melee_hit_volume");
 
 		_laserDot = GetNode<LaserDot>("laser_dot");
 		_laserDot.CustomInit(_head, uint.MaxValue, 1000);
@@ -58,6 +60,7 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 		_inventory.Init(_head, 1);
 
 		// Add weapons
+		_inventory.AddWeapon(AttackFactory.CreatePlayerMelee(_meleeVolume, _body));
 		_inventory.AddWeapon(AttackFactory.CreatePlayerShotgun(_head, _body));
 		_inventory.AddWeapon(AttackFactory.CreateStakegun(_head, _body));
 

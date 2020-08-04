@@ -1,12 +1,16 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/nodes/KinematicWrapper.cs" type="Script" id=1]
+[ext_resource path="res://prefabs/debug_cube_1x1x1.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/nodes/MeleeHitVolume.cs" type="Script" id=3]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.75, 1.7, 0.75 )
 
 [sub_resource type="CubeMesh" id=2]
 size = Vector3( 1.5, 2.6, 1.5 )
+
+[sub_resource type="BoxShape" id=5]
 
 [sub_resource type="CubeMesh" id=3]
 size = Vector3( 0.9, 0.75, 0.9 )
@@ -29,6 +33,16 @@ material/0 = null
 
 [node name="head" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, 0 )
+
+[node name="melee_hit_volume" type="Area" parent="head"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 2, 0, -0.9, -3 )
+script = ExtResource( 3 )
+
+[node name="debug_cube_1x1x1" parent="head/melee_hit_volume" instance=ExtResource( 2 )]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="head/melee_hit_volume"]
+shape = SubResource( 5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="head"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0 )

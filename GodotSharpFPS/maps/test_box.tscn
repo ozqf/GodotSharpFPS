@@ -21,41 +21,113 @@ environment = ExtResource( 3 )
 [node name="world_block" parent="world/geometry" instance=ExtResource( 1 )]
 transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, 8, 0, -8 )
 
+[node name="world_block16" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, 8, 0, -24 )
+
+[node name="world_block24" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, -8, 0, -24 )
+
 [node name="world_block2" parent="world/geometry" instance=ExtResource( 1 )]
 transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, -8, 0, -8 )
 
 [node name="world_block4" parent="world/geometry" instance=ExtResource( 1 )]
 transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, 8, 0, 8 )
 
+[node name="world_block14" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, 8, 0, 24 )
+
+[node name="world_block17" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, 24, 0, -8 )
+
+[node name="world_block18" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, 24, 0, -24 )
+
+[node name="world_block19" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, 24, 0, 8 )
+
+[node name="world_block20" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, 24, 0, 24 )
+
 [node name="world_block3" parent="world/geometry" instance=ExtResource( 1 )]
 transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, -8, 0, 8 )
+
+[node name="world_block15" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, -8, 0, 24 )
+
+[node name="world_block25" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, -24, 0, -24 )
+
+[node name="world_block26" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, -24, 0, -8 )
+
+[node name="world_block27" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, -24, 0, 8 )
+
+[node name="world_block28" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, -24, 0, 24 )
 
 [node name="world_block5" parent="world/geometry" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 5, 0 )
 
+[node name="world_block34" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, 16, 5, -16 )
+
+[node name="world_block35" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, 16, 5, 16 )
+
+[node name="world_block36" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, -16, 5, -16 )
+
+[node name="world_block37" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, -16, 5, 16 )
+
 [node name="world_block13" parent="world/geometry" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, -17, 5, 8 )
+transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, -33, 5, 8 )
+
+[node name="world_block30" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, -33, 5, 24 )
 
 [node name="world_block6" parent="world/geometry" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, -17, 5, -8 )
+transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, -33, 5, -8 )
+
+[node name="world_block29" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, -33, 5, -24 )
 
 [node name="world_block8" parent="world/geometry" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, 17, 5, 8 )
+transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, 33, 5, 8 )
+
+[node name="world_block21" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, 33, 5, 24 )
 
 [node name="world_block7" parent="world/geometry" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, 17, 5, -8 )
+transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, 33, 5, -8 )
+
+[node name="world_block22" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, 33, 5, -24 )
 
 [node name="world_block9" parent="world/geometry" instance=ExtResource( 1 )]
-transform = Transform( 8, 0, 0, 0, 4, 0, 0, 0, 1, 8, 5, -17 )
+transform = Transform( 8, 0, 0, 0, 4, 0, 0, 0, 1, 8, 5, -33 )
+
+[node name="world_block23" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 4, 0, 0, 0, 1, 24, 5, -33 )
 
 [node name="world_block10" parent="world/geometry" instance=ExtResource( 1 )]
-transform = Transform( 8, 0, 0, 0, 4, 0, 0, 0, 1, -8, 5, -17 )
+transform = Transform( 8, 0, 0, 0, 4, 0, 0, 0, 1, -8, 5, -33 )
+
+[node name="world_block33" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 4, 0, 0, 0, 1, -24, 5, -33 )
 
 [node name="world_block12" parent="world/geometry" instance=ExtResource( 1 )]
-transform = Transform( 8, 0, 0, 0, 4, 0, 0, 0, 1, 8, 5, 17 )
+transform = Transform( 8, 0, 0, 0, 4, 0, 0, 0, 1, 8, 5, 33 )
+
+[node name="world_block32" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 4, 0, 0, 0, 1, 24, 5, 33 )
 
 [node name="world_block11" parent="world/geometry" instance=ExtResource( 1 )]
-transform = Transform( 8, 0, 0, 0, 4, 0, 0, 0, 1, -8, 5, 17 )
+transform = Transform( 8, 0, 0, 0, 4, 0, 0, 0, 1, -8, 5, 33 )
+
+[node name="world_block31" parent="world/geometry" instance=ExtResource( 1 )]
+transform = Transform( 8, 0, 0, 0, 4, 0, 0, 0, 1, -24, 5, 33 )
 
 [node name="lights" type="Spatial" parent="world"]
 
@@ -66,7 +138,7 @@ shadow_enabled = true
 [node name="actors" type="Spatial" parent="."]
 
 [node name="bulk_spawner" parent="actors" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -11 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -16 )
 
 [node name="ent_mob" parent="actors" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -1 )

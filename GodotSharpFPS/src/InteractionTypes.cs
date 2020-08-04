@@ -7,7 +7,7 @@ namespace GodotSharpFps.src
 
     public enum TouchType
     {
-        None, Solid, Bullet, Thrown, Explosion
+        None, Solid, Bullet, Thrown, Explosion, Melee
     }
 
     public enum TouchResponseType

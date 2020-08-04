@@ -6,6 +6,21 @@ public class ZqfGodotUtils
 {
 	private static Random _random = new Random();
 
+
+	public static Godot.Collections.Dictionary CastRay(
+		Spatial worldSourceNode, Vector3 origin, Vector3 target, uint mask, PhysicsBody ignoreBody)
+	{
+		Godot.Collections.Array ignoreBodies = null;
+		if (ignoreBody != null)
+		{
+			ignoreBodies = new Godot.Collections.Array();
+			ignoreBodies.Add(ignoreBody);
+		}
+		PhysicsDirectSpaceState space = worldSourceNode.GetWorld().DirectSpaceState;
+		
+		return space.IntersectRay(origin, target, ignoreBodies, mask);
+	}
+
 	/// <summary>
 	/// TODO Replace with proper usage of Godot Viewports
 	/// </summary>
