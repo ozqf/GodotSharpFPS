@@ -32,6 +32,14 @@ namespace GodotSharpFps.src.nodes
             for (int i = 0; i < _hits.Count; ++i)
             {
                 IActor a = _hits[i];
+                Vector3 origin = _source.ignoreBody.GlobalTransform.origin;
+                Vector3 dest = a.GetTransformForTarget().origin;
+                Godot.Collections.Dictionary hit =
+                    ZqfGodotUtils.CastRay(this, origin, dest, uint.MaxValue, _source.ignoreBody);
+                if (hit.Keys.Count == 0) { continue; }
+
+                touch.hitPos = (Vector3)hit["position"];
+                touch.hitNormal = (Vector3)hit["normal"];
                 Console.WriteLine($"Hitting actor {a.actorId}");
                 a.ActorTouch(touch);
             }

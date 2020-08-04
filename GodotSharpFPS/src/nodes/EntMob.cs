@@ -63,6 +63,8 @@ namespace GodotSharpFps.src.nodes
 
 			TouchResponseData result;
 			result.damageTaken = touchData.damage;
+			GFXQuick gfx = Main.i.factory.SpawnGFX(GameFactory.Path_GFXBloodImpact);
+			gfx.Spawn(touchData.hitPos, touchData.hitNormal);
 			if (_health <= 0)
 			{
 				result.responseType = TouchResponseType.Killed;

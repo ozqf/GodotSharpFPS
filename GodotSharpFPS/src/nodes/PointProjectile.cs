@@ -42,31 +42,31 @@ public class PointProjectile : Spatial
 		origin -= (forward * 0.25f);
 		uint mask = uint.MaxValue;
 
-		/*PhysicsDirectSpaceState space = GetWorld().DirectSpaceState;
-		Godot.Collections.Array arr = null;
-		if (_ignoreBody != null)
-		{
-			arr = new Godot.Collections.Array();
-			arr.Add(_ignoreBody);
-		}
-		Dictionary hitResult = space.IntersectRay(origin, dest, arr, mask);*/
-
 		Dictionary hitResult = ZqfGodotUtils.CastRay(this, origin, dest, mask, _ignoreBody);
-
+		bool spawnGFX = true;
 		if (hitResult.Keys.Count > 0)
 		{
-			_touch.damage = _def.damage;
-			_touch.teamId = 0;
-			_touch.touchType = TouchType.Bullet;
+			_touch.hitPos = (Vector3)hitResult["position"];
+			_touch.hitNormal = (Vector3)hitResult["normal"];
 			IActor actor = Game.ExtractActor(hitResult["collider"]);
 			if (actor != null)
 			{
+				_touch.damage = _def.damage;
+				_touch.teamId = 0;
+				_touch.touchType = TouchType.Bullet;
+
 				TouchResponseData response = actor.ActorTouch(_touch);
+				if (response.responseType != TouchResponseType.None)
+				{
+					// leave spawning particles to the victim
+					spawnGFX = false;
+				}
 			}
-			Vector3 gfxOrigin = (Vector3)hitResult["position"];
-			Vector3 gfxNormal = (Vector3)hitResult["normal"];
-			GFXQuick gfx = Main.i.factory.SpawnGFX(impactGFX);
-			gfx.Spawn(gfxOrigin, gfxNormal);
+			if (spawnGFX)
+			{
+				GFXQuick gfx = Main.i.factory.SpawnGFX(impactGFX);
+				gfx.Spawn(_touch.hitPos, _touch.hitNormal);
+			}
 			Die();
 			return;
 		}

@@ -20,6 +20,9 @@ namespace GodotSharpFps.src
         public TouchType touchType;
         public Team teamId;
         public int damage;
+        public Vector3 hitPos;
+        public Vector3 hitNormal;
+        public int sourceActorId;
     }
 
     public struct TouchResponseData

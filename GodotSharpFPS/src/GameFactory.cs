@@ -10,6 +10,7 @@ public class GameFactory
 
     public const string Path_GFXImpact = "res://gfx/gfx_impact.tscn";
     public const string Path_GFXBulletImpact = "res://gfx/gfx_bullet_impact.tscn";
+    public const string Path_GFXBloodImpact = "res://gfx/gfx_blood_impact.tscn";
 
     public const string Path_EntMob = "game/ent_mob.tscn";
     public const string Path_EntPlayer = "game/player/ent_player.tscn";
