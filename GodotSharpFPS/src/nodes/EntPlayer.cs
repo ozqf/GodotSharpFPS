@@ -8,6 +8,7 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 	private FPSInput _input;
 	private FPSController _fpsCtrl;
 	private Spatial _head;
+	private Spatial _handsPlaceholder;
 	private MeleeHitVolume _meleeVolume;
 	private ActorInventory _inventory;
 	private LaserDot _laserDot;
@@ -44,6 +45,13 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 
 		_head = GetNode<Spatial>("actor_base/head");
 		_meleeVolume = _head.GetNode<MeleeHitVolume>("melee_hit_volume");
+
+		// grab hands placeholder and attach it to the head node
+		_handsPlaceholder = GetNode<Spatial>("hands_placeholder");
+		Transform t = _handsPlaceholder.GlobalTransform;
+		RemoveChild(_handsPlaceholder);
+		_head.AddChild(_handsPlaceholder);
+		_handsPlaceholder.GlobalTransform = t;
 
 		_laserDot = GetNode<LaserDot>("laser_dot");
 		_laserDot.CustomInit(_head, uint.MaxValue, 1000);
