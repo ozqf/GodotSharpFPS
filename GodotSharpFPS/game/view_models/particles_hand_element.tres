@@ -1,0 +1,11 @@
+[gd_resource type="ParticlesMaterial" format=2]
+
+[resource]
+emission_shape = 1
+emission_sphere_radius = 0.25
+direction = Vector3( 0, 1, 0 )
+spread = 9.37
+gravity = Vector3( 0, 1, 0 )
+initial_velocity_random = 1.0
+radial_accel = 1.0
+tangential_accel = 1.0

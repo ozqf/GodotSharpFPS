@@ -87,7 +87,8 @@ namespace GodotSharpFps.src
             if (_primaryPrjDef == null) { return; }
             Transform t = _launchNode.GlobalTransform;
 
-            ZqfGodotUtils.FillSpreadAngles(t, _primarySpread, 2000, 1200);
+            ZqfGodotUtils.FillSpreadAngles(
+                t, _primarySpread, _weaponDef.primarySpread.x, _weaponDef.primarySpread.y);
             for (int i = 0; i < _primarySpread.Count; ++i)
             {
                 PointProjectile prj = Main.i.factory.SpawnProjectile(_primaryPrjDef.prefabPath);
@@ -104,7 +105,8 @@ namespace GodotSharpFps.src
             if (_secondaryPrjDef == null) { return; }
             Transform t = _launchNode.GlobalTransform;
 
-            ZqfGodotUtils.FillSpreadAngles(t, _secondarySpread, 2000, 1200);
+            ZqfGodotUtils.FillSpreadAngles(
+                t, _secondarySpread, _weaponDef.secondarySpread.x, _weaponDef.secondarySpread.y);
             for (int i = 0; i < _secondarySpread.Count; ++i)
             {
                 PointProjectile prj = Main.i.factory.SpawnProjectile(_secondaryPrjDef.prefabPath);

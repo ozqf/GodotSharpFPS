@@ -29,13 +29,15 @@ namespace GodotSharpFps.src
 
 			weapDef.primaryRefireTime = 0.4f;
 			weapDef.primaryPrjCount = 10;
+			weapDef.primarySpread = new Vector2(1000, 600);
 
 			weapDef.secondaryRefireTime = weapDef.primaryRefireTime * weapDef.magazineSize;
 			weapDef.secondaryPrjCount = weapDef.primaryPrjCount * weapDef.magazineSize;
+			weapDef.secondarySpread = new Vector2(2000, 1200);
 
 			ProjectileDef primaryPrjDef = new ProjectileDef();
 			primaryPrjDef.damage = 25;
-			primaryPrjDef.launchSpeed = 50;
+			primaryPrjDef.launchSpeed = 300;
 			primaryPrjDef.timeToLive = 1;
 
 			// No secondary def, use primary twice
@@ -51,19 +53,21 @@ namespace GodotSharpFps.src
 			weapDef.name = "Stakegun";
 			weapDef.primaryRefireTime = 0.2f;
 			weapDef.secondaryRefireTime = 2;
+			weapDef.primarySpread = new Vector2();
+			weapDef.secondarySpread = new Vector2(600, 400);
 			weapDef.primaryPrjCount = 1;
 			weapDef.secondaryPrjCount = 4;
 			weapDef.magazineSize = 4;
 
 			ProjectileDef primaryPrjDef = new ProjectileDef();
 			primaryPrjDef.damage = 25;
-			primaryPrjDef.launchSpeed = 50;
+			primaryPrjDef.launchSpeed = 100;
 			primaryPrjDef.timeToLive = 2;
 			primaryPrjDef.prefabPath = GameFactory.Path_StakeProjectile;
 
 			ProjectileDef secondaryPrjDef = new ProjectileDef();
 			secondaryPrjDef.damage = 25;
-			secondaryPrjDef.launchSpeed = 50;
+			secondaryPrjDef.launchSpeed = 100;
 			secondaryPrjDef.timeToLive = 2;
 			secondaryPrjDef.prefabPath = GameFactory.Path_StakeProjectile;
 

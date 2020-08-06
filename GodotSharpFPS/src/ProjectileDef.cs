@@ -1,4 +1,6 @@
 ﻿
+using Godot;
+
 namespace GodotSharpFps.src
 {
     public class ProjectileDef
@@ -20,8 +22,12 @@ namespace GodotSharpFps.src
     {
         public float primaryRefireTime;
         public int primaryPrjCount;
+        public Vector2 primarySpread = new Vector2();
+
         public float secondaryRefireTime;
         public int secondaryPrjCount;
+        public Vector2 secondarySpread = new Vector2();
+
         public string name;
         public int magazineSize = 1;
         public float magazineReloadTime = 2;
