@@ -37,8 +37,8 @@ namespace GodotSharpFps.src
 
 			ProjectileDef primaryPrjDef = new ProjectileDef();
 			primaryPrjDef.damage = 25;
-			primaryPrjDef.launchSpeed = 300;
-			primaryPrjDef.timeToLive = 1;
+			primaryPrjDef.launchSpeed = 1000;
+			primaryPrjDef.timeToLive = 0.1f;
 
 			// No secondary def, use primary twice
 
@@ -64,14 +64,9 @@ namespace GodotSharpFps.src
 			primaryPrjDef.launchSpeed = 100;
 			primaryPrjDef.timeToLive = 2;
 			primaryPrjDef.prefabPath = GameFactory.Path_StakeProjectile;
+			primaryPrjDef.destroyMode = ProjectileDef.DestroyMode.Embed;
 
-			ProjectileDef secondaryPrjDef = new ProjectileDef();
-			secondaryPrjDef.damage = 25;
-			secondaryPrjDef.launchSpeed = 100;
-			secondaryPrjDef.timeToLive = 2;
-			secondaryPrjDef.prefabPath = GameFactory.Path_StakeProjectile;
-
-			InvWeapStakegun weapon = new InvWeapStakegun(launchNode, weapDef, primaryPrjDef, secondaryPrjDef, ignoreBody);
+			InvWeapStakegun weapon = new InvWeapStakegun(launchNode, weapDef, primaryPrjDef, primaryPrjDef, ignoreBody);
 			return weapon;
 		}
 
@@ -79,7 +74,7 @@ namespace GodotSharpFps.src
 		{
 			WeaponDef weapDef = new WeaponDef();
 			weapDef.name = "Launcher";
-			weapDef.primaryRefireTime = 0.02f;
+			weapDef.primaryRefireTime = 0.5f;
 			weapDef.secondaryRefireTime = 0.75f;
 			weapDef.primaryPrjCount = 1;
 			weapDef.secondaryPrjCount = 12;
@@ -88,6 +83,12 @@ namespace GodotSharpFps.src
 			primaryPrjDef.damage = 25;
 			primaryPrjDef.launchSpeed = 35;
 			primaryPrjDef.timeToLive = 1;
+			primaryPrjDef.impactDef = new ProjectileImpactDef()
+			{
+				impactType = ProjectileImpactDef.ImpactType.Explode,
+				radius = 5,
+				damage = 100
+			};
 
 			ProjectileDef secondaryPrjDef = new ProjectileDef();
 			secondaryPrjDef.damage = 25;

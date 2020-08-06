@@ -6,6 +6,8 @@ using System;
 
 public class PointProjectile : Spatial
 {
+	private enum State { Live, Dead, Embedded };
+	private State _state = State.Dead;
 	private string impactGFX = GameFactory.Path_GFXBulletImpact;
 
 	private ProjectileDef _def = null; // def should be readonly
@@ -24,8 +26,14 @@ public class PointProjectile : Spatial
 		_isDead = false;
 	}
 
+	private void RunImpactDef(Vector3 origin, ProjectileImpactDef impactDef)
+	{
+
+	}
+
 	private void Die()
 	{
+		_state = State.Dead;
 		_isDead = true;
 		QueueFree();
 	}
@@ -67,7 +75,21 @@ public class PointProjectile : Spatial
 				GFXQuick gfx = Main.i.factory.SpawnGFX(impactGFX);
 				gfx.Spawn(_touch.hitPos, _touch.hitNormal);
 			}
-			Die();
+			if (_def.impactDef != null)
+			{
+				RunImpactDef(_touch.hitPos, _def.impactDef);
+			}
+			if (_def.destroyMode == ProjectileDef.DestroyMode.Embed)
+			{
+				_state = State.Embedded;
+				t.origin = _touch.hitPos;
+				_tick = 3;
+				GlobalTransform = t;
+			}
+			else
+			{
+				Die();
+			}
 			return;
 		}
 		t.origin = dest;
@@ -90,7 +112,10 @@ public class PointProjectile : Spatial
 			Show();
 		}
 
-		MoveAsRay(delta);
+		if (_state == State.Live)
+		{
+			MoveAsRay(delta);
+		}
 	}
 
 	public void Launch(
@@ -102,6 +127,7 @@ public class PointProjectile : Spatial
 	{
 		_ignoreBody = ignoreBody;
 		_def = def;
+		_state = State.Live;
 
 		Transform t = GlobalTransform;
 		t.origin = new Vector3();

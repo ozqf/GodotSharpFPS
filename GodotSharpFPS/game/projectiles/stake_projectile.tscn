@@ -3,7 +3,7 @@
 [ext_resource path="res://src/nodes/PointProjectile.cs" type="Script" id=2]
 
 [sub_resource type="SpatialMaterial" id=1]
-albedo_color = Color( 0.811765, 0.4, 0.0666667, 1 )
+albedo_color = Color( 0.94902, 0.776471, 0.478431, 1 )
 
 [sub_resource type="CubeMesh" id=2]
 material = SubResource( 1 )

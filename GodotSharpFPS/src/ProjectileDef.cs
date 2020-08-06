@@ -1,21 +1,32 @@
-﻿
-using Godot;
+﻿using Godot;
 
 namespace GodotSharpFps.src
 {
     public class ProjectileDef
     {
+        public enum DestroyMode { Gfx, Embed };
+
         public string prefabPath = string.Empty;
         public float launchSpeed = 20;
         public int damage = 10;
         public float timeToLive = 4;
-        
+        public DestroyMode destroyMode = DestroyMode.Gfx;
+        public ProjectileImpactDef impactDef = null;
+
         public void Validate()
         {
             if (launchSpeed <= 0) { launchSpeed = 1; }
             if (damage < 0) { damage = 0; }
             if (timeToLive < 0) { timeToLive = 1; }
         }
+    }
+
+    public class ProjectileImpactDef
+    {
+        public enum ImpactType { None, Explode };
+        public ImpactType impactType = ImpactType.None;
+        public float radius = 1;
+        public float damage = 1;
     }
 
     public class WeaponDef
