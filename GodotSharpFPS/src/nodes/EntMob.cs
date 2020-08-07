@@ -55,10 +55,7 @@ namespace GodotSharpFps.src.nodes
 		public TouchResponseData ActorTouch(TouchData touchData)
 		{
 			Console.WriteLine($"Mob hit for {touchData.damage}");
-			if (_dead)
-			{
-				return TouchResponseData.empty;
-			}
+			if (_dead) { return TouchResponseData.empty; }
 			_health -= touchData.damage;
 
 			TouchResponseData result;
@@ -74,6 +71,10 @@ namespace GodotSharpFps.src.nodes
 			}
 			else
 			{
+				if (touchData.damageType == DamageType.Launch)
+				{
+					Console.WriteLine($"Mob - Launched!");
+				}
 				result.responseType = TouchResponseType.Damaged;
 			}
 			return result;

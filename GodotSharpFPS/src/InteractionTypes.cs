@@ -7,7 +7,7 @@ namespace GodotSharpFps.src
 
     public enum TouchType
     {
-        None, Solid, Bullet, Thrown, Explosion, Melee
+        None, Projectile, AreaOfEffect, Melee
     }
 
     public enum TouchResponseType
@@ -15,11 +15,17 @@ namespace GodotSharpFps.src
         None, Damaged, Killed
     }
 
+    public enum DamageType
+    {
+        Physical, Launch
+    }
+
     public struct TouchData
     {
         public TouchType touchType;
         public Team teamId;
         public int damage;
+        public DamageType damageType;
         public Vector3 hitPos;
         public Vector3 hitNormal;
         public int sourceActorId;

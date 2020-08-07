@@ -9,6 +9,7 @@ namespace GodotSharpFps.src
         public string prefabPath = string.Empty;
         public float launchSpeed = 20;
         public int damage = 10;
+        public DamageType damageType = DamageType.Physical;
         public float timeToLive = 4;
         public DestroyMode destroyMode = DestroyMode.Gfx;
         public ProjectileImpactDef impactDef = null;

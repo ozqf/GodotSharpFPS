@@ -10,7 +10,7 @@ namespace GodotSharpFps.src
     {
         Spatial _launchNode;
         //InvWeapon _godHand; // Debugging weapon
-        List<InvWeapon> _weapons = new List<InvWeapon>();
+        List<IEquippable> _weapons = new List<IEquippable>();
         int _currentWeaponIndex = -1;
         int _queuedWeaponSwitchIndex = -1;
         int _ownerId;
@@ -26,7 +26,7 @@ namespace GodotSharpFps.src
             return -1;
         }
 
-        public void AddWeapon(InvWeapon weap)
+        public void AddWeapon(IEquippable weap)
         {
             _weapons.Add(weap);
             if (_currentWeaponIndex == -1)
@@ -37,7 +37,7 @@ namespace GodotSharpFps.src
 
         #region Weapon List
 
-        private InvWeapon GetCurrentWeapon()
+        private IEquippable GetCurrentWeapon()
         {
             if (_currentWeaponIndex < 0 || _currentWeaponIndex >= _weapons.Count())
             {
@@ -100,7 +100,7 @@ namespace GodotSharpFps.src
 
         public void FillHudStatus(HUDPlayerState state)
         {
-            InvWeapon weap = GetCurrentWeapon();
+            IEquippable weap = GetCurrentWeapon();
             if (weap == null)
             {
                 state.ammoLoaded = 999;
@@ -115,7 +115,7 @@ namespace GodotSharpFps.src
         {
             if (_queuedWeaponSwitchIndex >= 0)
             {
-                InvWeapon cur = GetCurrentWeapon();
+                IEquippable cur = GetCurrentWeapon();
                 if (cur != null)
                 {
                     // check that current weapon is okay
@@ -138,7 +138,7 @@ namespace GodotSharpFps.src
         public void Tick(float delta, bool primaryOn, bool secondaryOn, AttackSource src)
         {
             CheckQueuedSwitch();
-            InvWeapon weap = GetCurrentWeapon();
+            IEquippable weap = GetCurrentWeapon();
             // Tick
             if (weap != null)
             {

@@ -4,7 +4,7 @@ using System;
 
 namespace GodotSharpFps.src.extended
 {
-    public class InvWeapMelee : InvWeapon
+    public class InvWeapMelee : InvProjectileWeapon
     {
         private MeleeHitVolume _volume = null;
 

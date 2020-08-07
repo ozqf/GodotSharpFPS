@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GodotSharpFps.src.extended
 {
-    public class InvWeapGodhand : InvWeapon
+    public class InvWeapGodhand : InvProjectileWeapon
     {
         public enum Mode
         {

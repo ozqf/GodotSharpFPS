@@ -10,12 +10,12 @@ extents = Vector3( 0.75, 1.7, 0.75 )
 [sub_resource type="CubeMesh" id=2]
 size = Vector3( 1.5, 2.6, 1.5 )
 
-[sub_resource type="BoxShape" id=5]
-
-[sub_resource type="CubeMesh" id=3]
-size = Vector3( 0.9, 0.75, 0.9 )
+[sub_resource type="BoxShape" id=3]
 
 [sub_resource type="CubeMesh" id=4]
+size = Vector3( 0.9, 0.75, 0.9 )
+
+[sub_resource type="CubeMesh" id=5]
 size = Vector3( 0.25, 0.25, 1 )
 
 [node name="actor_base" type="KinematicBody"]
@@ -42,16 +42,19 @@ script = ExtResource( 3 )
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="head/melee_hit_volume"]
-shape = SubResource( 5 )
+shape = SubResource( 3 )
 
 [node name="MeshInstance" type="MeshInstance" parent="head"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0 )
-mesh = SubResource( 3 )
+mesh = SubResource( 4 )
 material/0 = null
 
 [node name="weapon" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 1.2, -1.1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="weapon"]
-mesh = SubResource( 4 )
+mesh = SubResource( 5 )
 material/0 = null
+
+[node name="ground_check_centre" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )

@@ -6,7 +6,7 @@ namespace GodotSharpFps.src
 {
     public class AttackFactory
     {
-		public static InvWeapon CreatePlayerMelee(MeleeHitVolume volume, PhysicsBody ignoreBody)
+		public static IEquippable CreatePlayerMelee(MeleeHitVolume volume, PhysicsBody ignoreBody)
 		{
 			WeaponDef weapDef = new WeaponDef();
 			weapDef.name = "Melee";
@@ -20,7 +20,7 @@ namespace GodotSharpFps.src
 			return weapon;
 		}
 
-        public static InvWeapon CreatePlayerShotgun(Spatial launchNode, PhysicsBody ignoreBody)
+        public static IEquippable CreatePlayerShotgun(Spatial launchNode, PhysicsBody ignoreBody)
         {
 			WeaponDef weapDef = new WeaponDef();
 			weapDef.name = "Triple-Stick";
@@ -47,7 +47,7 @@ namespace GodotSharpFps.src
 			return weapon;
 		}
 
-		public static InvWeapon CreateStakegun(Spatial launchNode, PhysicsBody ignoreBody)
+		public static IEquippable CreateStakegun(Spatial launchNode, PhysicsBody ignoreBody)
 		{
 			WeaponDef weapDef = new WeaponDef();
 			weapDef.name = "Stakegun";
@@ -70,7 +70,7 @@ namespace GodotSharpFps.src
 			return weapon;
 		}
 
-		public static InvWeapon CreateLauncher(Spatial launchNode, PhysicsBody ignoreBody)
+		public static IEquippable CreateLauncher(Spatial launchNode, PhysicsBody ignoreBody)
 		{
 			WeaponDef weapDef = new WeaponDef();
 			weapDef.name = "Launcher";
@@ -83,6 +83,7 @@ namespace GodotSharpFps.src
 			primaryPrjDef.damage = 25;
 			primaryPrjDef.launchSpeed = 35;
 			primaryPrjDef.timeToLive = 1;
+			primaryPrjDef.damageType = DamageType.Launch;
 			primaryPrjDef.impactDef = new ProjectileImpactDef()
 			{
 				impactType = ProjectileImpactDef.ImpactType.Explode,
@@ -95,7 +96,7 @@ namespace GodotSharpFps.src
 			secondaryPrjDef.launchSpeed = 35;
 			secondaryPrjDef.timeToLive = 1;
 
-			InvWeapon weapon = new InvWeapon(launchNode, weapDef, primaryPrjDef, secondaryPrjDef, ignoreBody);
+			InvProjectileWeapon weapon = new InvProjectileWeapon(launchNode, weapDef, primaryPrjDef, secondaryPrjDef, ignoreBody);
 			return weapon;
 		}
 	}

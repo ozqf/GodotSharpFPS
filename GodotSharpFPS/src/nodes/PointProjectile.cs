@@ -10,7 +10,8 @@ public class PointProjectile : Spatial
 	private State _state = State.Dead;
 	private string impactGFX = GameFactory.Path_GFXBulletImpact;
 
-	private ProjectileDef _def = null; // def should be readonly
+	// def should be considered readonly - stores static settings.
+	private ProjectileDef _def = null;
 	private float _tick = 0;
 	private bool _isDead = false;
 
@@ -19,6 +20,7 @@ public class PointProjectile : Spatial
 
 	private PhysicsBody _ignoreBody = null;
 
+	// TODO: No need to pre-alloc this it is a struct!
 	private TouchData _touch = new TouchData();
 
 	public void Respawn()
@@ -56,13 +58,14 @@ public class PointProjectile : Spatial
 		{
 			_touch.hitPos = (Vector3)hitResult["position"];
 			_touch.hitNormal = (Vector3)hitResult["normal"];
+			_touch.damage = _def.damage;
+			_touch.teamId = 0;
+			_touch.touchType = TouchType.Projectile;
+			_touch.damageType = _def.damageType;
+
 			IActor actor = Game.ExtractActor(hitResult["collider"]);
 			if (actor != null)
 			{
-				_touch.damage = _def.damage;
-				_touch.teamId = 0;
-				_touch.touchType = TouchType.Bullet;
-
 				TouchResponseData response = actor.ActorTouch(_touch);
 				if (response.responseType != TouchResponseType.None)
 				{

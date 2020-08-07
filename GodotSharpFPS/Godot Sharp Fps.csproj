@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\extended\InvWeapMelee.cs" />
+    <Compile Include="src\IEquippable.cs" />
     <Compile Include="src\nodes\EmptyMap.cs" />
     <Compile Include="src\ActorInventory.cs" />
     <Compile Include="src\AttackFactory.cs" />
@@ -67,7 +68,7 @@
     <Compile Include="src\InteractionTypes.cs" />
     <Compile Include="src\extended\InvWeapStakegun.cs" />
     <Compile Include="src\IOrphanNodeUpdater.cs" />
-    <Compile Include="src\InvWeapon.cs" />
+    <Compile Include="src\InvProjectileWeapon.cs" />
     <Compile Include="src\MiscDataTypes.cs" />
     <Compile Include="src\nodes\ActorProvider.cs" />
     <Compile Include="src\nodes\BulkSpawner.cs" />

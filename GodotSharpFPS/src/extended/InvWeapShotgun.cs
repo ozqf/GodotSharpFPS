@@ -3,7 +3,7 @@ using System;
 
 namespace GodotSharpFps.src.extended
 {
-    public class InvWeapShotgun : InvWeapon
+    public class InvWeapShotgun : InvProjectileWeapon
     {
         public InvWeapShotgun(
             Spatial launchNode,

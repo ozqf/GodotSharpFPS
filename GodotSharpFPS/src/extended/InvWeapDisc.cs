@@ -3,7 +3,7 @@ using GodotSharpFps.src.nodes;
 
 namespace GodotSharpFps.src.extended
 {
-    public class InvWeapDisc : InvWeapon
+    public class InvWeapDisc : InvProjectileWeapon
     {
         private SwordThrowProjectile _projectile;
 

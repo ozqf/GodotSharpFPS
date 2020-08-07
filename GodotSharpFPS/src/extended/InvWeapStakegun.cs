@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GodotSharpFps.src.extended
 {
-    public class InvWeapStakegun : InvWeapon
+    public class InvWeapStakegun : InvProjectileWeapon
     {
 
 
