@@ -22,17 +22,17 @@ namespace GodotSharpFps.src
 		private KinematicBody _body = null;
 		private Spatial _head = null;
 
-		private Vector3 velocity = Vector3.Zero;
-		private Vector3 lastMove = Vector3.Zero;
-		private float lastDelta = 0;
+		private Vector3 _velocity = Vector3.Zero;
+		private Vector3 _lastMove = Vector3.Zero;
+		private float _lastDelta = 0;
 
 		private Vector3 externalPushAccumulator = Vector3.Zero;
 
-		private float yaw = 0;
-		private float pitch = 0;
+		private float _yaw = 0;
+		private float _pitch = 0;
 
-		private StringBuilder debugSb = new StringBuilder(1024);
-		public string debugStr { get { return debugSb.ToString(); } }
+		private StringBuilder _debugSb = new StringBuilder(1024);
+		public string debugStr { get { return _debugSb.ToString(); } }
 
 		public FPSController(KinematicBody body, Spatial head)
 		{
@@ -48,28 +48,28 @@ namespace GodotSharpFps.src
 			float mouseMoveX = motion.Relative.x * sensitivity * ratio.x;
 			// flip as we want moving mouse to the right to rotate left
 			mouseMoveX = -mouseMoveX;
-			yaw += mouseMoveX;
+			_yaw += mouseMoveX;
 
 			float mouseMoveY = motion.Relative.y * sensitivity * ratio.y;
-			pitch += mouseMoveY;
+			_pitch += mouseMoveY;
 		}
 
 		private void ApplyRotations()
 		{
 			// horizontal
 			// clamp between 0 - 360
-			while (yaw > 360) { yaw -= 360; }
-			while (yaw < 0) { yaw += 360; }
+			while (_yaw > 360) { _yaw -= 360; }
+			while (_yaw < 0) { _yaw += 360; }
 			Vector3 rot = _body.RotationDegrees;
-			rot.y = yaw;
+			rot.y = _yaw;
 			_body.RotationDegrees = rot;
 
 			Vector3 headRot = _head.RotationDegrees;
 			// vertical
 			// clamp
-			if (pitch > PITCH_CAP_DEGREES) { pitch = PITCH_CAP_DEGREES; }
-			else if (pitch < -PITCH_CAP_DEGREES) { pitch = -PITCH_CAP_DEGREES; }
-			headRot.x = pitch;
+			if (_pitch > PITCH_CAP_DEGREES) { _pitch = PITCH_CAP_DEGREES; }
+			else if (_pitch < -PITCH_CAP_DEGREES) { _pitch = -PITCH_CAP_DEGREES; }
+			headRot.x = _pitch;
 			_head.RotationDegrees = headRot;
 			//Console.WriteLine($"Yaw {yaw} / Pitch {pitch}");
 		}
@@ -77,7 +77,7 @@ namespace GodotSharpFps.src
 		// Super basic test
 		public void ProcessMovement(FPSInput input, float delta)
     	{
-			debugSb.Clear();
+			_debugSb.Clear();
 
 			ApplyRotations();
 			//Console.WriteLine($"Buttons {input.buttons} delta {delta}");
@@ -100,8 +100,8 @@ namespace GodotSharpFps.src
 			if (input.isBitOn(FPSInput.BitLookDown))
 			{ mouseMoveY -= KEYBOARD_TURN_DEGREES_PER_SECOND; }
 
-			yaw += mouseMoveX * delta;
-			pitch += mouseMoveY * delta;
+			_yaw += mouseMoveX * delta;
+			_pitch += mouseMoveY * delta;
 
 			// convert desired move to world axes
 			Transform t = _body.GlobalTransform;
@@ -116,27 +116,46 @@ namespace GodotSharpFps.src
 			runPush = runPush.Normalized();
 
 			// calculate horizontal move independently.
+			Vector3 lastVel = CalcLastFlatVelocity(_lastMove, _lastDelta);
 			Vector3 horizontal = CalcVelocityQuakeStyle(
-				velocity, runPush, MOVE_SPEED, delta, true);
-			velocity.x = horizontal.x;
-			velocity.z = horizontal.z;
+				lastVel, runPush, MOVE_SPEED, delta, true);
+			_velocity.x = horizontal.x;
+			_velocity.z = horizontal.z;
 
 			// Apply external push
 			Vector3 prevPosition = t.origin;
 
 			// Move!
-			Vector3 moveResult = _body.MoveAndSlide(velocity);
+			Vector3 moveResult = _body.MoveAndSlide(_velocity);
 
 			// record move info for next frame
-			lastMove = _body.GlobalTransform.origin - prevPosition;
-			lastDelta = delta;
+			_lastMove = _body.GlobalTransform.origin - prevPosition;
+			_lastDelta = delta;
 
-			debugSb.Append($"Pitch {pitch}\nyaw {yaw}\n");
-			debugSb.Append($"Prev delta {lastDelta}\n");
-			debugSb.Append($"Prev move {lastMove}\n");
-			debugSb.Append($"Velocity {velocity}\n");
-			debugSb.Append($"Run push {runPush}\n");
-			debugSb.Append($"Move spd {MOVE_SPEED} accel {MOVE_ACCELERATION}\n");
+			_debugSb.Append($"Pitch {_pitch}\nyaw {_yaw}\n");
+			_debugSb.Append($"Prev delta {_lastDelta}\n");
+			_debugSb.Append($"Prev move {_lastMove}\n");
+			_debugSb.Append($"Velocity {_velocity}\n");
+			_debugSb.Append($"Run push {runPush}\n");
+			_debugSb.Append($"Move spd {MOVE_SPEED} accel {MOVE_ACCELERATION}\n");
+		}
+
+		private Vector3 CalcLastFlatVelocity(Vector3 previousMove, float previousDelta)
+		{
+			// Calculate current velocity per second,
+			// (after avoiding divide by zero...)
+			// reconstruct it by taking the last position change
+			// scaled back by last delta. Appears to be accurate to
+			// 4 decimal places or so
+			// (...is this a form of verlet intergration?)
+			Vector3 previousVel = Vector3.Zero;
+			if (_lastDelta != 0)
+			{
+				previousVel = _lastMove * (1 / _lastDelta);
+				// clear vertical, it is handled differently
+				previousVel.y = 0;
+			}
+			return previousVel;
 		}
 
 		/// <summary>
@@ -148,13 +167,16 @@ namespace GodotSharpFps.src
 		/// <param name="delta"></param>
 		/// <param name="onGround"></param>
 		/// <returns></returns>
-		private Vector3 CalcVelocityQuakeStyle(
-			Vector3 currentVel,
+		public static Vector3 CalcVelocityQuakeStyle(
+			Vector3 previousFlatVel,
 			Vector3 accelDir,
 			float maxMoveSpeed,
 			float delta,
-			bool onGround)
+			bool onGround,
+			float friction = GROUND_FRICTION,
+			float accelForce = MOVE_ACCELERATION)
 		{
+			/*
 			// Calculate current velocity per second,
 			// (after avoiding divide by zero...)
 			// reconstruct it by taking the last position change
@@ -162,18 +184,19 @@ namespace GodotSharpFps.src
 			// 4 decimal places or so
 			// (...is this a form of verlet intergration?)
 			Vector3 previousVel = Vector3.Zero;
-			if (lastDelta != 0)
+			if (_lastDelta != 0)
 			{
-				previousVel = lastMove * (1 / lastDelta);
+				previousVel = _lastMove * (1 / _lastDelta);
 				// clear vertical, it is handled differently
 				previousVel.y = 0;
 			}
+			*/
 
-			float previousSpeed = previousVel.Length();
+			float previousSpeed = previousFlatVel.Length();
 			// stop dead if slow enough
 			if (previousSpeed < 0.001)
 			{
-				previousVel = Vector3.Zero;
+				previousFlatVel = Vector3.Zero;
 				previousSpeed = 0;
 			}
 
@@ -185,8 +208,8 @@ namespace GodotSharpFps.src
 				float speedDrop = previousSpeed * GROUND_FRICTION * delta;
 				float frictionScalar = Math.Max(previousSpeed - speedDrop, 0) / previousSpeed;
 				// friction only occurs on horizontal!
-				previousVel.x *= frictionScalar;
-				previousVel.z *= frictionScalar;
+				previousFlatVel.x *= frictionScalar;
+				previousFlatVel.z *= frictionScalar;
 			}
 
 			float acceleration = MOVE_ACCELERATION;
@@ -195,7 +218,7 @@ namespace GodotSharpFps.src
 			// Check applying this push would not exceed the maximum run speed
 			// If necessary truncale the velocity so the vector projection does not
 			// exceed maximum run speed
-			float projectionVelDot = accelDir.Dot(previousVel);
+			float projectionVelDot = accelDir.Dot(previousFlatVel);
 			float accelMagnitude = acceleration * delta;
 
 			if (projectionVelDot + accelMagnitude > maxMoveSpeed)
@@ -210,8 +233,8 @@ namespace GodotSharpFps.src
 
 			// apply acceleration
 			Vector3 result = Vector3.Zero;
-			result.x = previousVel.x + (accelDir.x * accelMagnitude);
-			result.z = previousVel.z + (accelDir.z * accelMagnitude);
+			result.x = previousFlatVel.x + (accelDir.x * accelMagnitude);
+			result.z = previousFlatVel.z + (accelDir.z * accelMagnitude);
 			return result;
 		}
 

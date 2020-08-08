@@ -31,6 +31,12 @@ public class ZqfGodotUtils
 		Vector2 screen = OS.GetScreenSize();
 		return new Vector2(real.x / screen.x, real.y / screen.y);
 	}
+
+	public static float Randomf()
+	{
+		return (float)_random.NextDouble();
+	}
+
 	public static float RandomRange(float min, float max)
 	{
 		float r = (float)_random.NextDouble();
@@ -56,6 +62,11 @@ public class ZqfGodotUtils
 		T instance = (T)Convert.ChangeType(instanceNode, typeof(T));
 		return instance;
 	}
+
+	public static float Distance(Vector3 a, Vector3 b)
+	{
+		return (b - a).Length();
+	}
 	
 	/// <summary>
 	/// Calculate pitch and yaw angles based on a flat x/z plane.
@@ -79,8 +90,11 @@ public class ZqfGodotUtils
 	public static float FlatYawDegreesBetween(Vector3 origin, Vector3 target)
 	{
 		// I always screw this stuff up or get it in the wrong order :(
-		float dx = origin.x - target.x;
-		float dz = origin.z - target.z;
+		float dx = target.x - origin.x;
+		float dz = target.z - origin.z;
+		// Works:
+		//float dx = origin.x - target.x;
+		//float dz = origin.z - target.z;
 		return Mathf.Rad2Deg(Mathf.Atan2(dx, dz));
 	}
 

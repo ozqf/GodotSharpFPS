@@ -8,6 +8,7 @@ namespace GodotSharpFps.src.nodes
         private int _entId = 0;
 		private int _numLiveChildren = 0;
 		private float _tick = 0;
+		private bool _isSpawning = false;
 
         public IActor GetActor() => this;
 		public void SetActorId(int newId) { _entId = newId; }
@@ -42,6 +43,7 @@ namespace GodotSharpFps.src.nodes
 
 		public override void _Process(float delta)
 		{
+			if (!_isSpawning) { return; }
 			if (_numLiveChildren == 0)
 			{
 				_tick -= delta;

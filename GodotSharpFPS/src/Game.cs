@@ -11,6 +11,7 @@ namespace GodotSharpFps.src
     public class Game
     {
         public const int NullActorId = 0;
+        public const float MaxActorVelocity = 50;
 
         private readonly Main _main;
 
