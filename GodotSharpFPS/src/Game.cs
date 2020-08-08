@@ -22,6 +22,8 @@ namespace GodotSharpFps.src
 
         private int _nextEntId = 1;
 
+        private bool _godMode = false;
+
         // teehee check this is a .net dictionary and not a godot dictionary...
         // ...godot dictionaries cannot store non-godot types!
         private DotNet.Dictionary<int, IActor> _ents = new DotNet.Dictionary<int, IActor>();
@@ -33,7 +35,10 @@ namespace GodotSharpFps.src
             _main = main;
             _main.AddObserver(OnGlobalEvent, this, false, "GameController");
             _main.console.AddCommand("actors", "", "Print actor list", Cmd_PrintActorRegister);
+            _main.console.AddCommand("god", "", "Toggle invulnerable player", Cmd_God);
         }
+
+        public bool GodModeOn() { return _godMode; }
 
         public State GetGameState() { return _state; }
 
@@ -115,6 +120,13 @@ namespace GodotSharpFps.src
             IActorProvider provider = obj as IActorProvider;
             if (provider == null) { return null; }
             return provider.GetActor();
+        }
+
+        public bool Cmd_God(string command, string[] tokens)
+        {
+            _godMode = !_godMode;
+            Console.WriteLine($"God mode {_godMode}");
+            return true;
         }
 
         public IActor CheckTarget(int currentTargetActorId, Team attacker)

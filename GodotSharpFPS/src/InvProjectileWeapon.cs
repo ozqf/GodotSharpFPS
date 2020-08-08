@@ -141,9 +141,9 @@ namespace GodotSharpFps.src
             }
         }
 
-        virtual public void Tick(float delta, bool primaryOn, bool secondaryOn, AttackSource src)
+        virtual public void Tick(float delta, EquippableTickInfo info)
         {
-            CommonTick(delta, primaryOn, secondaryOn, src);
+            CommonTick(delta, info.primaryOn, info.secondaryOn, info.src);
         }
     }
 }

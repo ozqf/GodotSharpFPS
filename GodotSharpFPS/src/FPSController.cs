@@ -126,12 +126,13 @@ namespace GodotSharpFps.src
 			Vector3 prevPosition = t.origin;
 
 			// Move!
-			Vector3 moveResult = _body.MoveAndSlide(_velocity);
+			_body.MoveAndSlide(_velocity);
 
 			// record move info for next frame
 			_lastMove = _body.GlobalTransform.origin - prevPosition;
 			_lastDelta = delta;
 
+			_debugSb.Append($"FPS: {Engine.GetFramesPerSecond()}");
 			_debugSb.Append($"Pitch {_pitch}\nyaw {_yaw}\n");
 			_debugSb.Append($"Prev delta {_lastDelta}\n");
 			_debugSb.Append($"Prev move {_lastMove}\n");
@@ -174,24 +175,12 @@ namespace GodotSharpFps.src
 			float delta,
 			bool onGround,
 			float friction = GROUND_FRICTION,
-			float accelForce = MOVE_ACCELERATION)
+			float accelForce = MOVE_ACCELERATION,
+			float airAccelForce = MOVE_AIR_MULTIPLIER)
 		{
-			/*
-			// Calculate current velocity per second,
-			// (after avoiding divide by zero...)
-			// reconstruct it by taking the last position change
-			// scaled back by last delta. Appears to be accurate to
-			// 4 decimal places or so
-			// (...is this a form of verlet intergration?)
-			Vector3 previousVel = Vector3.Zero;
-			if (_lastDelta != 0)
-			{
-				previousVel = _lastMove * (1 / _lastDelta);
-				// clear vertical, it is handled differently
-				previousVel.y = 0;
-			}
-			*/
-
+			// clear vertical, it is handled differently
+			previousFlatVel.y = 0;
+			
 			float previousSpeed = previousFlatVel.Length();
 			// stop dead if slow enough
 			if (previousSpeed < 0.001)
@@ -205,15 +194,15 @@ namespace GodotSharpFps.src
 			// should we apply friction at all?
 			if (onGround && previousSpeed > 0 && (inputOn == false || previousSpeed > maxMoveSpeed))
 			{
-				float speedDrop = previousSpeed * GROUND_FRICTION * delta;
+				float speedDrop = previousSpeed * friction * delta;
 				float frictionScalar = Math.Max(previousSpeed - speedDrop, 0) / previousSpeed;
 				// friction only occurs on horizontal!
 				previousFlatVel.x *= frictionScalar;
 				previousFlatVel.z *= frictionScalar;
 			}
 
-			float acceleration = MOVE_ACCELERATION;
-			if (!onGround) { acceleration *= MOVE_AIR_MULTIPLIER; }
+			float acceleration = accelForce;
+			if (!onGround) { acceleration *= airAccelForce; }
 
 			// Check applying this push would not exceed the maximum run speed
 			// If necessary truncale the velocity so the vector projection does not

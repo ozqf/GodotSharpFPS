@@ -10,6 +10,12 @@ namespace GodotSharpFps.src.nodes
 		// Gather display elements
 		private List<Spatial> _displayNodes = new List<Spatial>();
 		private CollisionShape _shape = null;
+		private RayCast _groundCheckCentre = null;
+
+		public bool IsGrounded()
+		{
+			return _groundCheckCentre.IsColliding();
+		}
 
 		public void ShowModels()
 		{
@@ -17,7 +23,7 @@ namespace GodotSharpFps.src.nodes
 			{
 				_displayNodes[i].Show();
 			}
-		}
+		} 
 
 		public void HideModels()
 		{
@@ -37,6 +43,7 @@ namespace GodotSharpFps.src.nodes
 			_displayNodes.Add(GetNode<Spatial>("MeshInstance"));
 			_displayNodes.Add(GetNode<Spatial>("head/MeshInstance"));
 			_displayNodes.Add(GetNode<Spatial>("weapon/MeshInstance"));
+			_groundCheckCentre = GetNode<RayCast>("ground_check_centre");
 			// Need shape so we can report its position.
 			_shape = GetNode<CollisionShape>("CollisionShape");
 		}

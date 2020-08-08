@@ -8,7 +8,7 @@ namespace GodotSharpFps.src.nodes
 		private KinematicWrapper _body;
 		private ProjectileDef _prjDef;
 		private bool _dead = false;
-		private int _health = 100000;
+		private int _health = 200;
 		private int _targetActorId = Game.NullActorId;
 		private float _moveTick = 0;
 		private float _attackTick = 0;
@@ -87,8 +87,8 @@ namespace GodotSharpFps.src.nodes
 					Console.WriteLine($"Mob - Launched!");
 				}
 				result.responseType = TouchResponseType.Damaged;
-				_pushAccumulator.x += -touchData.hitNormal.x * 50;
-				_pushAccumulator.z += -touchData.hitNormal.z * 50;
+				_pushAccumulator.x += -touchData.hitNormal.x * 15;
+				_pushAccumulator.z += -touchData.hitNormal.z * 15;
 				Console.WriteLine($"Push: {_pushAccumulator}");
 			}
 			return result;
@@ -174,7 +174,7 @@ namespace GodotSharpFps.src.nodes
 			// calculate self move
 			//Vector3 dir = new Vector3(Mathf.Sin(radians), 0, Mathf.Cos(radians));
 			_selfMove = FPSController.CalcVelocityQuakeStyle(
-				_velocity, _lastSelfDir, _walkSpeed, delta, true, 3, 50);
+				_velocity, _lastSelfDir, _walkSpeed, delta, true, 4, 25);
 
 			_velocity = _selfMove;
 			// apply push forces

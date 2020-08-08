@@ -34,6 +34,10 @@ namespace GodotSharpFps.src
         private const string Slot2 = "slot_2";
         private const string Slot3 = "slot_3";
         private const string Slot4 = "slot_4";
+        private const string Slot5 = "slot_5";
+        private const string Slot6 = "slot_6";
+        private const string Slot7 = "slot_7";
+        private const string Slot8 = "slot_8";
 
 
         public const int BitMoveForward = (1 << 0);
@@ -60,8 +64,13 @@ namespace GodotSharpFps.src
         public const int BitSlot2 = (1 << 16);
         public const int BitSlot3 = (1 << 17);
         public const int BitSlot4 = (1 << 18);
+        public const int BitSlot5 = (1 << 19);
+        public const int BitSlot6 = (1 << 20);
+        public const int BitSlot7 = (1 << 21);
+        public const int BitSlot8 = (1 << 22);
 
-        public int buttons;
+        private int prevButtons;
+        private int buttons;
         public Vector3 rotation;
 
         private List<GodotInputToBit> _inputs = new List<GodotInputToBit>();
@@ -84,6 +93,10 @@ namespace GodotSharpFps.src
             AddInput(Slot2, BitSlot2);
             AddInput(Slot3, BitSlot3);
             AddInput(Slot4, BitSlot4);
+            AddInput(Slot5, BitSlot5);
+            AddInput(Slot6, BitSlot6);
+            AddInput(Slot7, BitSlot7);
+            AddInput(Slot8, BitSlot8);
         }
 
         private void AddInput(string name, int bit)
@@ -99,16 +112,44 @@ namespace GodotSharpFps.src
             return (buttons & bit) != 0;
         }
 
+        public bool hasBitToggledOn(int bit)
+        {
+            return (prevButtons & bit) == 0 && (buttons & bit) != 0;
+        }
+
         private void ApplyInputButtonBit(FPSInput input, string keyName, int bit)
         { if (Input.IsActionPressed(keyName)) { input.buttons |= bit; } }
 
         public void ReadGodotInputs()
         {
+            // store previous state
+            prevButtons = buttons;
+            // Clear all inputs and reapply
+            buttons = 0;
+            // apply new
             int len = _inputs.Count;
             for (int i = 0; i < len; ++i)
             {
                 ApplyInputButtonBit(this, _inputs[i].inputName, _inputs[i].bit);
             }
+
+            // TODO - Clean me up!
+            // bleh, mouse wheel events are ONLY on just release...?
+            // https://godotengine.org/qa/30666/how-do-i-get-input-from-the-mouse-wheel
+            if (Input.IsActionJustReleased("next_slot"))
+            {
+                buttons |= FPSInput.BitNextSlot;
+            }
+            if (Input.IsActionJustReleased("prev_slot"))
+            {
+                buttons |= FPSInput.BitPrevSlot;
+            }
+        }
+
+        public void Clear()
+        {
+            buttons = 0;
+            prevButtons = 0;
         }
     }
 }

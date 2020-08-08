@@ -81,7 +81,7 @@ namespace GodotSharpFps.src
 
 			ProjectileDef primaryPrjDef = new ProjectileDef();
 			primaryPrjDef.damage = 25;
-			primaryPrjDef.launchSpeed = 35;
+			primaryPrjDef.launchSpeed = 50;
 			primaryPrjDef.timeToLive = 1;
 			primaryPrjDef.damageType = DamageType.Launch;
 			primaryPrjDef.impactDef = new ProjectileImpactDef()

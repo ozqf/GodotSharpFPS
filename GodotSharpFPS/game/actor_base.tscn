@@ -58,3 +58,4 @@ material/0 = null
 
 [node name="ground_check_centre" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+cast_to = Vector3( 0, -0.1, 0 )

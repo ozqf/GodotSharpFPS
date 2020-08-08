@@ -8,10 +8,10 @@ flags_unshaded = true
 params_billboard_mode = 1
 albedo_color = Color( 0.356863, 0.721569, 1, 1 )
 
-[sub_resource type="QuadMesh" id=3]
+[sub_resource type="QuadMesh" id=2]
 size = Vector2( 0.1, 0.1 )
 
-[sub_resource type="SpatialMaterial" id=4]
+[sub_resource type="SpatialMaterial" id=3]
 flags_unshaded = true
 params_billboard_mode = 1
 albedo_color = Color( 1, 0.682353, 0.0117647, 1 )
@@ -27,9 +27,8 @@ material_override = SubResource( 1 )
 cast_shadow = 0
 amount = 16
 lifetime = 0.5
-local_coords = false
 process_material = ExtResource( 1 )
-draw_pass_1 = SubResource( 3 )
+draw_pass_1 = SubResource( 2 )
 
 [node name="solid_cube_1x1x1_3" parent="right_hand" instance=ExtResource( 2 )]
 transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, -0.6 )
@@ -42,13 +41,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0 )
 
 [node name="fire" type="Particles" parent="left_hand"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.6 )
-material_override = SubResource( 4 )
+material_override = SubResource( 3 )
 cast_shadow = 0
 amount = 16
 lifetime = 0.5
-local_coords = false
 process_material = ExtResource( 1 )
-draw_pass_1 = SubResource( 3 )
+draw_pass_1 = SubResource( 2 )
 
 [node name="solid_cube_1x1x1_1" parent="left_hand" instance=ExtResource( 2 )]
 transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, -0.6 )
