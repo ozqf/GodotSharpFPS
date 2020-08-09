@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Text;
 
 namespace GodotSharpFps.src.nodes
 {
@@ -25,6 +26,7 @@ namespace GodotSharpFps.src.nodes
 		private Vector3 _selfMove = new Vector3();
 		private Vector3 _lastSelfDir = new Vector3();
 		private float _walkSpeed = 10;
+		private StringBuilder _debugSb = new StringBuilder();
 
 		public override void _Ready()
 		{
@@ -43,6 +45,9 @@ namespace GodotSharpFps.src.nodes
 			_prjDef.damage = 15;
 			_prjDef.launchSpeed = 15;
 			_prjDef.prefabPath = GameFactory.Path_PointProjectile;
+
+			_debugSb.Clear();
+			_debugSb.Append("EntMob");
 		}
 
 		public void SetActorId(int newId)
@@ -62,6 +67,11 @@ namespace GodotSharpFps.src.nodes
 		}
 
 		public void ChildActorRemoved(int id) { }
+
+		public string GetActorDebugText()
+		{
+			return _debugSb.ToString();
+		}
 
 		public TouchResponseData ActorTouch(TouchData touchData)
 		{

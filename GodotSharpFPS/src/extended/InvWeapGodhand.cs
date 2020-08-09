@@ -10,7 +10,7 @@ namespace GodotSharpFps.src.extended
 {
     public class InvWeapGodhand : IEquippable
     {
-        public enum Mode { Deathray, Cannon, Spawn, Last }
+        public enum Mode { Deathray, DebugTag, Spawn, Last }
         private Mode _mode = Mode.Deathray;
         private bool _equipped = false;
         protected Spatial _launchNode;
@@ -102,6 +102,12 @@ namespace GodotSharpFps.src.extended
                         }
                         Vector3 pos = _aimLaserNode.GlobalTransform.origin;
                         SpawnMob(pos);
+                    }
+                    break;
+                case Mode.DebugTag:
+                    if (info.primaryWasOn)
+                    {
+                        //Godot.Collections.Dictionary hitDict = ZqfGodotUtils.CastRay
                     }
                     break;
             }

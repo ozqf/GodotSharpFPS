@@ -28,6 +28,11 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 	public Transform GetTransformForTarget() { return _body.GetTransformForTarget(); }
 	public void RemoveActor() { this.QueueFree(); }
 
+	public string GetActorDebugText()
+	{
+		return _fpsCtrl.debugStr;
+	}
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -100,7 +105,7 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 		else { _input.Clear(); }
 
 		_fpsCtrl.ProcessMovement(_input, delta);
-		Main.i.SetDebugText(_fpsCtrl.debugStr);
+		//Main.i.SetDebugText(_fpsCtrl.debugStr);
 
 		if (_input.isBitOn(FPSInput.BitNextSlot))
 		{ _inventory.SelectNextWeapon(); }

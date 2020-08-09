@@ -59,8 +59,16 @@ public class ZqfGodotUtils
 		{
 			parentNode.AddChild(instanceNode);
 		}
-		T instance = (T)Convert.ChangeType(instanceNode, typeof(T));
-		return instance;
+		try
+		{
+			T instance = (T)Convert.ChangeType(instanceNode, typeof(T));
+			return instance;
+		}
+		catch (InvalidCastException ex)
+		{
+			Console.WriteLine($"ERROR casting prefab at {path} to {typeof(T)}!");
+			return default(T);
+		}
 	}
 
 	public static float Distance(Vector3 a, Vector3 b)

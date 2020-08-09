@@ -1,5 +1,6 @@
 using Godot;
 using GodotSharpFps.src.nodes;
+using System.Collections.Generic;
 
 public class GameFactory
 {
@@ -12,8 +13,20 @@ public class GameFactory
     public const string Path_GFXBulletImpact = "res://gfx/gfx_bullet_impact.tscn";
     public const string Path_GFXBloodImpact = "res://gfx/gfx_blood_impact.tscn";
 
-    public const string Path_EntMob = "game/ent_mob.tscn";
-    public const string Path_EntPlayer = "game/player/ent_player.tscn";
+    // Mobs
+    private const string Path_EntMob = "game/ent_mob.tscn";
+    private const string Path_EntMobPinkie = "game/ent_mob_pinkie.tscn";
+    private const string Path_EntPlayer = "game/player/ent_player.tscn";
+
+    public const string MobType_Humanoid = "Humanoid";
+    public const string MobType_Pinkie = "Pinkie";
+
+    // mob class -> prefab lookup
+    private Dictionary<string, string> _mobTypes = new Dictionary<string, string>
+    {
+        { MobType_Humanoid, Path_EntMob },
+        { MobType_Pinkie, Path_EntMobPinkie }
+    };
 
     private Node _root;
     
@@ -42,9 +55,14 @@ public class GameFactory
         return plyr;
     }
 
-    public EntMob SpawnMob()
+    public EntMob SpawnMob(string mobType = "")
     {
-        EntMob mob = ZqfGodotUtils.CreateInstance<EntMob>(Path_EntMob, _root);
+        string path = Path_EntMob;
+        if (_mobTypes.ContainsKey(mobType))
+        {
+            path = _mobTypes[mobType];
+        }
+        EntMob mob = ZqfGodotUtils.CreateInstance<EntMob>(path, _root);
         return mob;
     }
 

@@ -29,6 +29,7 @@ namespace GodotSharpFps.src
         private DotNet.Dictionary<int, IActor> _ents = new DotNet.Dictionary<int, IActor>();
         private List<PlayerStartNode> _playerStarts = new List<PlayerStartNode>();
         private int _plyrId = NullActorId;
+        private int _debugActorId = NullActorId;
 
         public Game(Main main)
         {
@@ -36,6 +37,12 @@ namespace GodotSharpFps.src
             _main.AddObserver(OnGlobalEvent, this, false, "GameController");
             _main.console.AddCommand("actors", "", "Print actor list", Cmd_PrintActorRegister);
             _main.console.AddCommand("god", "", "Toggle invulnerable player", Cmd_God);
+            _main.console.AddCommand("debugplayer", "", "Mark player as debug actor", Cmd_DebugPlayer);
+        }
+
+        public void SetDebugActorId(int id)
+        {
+            _debugActorId = id;
         }
 
         public bool GodModeOn() { return _godMode; }
@@ -106,6 +113,19 @@ namespace GodotSharpFps.src
                     }
                     break;
             }
+            if (_debugActorId != NullActorId)
+            {
+                IActor actor = GetActor(_debugActorId);
+                if (actor == null) { _debugActorId = NullActorId; }
+                else
+                {
+                    _main.SetDebugText(actor.GetActorDebugText());
+                }
+            }
+            else
+            {
+                _main.SetDebugText(string.Empty);
+            }
         }
 
         public static bool CheckTeamVsTeam(Team attacker, Team victim)
@@ -120,6 +140,19 @@ namespace GodotSharpFps.src
             IActorProvider provider = obj as IActorProvider;
             if (provider == null) { return null; }
             return provider.GetActor();
+        }
+
+        public bool Cmd_DebugPlayer(string command, string[] tokens)
+        {
+            if (_plyrId == NullActorId)
+            {
+                Console.WriteLine($"No registered player to debug");
+                return true;
+            }
+            if (_debugActorId == _plyrId) { return true; }
+            _debugActorId = _plyrId;
+            Console.WriteLine($"Player avatar {_plyrId} is debug actor");
+            return true;
         }
 
         public bool Cmd_God(string command, string[] tokens)
