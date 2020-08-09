@@ -47,7 +47,7 @@ namespace GodotSharpFps.src.nodes
 			_prjDef.prefabPath = GameFactory.Path_PointProjectile;
 
 			_debugSb.Clear();
-			_debugSb.Append("EntMob");
+			_debugSb.Append($"EntMob Id {_entId}");
 		}
 
 		public void SetActorId(int newId)

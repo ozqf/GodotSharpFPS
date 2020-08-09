@@ -5,19 +5,25 @@ namespace GodotSharpFps.src.nodes
 {
     public class BulkSpawner : Spatial, IActor, IActorProvider
     {
-		enum SpawnMode { Burst, Trickle };
-		private SpawnMode _mode = SpawnMode.Trickle;
-		private int _patternIndex = 0;
+		public enum SpawnMode { Burst, Trickle };
+
+		//private int _patternIndex = 0;
         private int _entId = 0;
-		private int _totalChildren = -1; // endless if negative
-		private int _maxLiveChildren = 1;
+		//private int _maxLiveChildren = 1;
 		private int _numLiveChildren = 0;
 		private float _tick = 0;
 		private bool _isSpawning = true;
 
-		private string _mobType = GameFactory.MobType_Pinkie;
+		// Exports
+		[Export]
+		private SpawnMode _mode = SpawnMode.Trickle;
+		[Export]
+		public string mobType = GameFactory.MobType_Pinkie;
+		[Export]
+		public int totalChildren = -1; // endless if negative
 
-        public IActor GetActor() => this;
+		// IActor
+		public IActor GetActor() => this;
 		public void SetActorId(int newId) { _entId = newId; }
 		public int ParentActorId { get; set; }
 		public int actorId { get { return _entId; } }
@@ -39,7 +45,7 @@ namespace GodotSharpFps.src.nodes
 
 		private void SpawnChild()
 		{
-			EntMob mob = Main.i.factory.SpawnMob(_mobType);
+			EntMob mob = Main.i.factory.SpawnMob(mobType);
 			if (mob == null)
 			{
 				Console.WriteLine($"BulkSpawner - failed to spawn child - disabling");

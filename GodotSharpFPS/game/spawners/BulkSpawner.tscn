@@ -1,12 +1,9 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://src/nodes/BulkSpawner.cs" type="Script" id=1]
-
-[sub_resource type="SphereMesh" id=1]
+[ext_resource path="res://prefabs/spawn_position_marker.tscn" type="PackedScene" id=2]
 
 [node name="bulk_spawner" type="Spatial"]
 script = ExtResource( 1 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-mesh = SubResource( 1 )
-material/0 = null
+[node name="spawn_position_marker" parent="." instance=ExtResource( 2 )]

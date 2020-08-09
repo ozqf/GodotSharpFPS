@@ -13,30 +13,42 @@ namespace GodotSharpFps.src.extended
         public enum Mode { Deathray, DebugTag, Spawn, Last }
         private Mode _mode = Mode.Deathray;
         private bool _equipped = false;
-        protected Spatial _launchNode;
+        private Spatial _launchNode;
         private Spatial _aimLaserNode;
-        protected PhysicsBody _ignoreBody;
         private string _displayName = string.Empty;
-
+        private int _aimActorId = Game.NullActorId;
         private ProjectileDef _riflePrjDef;
+        private string[] _mobTypes;
+        private string _mobSpawnType = string.Empty;
 
         public InvWeapGodhand(
             Spatial launchNode,
-            Spatial aimLaserNode,
-            PhysicsBody ignoreBody)
+            Spatial aimLaserNode)
         {
             _launchNode = launchNode;
             _aimLaserNode = aimLaserNode;
-            _ignoreBody = ignoreBody;
             UpdateDisplayName();
             _riflePrjDef = new ProjectileDef();
             _riflePrjDef.damage = 10000;
             _riflePrjDef.launchSpeed = 1000;
+            _mobTypes = Main.i.factory.GetMobTypeList();
+            _mobSpawnType = _mobTypes[0];
         }
 
         private void UpdateDisplayName()
         {
             _displayName = $"Godhand - {_mode}";
+            if (_mode == Mode.DebugTag)
+            {
+                if (_aimActorId != Game.NullActorId)
+                {
+                    _displayName += $" - actor {_aimActorId}";
+                }
+            }
+            if (_mode == Mode.Spawn)
+            {
+                _displayName += $" - {_mobSpawnType}";
+            }
         }
 
         public bool CanEquip()
@@ -105,9 +117,35 @@ namespace GodotSharpFps.src.extended
                     }
                     break;
                 case Mode.DebugTag:
+                    //_aimActorId
+                    Transform t = _launchNode.GlobalTransform;
+                    Vector3 origin = t.origin;
+                    Vector3 dest = origin + (-t.basis.z * 1000);
+                    Godot.Collections.Dictionary hitDict = ZqfGodotUtils
+                        .CastRay(_launchNode, origin, dest, uint.MaxValue, info.src.ignoreBody);
+                    if (hitDict.Keys.Count == 0)
+                    {
+                        _aimActorId = Game.NullActorId;
+                        UpdateDisplayName();
+                        break;
+                    }
+                    IActor actor = Game.ExtractActor(hitDict["collider"]);
+                    if (actor == null)
+                    {
+                        _aimActorId = Game.NullActorId;
+                        UpdateDisplayName();
+                        break;
+                    }
+                    int newId = actor.actorId;
+                    // refresh actor Id if required
+                    if (_aimActorId != newId)
+                    {
+                        _aimActorId = newId;
+                        UpdateDisplayName();
+                    }
                     if (info.primaryWasOn)
                     {
-                        //Godot.Collections.Dictionary hitDict = ZqfGodotUtils.CastRay
+                        Main.i.game.SetDebugActorId(_aimActorId);
                     }
                     break;
             }
