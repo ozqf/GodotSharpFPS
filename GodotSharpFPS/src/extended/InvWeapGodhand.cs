@@ -1,10 +1,6 @@
 ﻿using Godot;
 using GodotSharpFps.src.nodes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GodotSharpFps.src.extended
 {
@@ -27,12 +23,12 @@ namespace GodotSharpFps.src.extended
         {
             _launchNode = launchNode;
             _aimLaserNode = aimLaserNode;
-            UpdateDisplayName();
             _riflePrjDef = new ProjectileDef();
             _riflePrjDef.damage = 10000;
             _riflePrjDef.launchSpeed = 1000;
             _mobTypes = Main.i.factory.GetMobTypeList();
             _mobSpawnType = _mobTypes[0];
+            UpdateDisplayName();
         }
 
         private void UpdateDisplayName()

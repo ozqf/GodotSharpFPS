@@ -1,4 +1,5 @@
 using Godot;
+using GodotSharpFps.src;
 using GodotSharpFps.src.nodes;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +20,9 @@ public class GameFactory
     private const string Path_EntPlayer = "game/player/ent_player.tscn";
 
     // Mob scenes
-    private const string Path_EntMob = "game/mob/ent_mob.tscn";
-    private const string Path_EntMobPinkie = "game/mob/ent_mob_pinkie.tscn";
-    private const string Path_EntMobTitan = "game/mob/ent_mob_titan.tscn";
+    public const string Path_EntMob = "game/mob/ent_mob.tscn";
+    public const string Path_EntMobPinkie = "game/mob/ent_mob_pinkie.tscn";
+    public const string Path_EntMobTitan = "game/mob/ent_mob_titan.tscn";
 
     // Mob types
     public const string MobType_Humanoid = "Humanoid";
@@ -29,23 +30,67 @@ public class GameFactory
     public const string MobType_Titan = "Titan";
 
     // mob class -> prefab lookup
-    private Dictionary<string, string> _mobTypes = new Dictionary<string, string>
-    {
-        { MobType_Humanoid, Path_EntMob },
-        { MobType_Pinkie, Path_EntMobPinkie },
-        { MobType_Titan, Path_EntMobTitan }
-    };
+    //private Dictionary<string, string> _mobTypes = new Dictionary<string, string>
+    //{
+    //    { MobType_Humanoid, Path_EntMob },
+    //    { MobType_Pinkie, Path_EntMobPinkie },
+    //    { MobType_Titan, Path_EntMobTitan }
+    //};
+    private Dictionary<string, MobDef> _mobTypes = new Dictionary<string, MobDef>();
 
     private Node _root;
     
     public GameFactory(Spatial root)
     {
         _root = root;
+        _mobTypes.Add(GameFactory.MobType_Humanoid, new MobDef()
+        {
+            mobTypeName = GameFactory.MobType_Humanoid,
+            prefabPath = GameFactory.Path_EntMob,
+            defaultHealth = 200,
+            evadeRange = 10,
+            walkSpeed = 8,
+            friction = 4,
+            accelForce = 25,
+            pushMultiplier = 1
+        });
+        _mobTypes.Add(GameFactory.MobType_Pinkie, new MobDef()
+        {
+            mobTypeName = GameFactory.MobType_Pinkie,
+            prefabPath = GameFactory.Path_EntMobPinkie,
+            defaultHealth = 200,
+            evadeRange = 6,
+            walkSpeed = 10,
+            friction = 6,
+            accelForce = 25,
+            pushMultiplier = 1
+        });
+        _mobTypes.Add(GameFactory.MobType_Titan, new MobDef()
+        {
+            mobTypeName = GameFactory.MobType_Titan,
+            prefabPath = GameFactory.Path_EntMobTitan,
+            defaultHealth = 4000,
+            evadeRange = 30,
+            walkSpeed = 5.5f,
+            // very hard to push around
+            friction = 12,
+            accelForce = 200,
+            pushMultiplier = 0.1f
+        });
     }
 
     public string[] GetMobTypeList()
     {
         return _mobTypes.Keys.ToArray();
+    }
+
+    public MobDef GetMobType(string mobTypeName)
+    {
+        if (!_mobTypes.ContainsKey(mobTypeName))
+        {
+            return _mobTypes[GameFactory.MobType_Humanoid];
+        }
+        return _mobTypes[mobTypeName];
     }
 
     #region Spawning
@@ -68,14 +113,14 @@ public class GameFactory
         return plyr;
     }
 
-    public EntMob SpawnMob(string mobType = "")
+    public EntMob SpawnMob(string mobTypeName = "")
     {
-        string path = Path_EntMob;
-        if (_mobTypes.ContainsKey(mobType))
-        {
-            path = _mobTypes[mobType];
-        }
-        EntMob mob = ZqfGodotUtils.CreateInstance<EntMob>(path, _root);
+        MobDef mobType = GetMobType(mobTypeName);
+        // Pass a null parent as we need to init the mob before adding it to the tree
+        // which will invoke _ready
+        EntMob mob = ZqfGodotUtils.CreateInstance<EntMob>(mobType.prefabPath, null);
+        mob.SetMobType(mobType);
+        _root.AddChild(mob);
         return mob;
     }
 

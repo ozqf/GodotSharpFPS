@@ -6,6 +6,7 @@ namespace GodotSharpFps.src.nodes
 {
 	public class EntMob : Spatial, IActor, IActorProvider
 	{
+		private MobDef _mobDef;
 		private KinematicWrapper _body;
 		private ProjectileDef _prjDef;
 		private bool _dead = false;
@@ -13,7 +14,7 @@ namespace GodotSharpFps.src.nodes
 		private int _targetActorId = Game.NullActorId;
 		private float _moveTick = 0;
 		private float _attackTick = 0;
-		private float _evadeRange = 6f;
+		//private float _evadeRange = 6f;
 		public IActor GetActor() => this;
 
 		private int _entId = 0;
@@ -25,11 +26,17 @@ namespace GodotSharpFps.src.nodes
 		// intended AI move velocity
 		private Vector3 _selfMove = new Vector3();
 		private Vector3 _lastSelfDir = new Vector3();
-		private float _walkSpeed = 10;
+		//private float _walkSpeed = 10;
 		private StringBuilder _debugSb = new StringBuilder();
 
 		public override void _Ready()
 		{
+			if (_mobDef == null)
+			{
+				Console.WriteLine($"EntMob had no mob type set - getting default");
+				_mobDef = Main.i.factory.GetMobType(GameFactory.MobType_Humanoid);
+			}
+			_health = _mobDef.defaultHealth;
 			// find Godot scene nodes
 			_body = GetNode<KinematicWrapper>("actor_base");
 			_body.actor = this;
@@ -48,6 +55,11 @@ namespace GodotSharpFps.src.nodes
 
 			_debugSb.Clear();
 			_debugSb.Append($"EntMob Id {_entId}");
+		}
+
+		public void SetMobType(MobDef mobType)
+		{
+			_mobDef = mobType;
 		}
 
 		public void SetActorId(int newId)
@@ -97,8 +109,8 @@ namespace GodotSharpFps.src.nodes
 					Console.WriteLine($"Mob - Launched!");
 				}
 				result.responseType = TouchResponseType.Damaged;
-				_pushAccumulator.x += -touchData.hitNormal.x * 15;
-				_pushAccumulator.z += -touchData.hitNormal.z * 15;
+				_pushAccumulator.x += -touchData.hitNormal.x * (15 * _mobDef.pushMultiplier);
+				_pushAccumulator.z += -touchData.hitNormal.z * (15 * _mobDef.pushMultiplier);
 				Console.WriteLine($"Push: {_pushAccumulator}");
 			}
 			return result;
@@ -143,7 +155,7 @@ namespace GodotSharpFps.src.nodes
 				float dist = ZqfGodotUtils.Distance(self.origin, tar);
 				_moveTick = 1.5f;
 				// move toward target
-				if (dist > _evadeRange)
+				if (dist > _mobDef.evadeRange)
 				{
 					// randomly jink to the side
 					if (rand < 0.333)
@@ -184,7 +196,7 @@ namespace GodotSharpFps.src.nodes
 			// calculate self move
 			//Vector3 dir = new Vector3(Mathf.Sin(radians), 0, Mathf.Cos(radians));
 			_selfMove = FPSController.CalcVelocityQuakeStyle(
-				_velocity, _lastSelfDir, _walkSpeed, delta, true, 4, 25);
+				_velocity, _lastSelfDir, _mobDef.walkSpeed, delta, true, _mobDef.friction, _mobDef.accelForce);
 
 			_velocity = _selfMove;
 			// apply push forces

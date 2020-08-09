@@ -5,5 +5,6 @@
 
 [node name="ent_mob_pinkie" type="Spatial"]
 script = ExtResource( 2 )
+mobType = "Titan"
 
 [node name="actor_base" parent="." instance=ExtResource( 1 )]
