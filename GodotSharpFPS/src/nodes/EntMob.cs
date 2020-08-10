@@ -14,7 +14,6 @@ namespace GodotSharpFps.src.nodes
 		private int _targetActorId = Game.NullActorId;
 		private float _moveTick = 0;
 		private float _attackTick = 0;
-		//private float _evadeRange = 6f;
 		public IActor GetActor() => this;
 
 		private int _entId = 0;
@@ -26,7 +25,6 @@ namespace GodotSharpFps.src.nodes
 		// intended AI move velocity
 		private Vector3 _selfMove = new Vector3();
 		private Vector3 _lastSelfDir = new Vector3();
-		//private float _walkSpeed = 10;
 		private StringBuilder _debugSb = new StringBuilder();
 
 		public override void _Ready()
@@ -57,10 +55,7 @@ namespace GodotSharpFps.src.nodes
 			_debugSb.Append($"EntMob Id {_entId}");
 		}
 
-		public void SetMobType(MobDef mobType)
-		{
-			_mobDef = mobType;
-		}
+		public void SetMobType(MobDef mobType) { _mobDef = mobType; }
 
 		public void SetActorId(int newId)
 		{
@@ -73,10 +68,7 @@ namespace GodotSharpFps.src.nodes
 		public Team GetTeam() { return Team.Mobs; }
 		public Transform GetTransformForTarget() { return _body.GetTransformForTarget(); }
 		public void RemoveActor() { this.QueueFree(); }
-		public void ActorTeleport(Transform t)
-		{
-			_body.GlobalTransform = t;
-		}
+		public void ActorTeleport(Transform t) { _body.GlobalTransform = t; }
 
 		public void ChildActorRemoved(int id) { }
 
@@ -116,12 +108,6 @@ namespace GodotSharpFps.src.nodes
 			return result;
 		}
 
-		//private float yaw = 0;
-		public override void _Process(float delta)
-		{
-			
-		}
-
 		public override void _PhysicsProcess(float delta)
 		{
 			IActor actor = Main.i.game.CheckTarget(_targetActorId, GetTeam());
@@ -158,11 +144,11 @@ namespace GodotSharpFps.src.nodes
 				if (dist > _mobDef.evadeRange)
 				{
 					// randomly jink to the side
-					if (rand < 0.333)
+					if (rand < 0.25)
 					{
 						yawDeg += 45;
 					}
-					else if (rand < 0.666)
+					else if (rand < 0.5)
 					{
 						yawDeg -= 45;
 					}
@@ -176,17 +162,8 @@ namespace GodotSharpFps.src.nodes
 					yawDeg += (rand > 0.5) ? 70 : -70;
 					_moveTick = 1.5f;
 				}
-				
-				Console.WriteLine($"Move degrees: {yawDeg}");
-				//_selfMove.x = Mathf.Sin(radians) * _walkSpeed;
-				//_selfMove.y = 0;
-				//_selfMove.z = Mathf.Cos(radians) * _walkSpeed;
-
 				float radians = Mathf.Deg2Rad(yawDeg);
 				_lastSelfDir = new Vector3(Mathf.Sin(radians), 0, Mathf.Cos(radians));
-				//Vector3 dir = new Vector3(Mathf.Sin(radians), 0, Mathf.Cos(radians));
-				//_selfMove = FPSController.CalcVelocityQuakeStyle(
-				//	_velocity, dir, _walkSpeed, delta, true, 3, 50);
 			}
 			else
 			{
@@ -194,7 +171,6 @@ namespace GodotSharpFps.src.nodes
 			}
 
 			// calculate self move
-			//Vector3 dir = new Vector3(Mathf.Sin(radians), 0, Mathf.Cos(radians));
 			_selfMove = FPSController.CalcVelocityQuakeStyle(
 				_velocity, _lastSelfDir, _mobDef.walkSpeed, delta, true, _mobDef.friction, _mobDef.accelForce);
 
@@ -208,12 +184,6 @@ namespace GodotSharpFps.src.nodes
 				_velocity *= Game.MaxActorVelocity;
 			}
 			Vector3 result = _body.MoveAndSlide(_velocity);
-
-			//if (yaw != yawDeg)
-			//{
-			//    yaw = yawDeg;
-			//    Console.WriteLine($"Yaw {yaw} between {self} and {tar}");
-			//}
 		}
 	}
 }

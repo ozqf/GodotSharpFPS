@@ -30,12 +30,6 @@ public class GameFactory
     public const string MobType_Titan = "Titan";
 
     // mob class -> prefab lookup
-    //private Dictionary<string, string> _mobTypes = new Dictionary<string, string>
-    //{
-    //    { MobType_Humanoid, Path_EntMob },
-    //    { MobType_Pinkie, Path_EntMobPinkie },
-    //    { MobType_Titan, Path_EntMobTitan }
-    //};
     private Dictionary<string, MobDef> _mobTypes = new Dictionary<string, MobDef>();
 
     private Node _root;
