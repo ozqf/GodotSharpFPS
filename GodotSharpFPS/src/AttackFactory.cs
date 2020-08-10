@@ -6,9 +6,13 @@ namespace GodotSharpFps.src
 {
     public class AttackFactory
     {
-		public static IEquippable CreatePlayerMelee(MeleeHitVolume volume)
+		public static IEquippable CreatePlayerMelee(
+			MeleeHitVolume volume,
+			SwordThrowProjectile projectile,
+			LaserDot aimLaser)
 		{
-			InvWeapMelee weapon = new InvWeapMelee(volume, 0.3f, 25);
+			InvWeapMelee weapon = new InvWeapMelee(
+				volume, projectile, aimLaser, 0.3f, 25);
 			return weapon;
 		}
 

@@ -7,14 +7,23 @@ namespace GodotSharpFps.src.extended
     public class InvWeapMelee : IEquippable
     {
         private MeleeHitVolume _volume = null;
+        private SwordThrowProjectile _projectile = null;
+        private LaserDot _aimLaser = null;
         private float _tick = 0;
         private float _refireTime = 0.5f;
         private int _damage = 25;
         private bool _isEquipped = false;
 
-        public InvWeapMelee(MeleeHitVolume volume, float refireTime, int damage)
+        public InvWeapMelee(
+            MeleeHitVolume volume,
+            SwordThrowProjectile projectile,
+            LaserDot aimLaser,
+            float refireTime,
+            int damage)
         {
             _volume = volume;
+            _projectile = projectile;
+            _aimLaser = aimLaser;
             _refireTime = refireTime;
             _damage = damage;
         }
