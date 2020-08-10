@@ -7,6 +7,7 @@ namespace GodotSharpFps.src.nodes
     public class MeleeHitVolume: Area
     {
         private int _ticks = 0;
+        private int _damage = 15;
         private bool _on = false;
         private CollisionShape _shape;
         private MeshInstance _debugMesh;
@@ -22,11 +23,16 @@ namespace GodotSharpFps.src.nodes
             Off();
         }
 
+        public void SetDamage(int dmg)
+        {
+            _damage = dmg;
+        }
+
         private void PerformHits()
         {
             Console.WriteLine($"Performing {_hits.Count} melee hits");
             TouchData touch = new TouchData();
-            touch.damage = 15;
+            touch.damage = _damage;
             touch.teamId = _source.team;
             touch.touchType = TouchType.Melee;
             for (int i = 0; i < _hits.Count; ++i)

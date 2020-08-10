@@ -76,7 +76,7 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 		_inventory.Init(_head, 1);
 
 		// Add weapons
-		_inventory.AddWeapon(AttackFactory.CreatePlayerMelee(_meleeVolume, _body));
+		_inventory.AddWeapon(AttackFactory.CreatePlayerMelee(_meleeVolume));
 		_inventory.AddWeapon(AttackFactory.CreatePlayerShotgun(_head, _body));
 		_inventory.AddWeapon(AttackFactory.CreateStakegun(_head, _body));
 		_inventory.AddWeapon(AttackFactory.CreateLauncher(_head, _body));

@@ -6,17 +6,9 @@ namespace GodotSharpFps.src
 {
     public class AttackFactory
     {
-		public static IEquippable CreatePlayerMelee(MeleeHitVolume volume, PhysicsBody ignoreBody)
+		public static IEquippable CreatePlayerMelee(MeleeHitVolume volume)
 		{
-			WeaponDef weapDef = new WeaponDef();
-			weapDef.name = "Melee";
-			weapDef.magazineSize = 9999;
-			weapDef.primaryRefireTime = 0.75f;
-			
-
-			InvWeapMelee weapon = new InvWeapMelee(
-				null, weapDef, null, null, ignoreBody);
-			weapon.SetMeleeVolume(volume);
+			InvWeapMelee weapon = new InvWeapMelee(volume, 0.3f, 25);
 			return weapon;
 		}
 
@@ -36,7 +28,7 @@ namespace GodotSharpFps.src
 			weapDef.secondarySpread = new Vector2(2000, 1200);
 
 			ProjectileDef primaryPrjDef = new ProjectileDef();
-			primaryPrjDef.damage = 25;
+			primaryPrjDef.damage = 12;
 			primaryPrjDef.launchSpeed = 1000;
 			primaryPrjDef.timeToLive = 0.1f;
 
@@ -51,7 +43,7 @@ namespace GodotSharpFps.src
 		{
 			WeaponDef weapDef = new WeaponDef();
 			weapDef.name = "Stakegun";
-			weapDef.primaryRefireTime = 0.2f;
+			weapDef.primaryRefireTime = 0.3f;
 			weapDef.secondaryRefireTime = 2;
 			weapDef.primarySpread = new Vector2();
 			weapDef.secondarySpread = new Vector2(600, 400);
@@ -60,8 +52,8 @@ namespace GodotSharpFps.src
 			weapDef.magazineSize = 4;
 
 			ProjectileDef primaryPrjDef = new ProjectileDef();
-			primaryPrjDef.damage = 25;
-			primaryPrjDef.launchSpeed = 100;
+			primaryPrjDef.damage = 50;
+			primaryPrjDef.launchSpeed = 150;
 			primaryPrjDef.timeToLive = 2;
 			primaryPrjDef.prefabPath = GameFactory.Path_StakeProjectile;
 			primaryPrjDef.destroyMode = ProjectileDef.DestroyMode.Embed;
