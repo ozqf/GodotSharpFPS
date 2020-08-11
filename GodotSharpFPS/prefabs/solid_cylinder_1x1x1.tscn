@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="CylinderMesh" id=1]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 1.0
+
+[node name="solid_cube_1x1x1" type="MeshInstance"]
+mesh = SubResource( 1 )
+material/0 = null

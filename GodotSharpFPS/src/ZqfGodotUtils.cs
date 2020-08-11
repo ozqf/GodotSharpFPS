@@ -21,6 +21,13 @@ public class ZqfGodotUtils
 		return space.IntersectRay(origin, target, ignoreBodies, mask);
 	}
 
+	public static float Capf(float value, float min, float max)
+	{
+		if (value < min) { return min; }
+		if (value > max) { return max; }
+		return value;
+	}
+
 	/// <summary>
 	/// TODO Replace with proper usage of Godot Viewports
 	/// </summary>
@@ -71,6 +78,14 @@ public class ZqfGodotUtils
 		}
 	}
 
+	public static void SwapSpatialParent(Spatial child, Spatial newParent)
+	{
+		Transform t = child.GlobalTransform;
+		child.GetParent().RemoveChild(child);
+		newParent.AddChild(child);
+		child.GlobalTransform = t;
+	}
+
 	public static float Distance(Vector3 a, Vector3 b)
 	{
 		return (b - a).Length();
@@ -100,9 +115,6 @@ public class ZqfGodotUtils
 		// I always screw this stuff up or get it in the wrong order :(
 		float dx = target.x - origin.x;
 		float dz = target.z - origin.z;
-		// Works:
-		//float dx = origin.x - target.x;
-		//float dz = origin.z - target.z;
 		return Mathf.Rad2Deg(Mathf.Atan2(dx, dz));
 	}
 

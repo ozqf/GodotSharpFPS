@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://game/view_models/particles_hand_element.tres" type="Material" id=1]
 [ext_resource path="res://prefabs/solid_cube_1x1x1.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/nodes/ViewModel.cs" type="Script" id=3]
 
 [sub_resource type="SpatialMaterial" id=1]
 flags_unshaded = true
@@ -17,6 +18,7 @@ params_billboard_mode = 1
 albedo_color = Color( 1, 0.682353, 0.0117647, 1 )
 
 [node name="hands_placeholder" type="Spatial"]
+script = ExtResource( 3 )
 
 [node name="right_hand" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0 )

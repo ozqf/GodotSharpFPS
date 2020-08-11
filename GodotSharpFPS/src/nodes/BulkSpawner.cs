@@ -12,9 +12,10 @@ namespace GodotSharpFps.src.nodes
 		//private int _maxLiveChildren = 1;
 		private int _numLiveChildren = 0;
 		private float _tick = 0;
-		private bool _isSpawning = true;
 
 		// Exports
+		[Export]
+		public bool isSpawning = true;
 		[Export]
 		private SpawnMode _mode = SpawnMode.Trickle;
 		[Export]
@@ -49,7 +50,7 @@ namespace GodotSharpFps.src.nodes
 			if (mob == null)
 			{
 				Console.WriteLine($"BulkSpawner - failed to spawn child - disabling");
-				_isSpawning = false;
+				isSpawning = false;
 				return;
 			}
 			ZqfGodotUtils.Teleport(mob, GlobalTransform.origin);
@@ -67,7 +68,7 @@ namespace GodotSharpFps.src.nodes
 
 		public override void _Process(float delta)
 		{
-			if (!_isSpawning) { return; }
+			if (!isSpawning) { return; }
 			if (_numLiveChildren == 0)
 			{
 				_tick -= delta;

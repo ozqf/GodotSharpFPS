@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://game/world/world_block.tscn" type="PackedScene" id=1]
 [ext_resource path="res://game/spawners/player_start.tscn" type="PackedScene" id=2]
 [ext_resource path="res://environments/env_night.tres" type="Environment" id=3]
-[ext_resource path="res://game/mob/ent_mob.tscn" type="PackedScene" id=4]
 [ext_resource path="res://game/spawners/ent_spawn.tscn" type="PackedScene" id=5]
 [ext_resource path="res://game/spawners/BulkSpawner.tscn" type="PackedScene" id=6]
 [ext_resource path="res://gfx/gfx_bullet_impact.tscn" type="PackedScene" id=7]
@@ -142,10 +141,24 @@ transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -5, 1, 
 
 [node name="bulk_spawner2" parent="actors" instance=ExtResource( 6 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5, 1, -16 )
+isSpawning = false
 mobType = "Titan"
 
-[node name="ent_mob" parent="actors" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -1 )
+[node name="bulk_spawner3" parent="actors" instance=ExtResource( 6 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -5, 1, 16 )
+
+[node name="bulk_spawner6" parent="actors" instance=ExtResource( 6 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 1, 0 )
+
+[node name="bulk_spawner4" parent="actors" instance=ExtResource( 6 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5, 1, 16 )
+isSpawning = false
+mobType = "Titan"
+
+[node name="bulk_spawner5" parent="actors" instance=ExtResource( 6 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 16, 1, 0 )
+isSpawning = false
+mobType = "Titan"
 
 [node name="player_start" parent="actors" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 0 )

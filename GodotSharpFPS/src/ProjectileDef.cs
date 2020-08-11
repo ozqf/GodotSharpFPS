@@ -4,10 +4,16 @@ namespace GodotSharpFps.src
 {
     public class ProjectileDef
     {
+        public enum MoveMode { Basic, Accel };
         public enum DestroyMode { Gfx, Embed };
 
         public string prefabPath = string.Empty;
+        public MoveMode moveMode = MoveMode.Basic;
         public float launchSpeed = 20;
+        public float maxSpeed = 999f;
+        public float minSpeed = 0;
+        public float accelPerSecond = 0;
+
         public int damage = 10;
         public DamageType damageType = DamageType.Physical;
         public float timeToLive = 4;

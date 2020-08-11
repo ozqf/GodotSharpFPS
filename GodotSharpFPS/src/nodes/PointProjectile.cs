@@ -13,7 +13,9 @@ public class PointProjectile : Spatial
 	// def should be considered readonly - stores static settings.
 	private ProjectileDef _def = null;
 	private float _tick = 0;
+	private float _speed = 0;
 	private bool _isDead = false;
+	private Team _team = Team.None;
 
 	private int _hideTicksMax = 3;
 	private int _hideTicks = 2;
@@ -42,11 +44,18 @@ public class PointProjectile : Spatial
 
 	private void MoveAsRay(float delta)
 	{
+		if (_def.moveMode == ProjectileDef.MoveMode.Accel)
+		{
+			_speed += _def.accelPerSecond * delta;
+			_speed = ZqfGodotUtils
+				.Capf(_speed, _def.minSpeed, _def.maxSpeed);
+		}
+
 		Transform t = GlobalTransform;
 		Vector3 origin = t.origin;
 		Vector3 forward = -t.basis.z;
 		Vector3 dest = origin;
-		dest += (forward * _def.launchSpeed) * delta;
+		dest += (forward * _speed) * delta;
 		// Set origin back slightly as otherwise rays seem to tunnel
 		// (perhaps due to ray starting inside collider...?)
 		origin -= (forward * 0.25f);
@@ -110,15 +119,9 @@ public class PointProjectile : Spatial
 		_tick -= delta;
 
 		_hideTicks--;
-		if (_hideTicks <= 0)
-		{
-			Show();
-		}
+		if (_hideTicks <= 0) { Show(); }
 
-		if (_state == State.Live)
-		{
-			MoveAsRay(delta);
-		}
+		if (_state == State.Live) { MoveAsRay(delta); }
 	}
 
 	public void Launch(
@@ -138,12 +141,11 @@ public class PointProjectile : Spatial
 		Vector3 lookPos = t.origin + forward;
 		this.LookAt(lookPos, Vector3.Up);
 
-		//Vector3 origin = globalOrigin.origin;
 		t.origin = origin;
-		//Console.WriteLine($"Prj spawned at {origin.x}, {origin.y}, {origin.z}");
 		GlobalTransform = t;
 		_tick = def.timeToLive;
-		//Console.WriteLine($"Prj TTL {_tick}");
+		_speed = def.launchSpeed;
+		_team = team;
 		_hideTicks = _hideTicksMax;
 		Hide();
 	}

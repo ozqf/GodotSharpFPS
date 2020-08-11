@@ -48,8 +48,11 @@ namespace GodotSharpFps.src.nodes
 			}
 			_prjDef = new ProjectileDef();
 			_prjDef.damage = 15;
-			_prjDef.launchSpeed = 15;
+			_prjDef.launchSpeed = 10;
 			_prjDef.prefabPath = GameFactory.Path_PointProjectile;
+			_prjDef.moveMode = ProjectileDef.MoveMode.Accel;
+			_prjDef.maxSpeed = 150;
+			_prjDef.accelPerSecond = 50;
 
 			_debugSb.Clear();
 			_debugSb.Append($"EntMob Id {_entId}");

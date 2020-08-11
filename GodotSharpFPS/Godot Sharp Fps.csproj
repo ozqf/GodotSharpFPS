@@ -69,7 +69,7 @@
     <Compile Include="src\InteractionTypes.cs" />
     <Compile Include="src\extended\InvWeapStakegun.cs" />
     <Compile Include="src\IOrphanNodeUpdater.cs" />
-    <Compile Include="src\InvProjectileWeapon.cs" />
+    <Compile Include="src\extended\InvProjectileWeapon.cs" />
     <Compile Include="src\MiscDataTypes.cs" />
     <Compile Include="src\nodes\ActorProvider.cs" />
     <Compile Include="src\nodes\BulkSpawner.cs" />
@@ -83,6 +83,7 @@
     <Compile Include="src\nodes\KinematicWrapper.cs" />
     <Compile Include="src\nodes\LaserDot.cs" />
     <Compile Include="src\nodes\TriggerTouch.cs" />
+    <Compile Include="src\nodes\ViewModel.cs" />
     <Compile Include="src\ProjectileDef.cs" />
     <Compile Include="src\extended\InvWeapDisc.cs" />
     <Compile Include="src\ZqfGodotUtils.cs" />
