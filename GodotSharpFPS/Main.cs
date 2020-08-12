@@ -35,6 +35,7 @@ public class Main : Spatial
 	public CmdConsole console;
 	public GameFactory factory;
 	public Game game;
+	public MobThink mobThink;
 	public GameCamera cam;
 	public UI ui;
 
@@ -59,8 +60,8 @@ public class Main : Spatial
 		cam = GetNode<GameCamera>("game_camera");
 		ui = GetNode<UI>("/root/ui");
 		Input.SetMouseMode(Input.MouseMode.Captured);
-
 		game = new Game(this);
+		mobThink = new MobThink();
 
 		// test stuff
 		ZqfXml.ListAllAssemblyResources(Assembly.GetExecutingAssembly());
