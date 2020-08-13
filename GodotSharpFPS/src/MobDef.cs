@@ -6,14 +6,17 @@ namespace GodotSharpFps.src
     /// </summary>
     public class MobDef
     {
-        public string mobTypeName;
-        public string prefabPath;
+        public string mobTypeName = string.Empty;
+        public string prefabPath = string.Empty;
 
-        public int defaultHealth;
-        public float evadeRange;
-        public float walkSpeed;
-        public int friction;
-        public int accelForce;
-        public float pushMultiplier;
+        public int defaultHealth = 100;
+        public float stuntime = 1;
+        public float evadeRange = 10;
+        public float walkSpeed = 5;
+        public int friction = 5;
+        public int accelForce = 50;
+
+        public float pushMultiplier = 1;
+        public int thinkIndexBase = 0;
     }
 }

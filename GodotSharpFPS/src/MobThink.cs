@@ -13,7 +13,30 @@ namespace GodotSharpFps.src
         void Think(EntMob mob, float delta);
     }
 
-    public class MobThinkDefault : IMobThinker
+	public class MobThinkStunned : IMobThinker
+	{
+		public void Think(EntMob mob, float delta)
+		{
+			Console.WriteLine($"Mob stunned {mob.thinkTick}");
+			Vector3 zero = new Vector3();
+			// calculate self move
+			mob.selfMove = FPSController.CalcVelocityQuakeStyle(
+				mob.velocity, zero, mob.mobDef.walkSpeed, delta, true, mob.mobDef.friction, mob.mobDef.accelForce);
+			mob.velocity = mob.selfMove;
+			mob.velocity += mob.pushAccumulator;
+			mob.pushAccumulator = Vector3.Zero;
+			if (mob.velocity.LengthSquared() > Game.MaxActorVelocity * Game.MaxActorVelocity)
+			{
+				mob.velocity = mob.velocity.Normalized();
+				mob.velocity *= Game.MaxActorVelocity;
+			}
+			Vector3 result = mob.body.MoveAndSlide(mob.velocity);
+			if (mob.thinkTick <= 0) { mob.thinkIndex = mob.mobDef.thinkIndexBase; }
+			else { mob.thinkTick -= delta; }
+		}
+	}
+
+	public class MobThinkDefault : IMobThinker
     {
         public void Think(EntMob mob, float delta)
         {
@@ -32,15 +55,15 @@ namespace GodotSharpFps.src
 			self = mob.GetTransformForTarget();
 			Vector3 toTar = (tar - self.origin).Normalized();
 
-			if (mob.attackTick <= 0)
+			if (mob.thinkTick <= 0)
 			{
-				mob.attackTick = 1;
+				mob.thinkTick = 1;
 				PointProjectile prj = Main.i.factory.SpawnPointProjectile();
 				prj.Launch(self.origin, toTar, mob.prjDef, mob.body, Team.Mobs);
 			}
 			else
 			{
-				mob.attackTick -= delta;
+				mob.thinkTick -= delta;
 			}
 
 			if (mob.moveTick <= 0)
@@ -77,6 +100,8 @@ namespace GodotSharpFps.src
 			{
 				mob.moveTick -= delta;
 			}
+			//////////////////////////////////////
+			// Move
 
 			// calculate self move
 			mob.selfMove = FPSController.CalcVelocityQuakeStyle(
@@ -98,20 +123,29 @@ namespace GodotSharpFps.src
     public class MobThink
     {
         public const int DefaultThink = 0;
-        public const int LastThinker = 1;
+		public const int StunThink = 1;
+		public const int LastThinker = 2;
 
         private IMobThinker[] _thinkers = new IMobThinker[LastThinker];
 
         public MobThink()
         {
             _thinkers[DefaultThink] = new MobThinkDefault();
-        }
+			_thinkers[StunThink] = new MobThinkStunned();
+		}
+
+		public void ApplyStun(EntMob mob)
+		{
+			Console.WriteLine($"Mob - apply stun");
+			mob.thinkIndex = StunThink;
+			mob.thinkTick = mob.mobDef.stuntime;
+		}
 
         public void UpdateMob(EntMob mob, float delta)
         {
 
 			if (mob.thinkIndex < 0) { mob.thinkIndex = 0; }
-			else if (mob.thinkIndex <= LastThinker) { mob.thinkIndex = 0; }
+			else if (mob.thinkIndex >= LastThinker) { mob.thinkIndex = 0; }
 			_thinkers[mob.thinkIndex].Think(mob, delta);
 		}
     }

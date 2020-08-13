@@ -16,6 +16,7 @@ namespace GodotSharpFps.src
         protected int _ownerId;
         protected int _primaryOn;
         protected int _secondaryOn;
+        protected float _lastTickMax;
         protected float _tick;
         protected float _primaryRefireTime;
         protected float _secondaryRefireTime;
@@ -68,6 +69,15 @@ namespace GodotSharpFps.src
             return 999;
         }
 
+        virtual public float GetRefireLerp()
+        {
+            if (_lastTickMax == 0) { return 0; }
+            float f = _tick / _lastTickMax;
+            if (f < 0) { f = 0; }
+            if (f > 1) { f = 1; }
+            return f;
+        }
+
         virtual public bool CanEquip()
         {
             return true;
@@ -97,6 +107,7 @@ namespace GodotSharpFps.src
 
                 prj.Launch(t.origin, _primarySpread[i], _primaryPrjDef, src.ignoreBody, src.team);
                 _tick = _weaponDef.primaryRefireTime;
+                _lastTickMax = _tick;
             }
         }
 
@@ -115,6 +126,7 @@ namespace GodotSharpFps.src
 
                 prj.Launch(t.origin, _secondarySpread[i], _secondaryPrjDef, src.ignoreBody, src.team);
                 _tick = _weaponDef.secondaryRefireTime;
+                _lastTickMax = _tick;
             }
         }
 

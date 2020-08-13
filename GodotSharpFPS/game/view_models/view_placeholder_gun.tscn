@@ -7,13 +7,18 @@
 [node name="view_placeholder_gun" type="Spatial"]
 script = ExtResource( 3 )
 
-[node name="Spatial" type="Spatial" parent="."]
+[node name="model" type="Spatial" parent="."]
 
-[node name="solid_cube_1x1x2" parent="Spatial" instance=ExtResource( 1 )]
+[node name="solid_cube_1x1x2" parent="model" instance=ExtResource( 1 )]
 transform = Transform( 0.3, 0, 0, 0, -6.55671e-08, 0.3, 0, -1.5, -1.31134e-08, 0, -0.15, 0.1 )
 
-[node name="solid_cube_1x1x3" parent="Spatial" instance=ExtResource( 1 )]
+[node name="solid_cube_1x1x3" parent="model" instance=ExtResource( 1 )]
 transform = Transform( 0.3, 0, 0, 0, -6.55671e-08, 0.3, 0, -1.5, -1.31134e-08, 0, 0.15, -0.4 )
 
-[node name="solid_cube_1x1x1" parent="Spatial" instance=ExtResource( 2 )]
+[node name="solid_cube_1x1x1" parent="model" instance=ExtResource( 2 )]
 transform = Transform( 0.35, 0, 0, 0, 0.7, 0, 0, 0, 1, 0, 0, 0.8 )
+
+[node name="a" type="Spatial" parent="."]
+
+[node name="b" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )

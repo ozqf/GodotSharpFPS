@@ -109,6 +109,7 @@ namespace GodotSharpFps.src
             }
             state.weaponName = weap.GetDisplayName();
             state.ammoLoaded = weap.GetLoadedAmmo();
+            state.view.lerp = weap.GetRefireLerp();
         }
 
         private void CheckQueuedSwitch()

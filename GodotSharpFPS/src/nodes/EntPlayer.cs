@@ -6,6 +6,8 @@ using GodotSharpFps.src.extended;
 
 public class EntPlayer : Spatial, IActor, IActorProvider
 {
+	private ViewModel _viewModel;
+
 	private Main _main;
 	private FPSInput _input;
 	private FPSController _fpsCtrl;
@@ -70,6 +72,7 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 		_gunPlaceholder = GetNode<ViewModel>("view_placeholder_gun");
 		ZqfGodotUtils.SwapSpatialParent(_gunPlaceholder, _head);
 		_gunPlaceholder.SetEnabled(true);
+		_viewModel = _gunPlaceholder;
 
 		_laserDot = GetNode<LaserDot>("laser_dot");
 		_laserDot.CustomInit(_head, uint.MaxValue, 1000);
@@ -108,6 +111,14 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 	public override void _ExitTree()
 	{
 		base._ExitTree();
+	}
+
+	public override void _Input(InputEvent @event)
+	{
+		if (Main.i.gameInputActive == false) { return; }
+		InputEventMouseMotion motion = @event as InputEventMouseMotion;
+		if (motion == null) { return; }
+		_fpsCtrl.ProcessMouseMotion(motion, ZqfGodotUtils.GetWindowToScreenRatio());
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -158,20 +169,11 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 
 		_inventory.FillHudStatus(_hudState);
 		_hudState.health = _health;
+		if (_viewModel != null)
+		{
+			_viewModel.SetViewModelState(_hudState.view);
+		}
 		Main.i.ui.SetHudState(_hudState);
-	}
-
-	public override void _Process(float delta)
-	{
-		
-	}
-
-	public override void _Input(InputEvent @event)
-	{
-		if (Main.i.gameInputActive == false) { return; }
-		InputEventMouseMotion motion = @event as InputEventMouseMotion;
-		if (motion == null) { return; }
-		_fpsCtrl.ProcessMouseMotion(motion, ZqfGodotUtils.GetWindowToScreenRatio());
 	}
 
 	public void SetActorId(int newId)

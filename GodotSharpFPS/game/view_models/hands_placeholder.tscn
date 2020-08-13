@@ -20,10 +20,12 @@ albedo_color = Color( 1, 0.682353, 0.0117647, 1 )
 [node name="hands_placeholder" type="Spatial"]
 script = ExtResource( 3 )
 
-[node name="right_hand" type="Spatial" parent="."]
+[node name="model" type="Spatial" parent="."]
+
+[node name="right_hand" type="Spatial" parent="model"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0 )
 
-[node name="ice" type="Particles" parent="right_hand"]
+[node name="ice" type="Particles" parent="model/right_hand"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.6 )
 material_override = SubResource( 1 )
 cast_shadow = 0
@@ -32,16 +34,16 @@ lifetime = 0.5
 process_material = ExtResource( 1 )
 draw_pass_1 = SubResource( 2 )
 
-[node name="solid_cube_1x1x1_3" parent="right_hand" instance=ExtResource( 2 )]
+[node name="solid_cube_1x1x1_3" parent="model/right_hand" instance=ExtResource( 2 )]
 transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, -0.6 )
 
-[node name="solid_cube_1x1x1_4" parent="right_hand" instance=ExtResource( 2 )]
+[node name="solid_cube_1x1x1_4" parent="model/right_hand" instance=ExtResource( 2 )]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 1, 0, 0, -1.19209e-07 )
 
-[node name="left_hand" type="Spatial" parent="."]
+[node name="left_hand" type="Spatial" parent="model"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0 )
 
-[node name="fire" type="Particles" parent="left_hand"]
+[node name="fire" type="Particles" parent="model/left_hand"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.6 )
 material_override = SubResource( 3 )
 cast_shadow = 0
@@ -50,8 +52,12 @@ lifetime = 0.5
 process_material = ExtResource( 1 )
 draw_pass_1 = SubResource( 2 )
 
-[node name="solid_cube_1x1x1_1" parent="left_hand" instance=ExtResource( 2 )]
+[node name="solid_cube_1x1x1_1" parent="model/left_hand" instance=ExtResource( 2 )]
 transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, -0.6 )
 
-[node name="solid_cube_1x1x1_2" parent="left_hand" instance=ExtResource( 2 )]
+[node name="solid_cube_1x1x1_2" parent="model/left_hand" instance=ExtResource( 2 )]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 1, 0, 0, -1.19209e-07 )
+
+[node name="a" type="Spatial" parent="."]
+
+[node name="b" type="Spatial" parent="."]

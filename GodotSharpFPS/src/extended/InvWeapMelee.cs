@@ -43,6 +43,11 @@ namespace GodotSharpFps.src.extended
             return 999;
         }
 
+        virtual public float GetRefireLerp()
+        {
+            return 0;
+        }
+
         public bool CanSwitchAway()
         {
             return (_tick <= 0);

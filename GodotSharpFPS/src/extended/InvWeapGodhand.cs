@@ -47,6 +47,12 @@ namespace GodotSharpFps.src.extended
             }
         }
 
+        virtual public float GetRefireLerp()
+        {
+            return 0;
+        }
+
+
         public bool CanEquip()
         {
             return true;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace GodotSharpFps.src
 {
     public struct EquippableTickInfo
@@ -35,6 +30,7 @@ namespace GodotSharpFps.src
         string GetDisplayName();
         bool CanEquip();
         int GetLoadedAmmo();
+        float GetRefireLerp();
         bool CanSwitchAway();
         void SetEquipped(bool flag);
         void Tick(float delta, EquippableTickInfo info);

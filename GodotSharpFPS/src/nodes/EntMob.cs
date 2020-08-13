@@ -15,7 +15,8 @@ namespace GodotSharpFps.src.nodes
 		public ProjectileDef prjDef;
 		public int targetActorId = Game.NullActorId;
 		public float moveTick = 0;
-		public float attackTick = 0;
+		public float thinkTick = 0;
+		public int thinkState = 0;
 		public int thinkIndex = MobThink.DefaultThink;
 
 		public IActor GetActor() => this;
@@ -106,6 +107,7 @@ namespace GodotSharpFps.src.nodes
 				if (touchData.damageType == DamageType.Launch)
 				{
 					Console.WriteLine($"Mob - Launched!");
+					Main.i.mobThink.ApplyStun(this);
 				}
 				result.responseType = TouchResponseType.Damaged;
 				pushAccumulator.x += -touchData.hitNormal.x * (15 * mobDef.pushMultiplier);
