@@ -39,7 +39,11 @@ public class UI : Node
     {
         if (type == GlobalEventType.GameStateChange)
         {
-            if (!(obj is Game.State)) { return; }
+            if (!(obj is Game.State))
+            {
+                Console.WriteLine($"ERR - UI expected a Game.State event type");
+                return;
+            }
             Game.State state = (Game.State)obj;
 
             switch (state)
@@ -61,7 +65,7 @@ public class UI : Node
                     playerStatus.Hide();
                     break;
                 case Game.State.GameOver:
-                    _gameMessage.Text = "Press fire to reload";
+                    _gameMessage.Text = "Press fire to retry";
                     playerStatus.Hide();
                     break;
             }

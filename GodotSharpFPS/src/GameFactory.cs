@@ -66,7 +66,8 @@ public class GameFactory
             defaultHealth = 4000,
             evadeRange = 30,
             walkSpeed = 5.5f,
-            stuntime = 1,
+            stuntime = 0.5f,
+            stunThreshold = 75,
             // very hard to push around
             friction = 12,
             accelForce = 200,

@@ -10,7 +10,8 @@ namespace GodotSharpFps.src
         public string prefabPath = string.Empty;
 
         public int defaultHealth = 100;
-        public float stuntime = 1;
+        public float stuntime = 0.5f;
+        public int stunThreshold = 1;
         public float evadeRange = 10;
         public float walkSpeed = 5;
         public int friction = 5;

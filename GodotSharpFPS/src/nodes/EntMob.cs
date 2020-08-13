@@ -8,6 +8,7 @@ namespace GodotSharpFps.src.nodes
 	{
 		private bool _dead = false;
 		private int _health = 200;
+		
 
 		// Public for access by mob think
 		public MobDef mobDef;
@@ -18,6 +19,8 @@ namespace GodotSharpFps.src.nodes
 		public float thinkTick = 0;
 		public int thinkState = 0;
 		public int thinkIndex = MobThink.DefaultThink;
+		public int stunAccumulator = 0;
+
 
 		public IActor GetActor() => this;
 
@@ -109,6 +112,8 @@ namespace GodotSharpFps.src.nodes
 					Console.WriteLine($"Mob - Launched!");
 					Main.i.mobThink.ApplyStun(this);
 				}
+				stunAccumulator += result.damageTaken;
+
 				result.responseType = TouchResponseType.Damaged;
 				pushAccumulator.x += -touchData.hitNormal.x * (15 * mobDef.pushMultiplier);
 				pushAccumulator.z += -touchData.hitNormal.z * (15 * mobDef.pushMultiplier);
@@ -120,82 +125,6 @@ namespace GodotSharpFps.src.nodes
 		public override void _PhysicsProcess(float delta)
 		{
 			Main.i.mobThink.UpdateMob(this, delta);
-			/*
-			IActor actor = Main.i.game.CheckTarget(targetActorId, GetTeam());
-			if (actor == null)
-			{
-				targetActorId = Game.NullActorId;
-				return;
-			}
-			targetActorId = actor.actorId;
-			Transform self = GetTransformForTarget();
-			Vector3 tar = actor.GetTransformForTarget().origin;
-			float yawDeg = ZqfGodotUtils.FlatYawDegreesBetween(
-				self.origin, tar);
-			body.RotationDegrees = new Vector3(0, yawDeg + 180, 0);
-			self = GetTransformForTarget();
-
-			if (attackTick <= 0)
-			{
-				attackTick = 1;
-				PointProjectile prj = Main.i.factory.SpawnPointProjectile();
-				prj.Launch(self.origin, -self.basis.z, prjDef, body, Team.Mobs);
-			}
-			else
-			{
-				attackTick -= delta;
-			}
-			
-			if (moveTick <= 0)
-			{
-				float rand = ZqfGodotUtils.Randomf();
-				float dist = ZqfGodotUtils.Distance(self.origin, tar);
-				moveTick = 1.5f;
-				// move toward target
-				if (dist > mobDef.evadeRange)
-				{
-					// randomly jink to the side
-					if (rand < 0.25)
-					{
-						yawDeg += 45;
-					}
-					else if (rand < 0.5)
-					{
-						yawDeg -= 45;
-					}
-					// check movement again in:
-					moveTick = 1f;
-				}
-				else
-				{
-					// evade either left or right
-					// don't add a full 90 degrees as will evade straight out of evade dist
-					yawDeg += (rand > 0.5) ? 70 : -70;
-					moveTick = 1.5f;
-				}
-				float radians = Mathf.Deg2Rad(yawDeg);
-				lastSelfDir = new Vector3(Mathf.Sin(radians), 0, Mathf.Cos(radians));
-			}
-			else
-			{
-				moveTick -= delta;
-			}
-
-			// calculate self move
-			selfMove = FPSController.CalcVelocityQuakeStyle(
-				velocity, lastSelfDir, mobDef.walkSpeed, delta, true, mobDef.friction, mobDef.accelForce);
-
-			velocity = selfMove;
-			// apply push forces
-			velocity += pushAccumulator;
-			pushAccumulator = Vector3.Zero;
-			if (velocity.LengthSquared() > Game.MaxActorVelocity * Game.MaxActorVelocity)
-			{
-				velocity = velocity.Normalized();
-				velocity *= Game.MaxActorVelocity;
-			}
-			Vector3 result = body.MoveAndSlide(velocity);
-			*/
 		}
 	}
 }

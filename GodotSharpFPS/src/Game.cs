@@ -79,7 +79,7 @@ namespace GodotSharpFps.src
                     SetGameState(State.Limbo);
                     break;
                 case GlobalEventType.PlayerDied:
-                    _main.cam.Reset();
+                    _main.cam.DetachFromCustomParent();
                     SetGameState(State.GameOver);
                     break;
             }
@@ -198,6 +198,10 @@ namespace GodotSharpFps.src
             if (_playerStarts.Count == 1)
             {
                 SetGameState(State.Pregame);
+                if (_main.cam.GetParentType() != GameCamera.ParentType.Player)
+                {
+                    _main.cam.AttachToTarget(node, GameCamera.ParentType.Misc);
+                }
             }
         }
 

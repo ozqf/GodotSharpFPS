@@ -36,7 +36,6 @@ namespace GodotSharpFps.src.nodes
 
 		public void SetViewModelState(ViewModelState state)
 		{
-			Console.WriteLine($"View Model Lerp {state.lerp}");
 			_lerp = state.lerp;
 			Transform at = _a.Transform;
 			Transform bt = _b.Transform;

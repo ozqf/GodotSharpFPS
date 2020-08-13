@@ -3,24 +3,47 @@ using System;
 
 public class GameCamera : Camera
 {
-	private Node g_originalParent;
+	public enum ParentType { None, Misc, Player };
+	private Node _originalParent;
+	private Node _currentParent;
+	private ParentType _parentType;
+
 	public override void _Ready()
 	{
 		base._Ready();
-		g_originalParent = GetParent();
+		_originalParent = GetParent();
+	}
+
+	public ParentType GetParentType()
+	{
+		return _parentType;
+	}
+
+	public void DetachFromCustomParent()
+	{
+		if (_currentParent != null && _currentParent != _originalParent)
+		{
+			Transform t = GlobalTransform;
+			AttachToTarget(_originalParent, ParentType.None);
+			GlobalTransform = t;
+		}
 	}
 
 	public void Reset()
 	{
-		AttachToTarget(g_originalParent);
+		DetachFromCustomParent();
+		Transform = Transform.Identity;
 	}
 
-	public void AttachToTarget(Node newParent)
+	public void AttachToTarget(Node newParent, ParentType parentType = ParentType.Misc)
 	{
-		//Transform t = GlobalTransform;
+		if (newParent == _currentParent) { return; }
+
 		Node parent = GetParent();
 		parent.RemoveChild(this);
 		newParent.AddChild(this);
-		//GlobalTransform = t;
+		_currentParent = newParent;
+		Transform = Transform.Identity;
+		_parentType = parentType;
 	}
 }

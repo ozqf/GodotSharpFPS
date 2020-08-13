@@ -17,7 +17,6 @@ namespace GodotSharpFps.src
 	{
 		public void Think(EntMob mob, float delta)
 		{
-			Console.WriteLine($"Mob stunned {mob.thinkTick}");
 			Vector3 zero = new Vector3();
 			// calculate self move
 			mob.selfMove = FPSController.CalcVelocityQuakeStyle(
@@ -38,8 +37,24 @@ namespace GodotSharpFps.src
 
 	public class MobThinkDefault : IMobThinker
     {
+		private MobThink _mobThink;
+		public MobThinkDefault(MobThink mobThink)
+		{
+			_mobThink = mobThink;
+		}
+
         public void Think(EntMob mob, float delta)
         {
+			int stunAccum = mob.stunAccumulator;
+			mob.stunAccumulator = 0;
+			if (stunAccum >= mob.mobDef.stunThreshold)
+			{
+				// switch to stun and update with that instead
+				_mobThink.ApplyStun(mob);
+				_mobThink.UpdateMob(mob, delta);
+				return;
+			}
+
 			IActor actor = Main.i.game.CheckTarget(mob.targetActorId, mob.GetTeam());
 			if (actor == null)
 			{
@@ -130,7 +145,7 @@ namespace GodotSharpFps.src
 
         public MobThink()
         {
-            _thinkers[DefaultThink] = new MobThinkDefault();
+            _thinkers[DefaultThink] = new MobThinkDefault(this);
 			_thinkers[StunThink] = new MobThinkStunned();
 		}
 
