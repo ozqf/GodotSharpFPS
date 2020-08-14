@@ -132,9 +132,9 @@ namespace GodotSharpFps.src
 
         virtual protected void CheckTriggers(bool primaryOn, bool secondaryOn, AttackSource src)
         {
-            if (primaryOn)
+            if (primaryOn && _primaryPrjDef != null)
             { FirePrimary(src); }
-            else if (secondaryOn)
+            else if (secondaryOn && _secondaryPrjDef != null)
             { FireSecondary(src); }
         }
 
