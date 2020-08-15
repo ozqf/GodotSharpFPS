@@ -4,8 +4,9 @@ using Godot;
 
 public class ZqfGodotUtils
 {
-	private static Random _random = new Random();
+	public const float TAU = (3.1415926535897931f * 2f);
 
+	private static Random _random = new Random();
 
 	public static Godot.Collections.Dictionary CastRay(
 		Spatial worldSourceNode, Vector3 origin, Vector3 target, uint mask, PhysicsBody ignoreBody)
@@ -143,7 +144,6 @@ public class ZqfGodotUtils
 		Vector3 forward = -tran.basis.z;
 		Vector3 up = tran.basis.y;
 		Vector3 right = tran.basis.x;
-		Random r = new Random();
 		
 		results[0] = forward;
 		for (int i = 1; i < len; ++i)

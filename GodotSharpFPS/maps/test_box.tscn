@@ -142,6 +142,7 @@ isSpawning = false
 
 [node name="bulk_spawner2" parent="actors" instance=ExtResource( 6 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5, 1, -16 )
+isSpawning = false
 mobType = "Titan"
 
 [node name="bulk_spawner3" parent="actors" instance=ExtResource( 6 )]

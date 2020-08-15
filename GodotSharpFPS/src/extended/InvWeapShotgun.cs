@@ -29,6 +29,8 @@ namespace GodotSharpFps.src
         protected List<Vector3> _primarySpread = new List<Vector3>();
         protected List<Vector3> _secondarySpread = new List<Vector3>();
 
+        protected List<Transform> _launchTransforms = new List<Transform>();
+
         public InvWeapShotgun(
             Spatial launchNode,
             WeaponDef weaponDef,
@@ -98,6 +100,27 @@ namespace GodotSharpFps.src
             if (_primaryPrjDef == null) { return; }
             Transform t = _launchNode.GlobalTransform;
 
+            //SpawnPatterns.Cone3DRandom(
+            //    t,
+            //    _launchTransforms,
+            //    _weaponDef.primaryPrjCount,
+            //    _weaponDef.primarySpread.x,
+            //    _weaponDef.primarySpread.y);
+
+            SpawnPatterns.VerticalLine(
+                t,
+                _launchTransforms,
+                _weaponDef.primaryPrjCount,
+                6);
+
+            for (int i = 0; i < _weaponDef.primaryPrjCount; ++i)
+            {
+                Transform launchT = _launchTransforms[i];
+                PointProjectile prj = Main.i.factory.SpawnProjectile(_primaryPrjDef.prefabPath);
+                if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
+                prj.Launch(launchT.origin, -launchT.basis.z, _primaryPrjDef, src.ignoreBody, src.team);
+            }
+            /*
             ZqfGodotUtils.FillSpreadAngles(
                 t, _primarySpread, _weaponDef.primarySpread.x, _weaponDef.primarySpread.y);
             for (int i = 0; i < _primarySpread.Count; ++i)
@@ -110,18 +133,25 @@ namespace GodotSharpFps.src
                 _tick = _weaponDef.primaryRefireTime;
                 _lastTickMax = _tick;
             }
+            */
             // check for reload
-            _roundsLoaded--;
-            if (_roundsLoaded <= 0)
-            {
-                _tick = _weaponDef.magazineReloadTime;
-                _isReloading = true;
-            }
+            //_roundsLoaded--;
+            //if (_roundsLoaded <= 0)
+            //{
+            //    _tick = _weaponDef.magazineReloadTime;
+            //    _isReloading = true;
+            //}
+            //else
+            //{
+                _tick = _weaponDef.primaryRefireTime;
+            //}
+            _lastTickMax = _tick;
         }
 
         virtual public void FireSecondary(AttackSource src)
         {
             if (_secondaryPrjDef == null) { return; }
+            /*
             int numShots = _roundsLoaded;
             _roundsLoaded = 0;
             _isReloading = true;
@@ -138,6 +168,7 @@ namespace GodotSharpFps.src
                 prj.Launch(t.origin, _secondarySpread[i], _secondaryPrjDef, src.ignoreBody, src.team);
                 _tick = _weaponDef.secondaryRefireTime;
             }
+            */
         }
 
         virtual protected void CheckTriggers(bool primaryOn, bool secondaryOn, AttackSource src)

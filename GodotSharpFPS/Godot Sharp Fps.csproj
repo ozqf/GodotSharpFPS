@@ -87,6 +87,7 @@
     <Compile Include="src\nodes\ViewModel.cs" />
     <Compile Include="src\ProjectileDef.cs" />
     <Compile Include="src\extended\InvWeapDisc.cs" />
+    <Compile Include="src\SpawnPatterns.cs" />
     <Compile Include="src\ZqfGodotUtils.cs" />
     <Compile Include="src\FPSInput.cs" />
     <Compile Include="src\FPSController.cs" />

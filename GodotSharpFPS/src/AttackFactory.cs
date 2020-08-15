@@ -33,8 +33,8 @@ namespace GodotSharpFps.src
 
 			ProjectileDef primaryPrjDef = new ProjectileDef();
 			primaryPrjDef.damage = 12;
-			primaryPrjDef.launchSpeed = 1000;
-			primaryPrjDef.timeToLive = 0.1f;
+			primaryPrjDef.launchSpeed = 40;
+			primaryPrjDef.timeToLive = 4f;// 0.1f;
 
 			// No secondary def, use primary twice
 
