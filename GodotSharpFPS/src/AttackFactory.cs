@@ -39,8 +39,8 @@ namespace GodotSharpFps.src
 			PatternDef pattern = new PatternDef();
 			pattern.patternType = PatternType.Cone3DRandom;
 			pattern.count = 10;
-			pattern.scale.x = 2000;
-			pattern.scale.y = 1200;
+			pattern.scale.x = 1000;
+			pattern.scale.y = 600;
 
 			// No secondary def, use primary twice
 

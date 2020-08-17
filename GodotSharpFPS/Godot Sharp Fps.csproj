@@ -76,6 +76,7 @@
     <Compile Include="src\nodes\BulkSpawner.cs" />
     <Compile Include="src\nodes\EntitySpawn.cs" />
     <Compile Include="src\nodes\EntMob.cs" />
+    <Compile Include="src\nodes\EntTurret.cs" />
     <Compile Include="src\nodes\GameCamera.cs" />
     <Compile Include="src\nodes\GFXQuick.cs" />
     <Compile Include="src\nodes\MeleeHitVolume.cs" />

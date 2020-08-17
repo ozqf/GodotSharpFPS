@@ -27,7 +27,8 @@ namespace GodotSharpFps.src.extended
             _riflePrjDef.damage = 10000;
             _riflePrjDef.launchSpeed = 1000;
             _mobTypes = Main.i.factory.GetMobTypeList();
-            _mobSpawnType = _mobTypes[0];
+            //_mobSpawnType = _mobTypes[0];
+            _mobSpawnType = GameFactory.MobType_Titan;
             UpdateDisplayName();
         }
 
@@ -89,7 +90,7 @@ namespace GodotSharpFps.src.extended
 
         private void SpawnMob(Vector3 pos)
         {
-            EntMob mob = Main.i.factory.SpawnMob();
+            EntMob mob = Main.i.factory.SpawnMob(_mobSpawnType);
             ZqfGodotUtils.Teleport(mob, pos);
         }
 

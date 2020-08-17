@@ -55,12 +55,13 @@ namespace GodotSharpFps.src.nodes
 				Main.i.game.RegisterActor(this);
 			}
 			prjDef = new ProjectileDef();
-			prjDef.damage = 15;
-			prjDef.launchSpeed = 10;
+			prjDef.damage = 10;
+			prjDef.launchSpeed = 100;
 			prjDef.prefabPath = GameFactory.Path_PointProjectile;
 			prjDef.moveMode = ProjectileDef.MoveMode.Accel;
-			prjDef.maxSpeed = 150;
-			prjDef.accelPerSecond = 50;
+			prjDef.maxSpeed = 100;
+			prjDef.minSpeed = 10;
+			prjDef.accelPerSecond = -300;
 
 			_debugSb.Clear();
 			_debugSb.Append($"EntMob Id {_entId}");

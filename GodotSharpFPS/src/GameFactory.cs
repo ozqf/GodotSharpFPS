@@ -1,6 +1,7 @@
 using Godot;
 using GodotSharpFps.src;
 using GodotSharpFps.src.nodes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -84,6 +85,7 @@ public class GameFactory
     {
         if (!_mobTypes.ContainsKey(mobTypeName))
         {
+            Console.WriteLine($"No mob type \"{mobTypeName}\" found");
             return _mobTypes[GameFactory.MobType_Humanoid];
         }
         return _mobTypes[mobTypeName];
