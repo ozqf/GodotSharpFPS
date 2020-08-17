@@ -36,10 +36,16 @@ namespace GodotSharpFps.src
 			primaryPrjDef.launchSpeed = 40;
 			primaryPrjDef.timeToLive = 4f;// 0.1f;
 
+			PatternDef pattern = new PatternDef();
+			pattern.patternType = PatternType.Cone3DRandom;
+			pattern.count = 10;
+			pattern.scale.x = 2000;
+			pattern.scale.y = 1200;
+
 			// No secondary def, use primary twice
 
 			InvWeapShotgun weapon = new InvWeapShotgun(
-				launchNode, weapDef, primaryPrjDef, primaryPrjDef, ignoreBody);
+				launchNode, weapDef, primaryPrjDef, pattern);
 			return weapon;
 		}
 

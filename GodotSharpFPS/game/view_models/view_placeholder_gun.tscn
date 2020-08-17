@@ -10,13 +10,16 @@ script = ExtResource( 3 )
 [node name="model" type="Spatial" parent="."]
 
 [node name="solid_cube_1x1x2" parent="model" instance=ExtResource( 1 )]
-transform = Transform( 0.3, 0, 0, 0, -6.55671e-08, 0.3, 0, -1.5, -1.31134e-08, 0, -0.15, 0.1 )
+transform = Transform( 0.3, 0, 0, 0, -6.55671e-08, 0.3, 0, -1.5, -1.31134e-08, 0, -0.15, -0.5 )
+cast_shadow = 0
 
 [node name="solid_cube_1x1x3" parent="model" instance=ExtResource( 1 )]
-transform = Transform( 0.3, 0, 0, 0, -6.55671e-08, 0.3, 0, -1.5, -1.31134e-08, 0, 0.15, -0.4 )
+transform = Transform( 0.3, 0, 0, 0, -6.55671e-08, 0.3, 0, -1.5, -1.31134e-08, 0, 0.15, -1 )
+cast_shadow = 0
 
 [node name="solid_cube_1x1x1" parent="model" instance=ExtResource( 2 )]
-transform = Transform( 0.35, 0, 0, 0, 0.7, 0, 0, 0, 1, 0, 0, 0.8 )
+transform = Transform( 0.35, 0, 0, 0, 0.7, 0, 0, 0, 1, 0, 0, 0.2 )
+cast_shadow = 0
 
 [node name="a" type="Spatial" parent="."]
 

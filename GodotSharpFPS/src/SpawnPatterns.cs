@@ -3,6 +3,16 @@ using System.Collections.Generic;
 
 namespace GodotSharpFps.src
 {
+	public enum PatternType
+	{ None, Cone3DRandom, Cone3D, HorizontalLine, VerticalLine, Line };
+
+	public struct PatternDef
+	{
+		public PatternType patternType;
+		public int count;
+		public Vector3 scale;
+	}
+
 	public static class SpawnPatterns
 	{
 		/// <summary>
@@ -25,7 +35,7 @@ namespace GodotSharpFps.src
 			}
 			return true;
 		}
-		public static void Cone3D(
+		private static void Cone3D(
 			Transform source, List<Transform> results, int count, float spreadH, float spreadV)
 		{
 			if (!PrepareTransformList(source, results, count)) { return; }
@@ -50,7 +60,7 @@ namespace GodotSharpFps.src
 			}
 		}
 
-		public static void Cone3DRandom(
+		private static void Cone3DRandom(
 			Transform source, List<Transform> results, int count, float spreadH, float spreadV)
 		{
 			if (!PrepareTransformList(source, results, count)) { return; }
@@ -74,7 +84,7 @@ namespace GodotSharpFps.src
 			}
 		}
 
-		public static void HorizontalLine(
+		private static void HorizontalLine(
 			Transform source, List<Transform> results, int count, float length)
 		{
 			if (!PrepareTransformList(source, results, count)) { return; }
@@ -97,7 +107,7 @@ namespace GodotSharpFps.src
 			}
 		}
 
-		public static void VerticalLine(
+		private static void VerticalLine(
 			Transform source, List<Transform> results, int count, float length)
 		{
 			if (!PrepareTransformList(source, results, count)) { return; }
@@ -117,6 +127,29 @@ namespace GodotSharpFps.src
 				t.origin += offset;
 				results[i] = t;
 				lerp += step;
+			}
+		}
+
+		public static void FillPattern(
+			Transform source, PatternDef def, List<Transform> results)
+		{
+			switch (def.patternType)
+			{
+				case PatternType.Cone3D:
+					Cone3D(source, results, def.count, def.scale.x, def.scale.y);
+					break;
+				case PatternType.Cone3DRandom:
+					Cone3DRandom(source, results, def.count, def.scale.x, def.scale.y);
+					break;
+				case PatternType.HorizontalLine:
+					HorizontalLine(source, results, def.count, def.scale.x);
+					break;
+				case PatternType.VerticalLine:
+					VerticalLine(source, results, def.count, def.scale.y);
+					break;
+				default:
+					Cone3DRandom(source, results, def.count, def.scale.x, def.scale.y);
+					break;
 			}
 		}
 	}

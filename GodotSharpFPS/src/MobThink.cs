@@ -30,6 +30,7 @@ namespace GodotSharpFps.src
 				mob.velocity *= Game.MaxActorVelocity;
 			}
 			Vector3 result = mob.body.MoveAndSlide(mob.velocity);
+
 			if (mob.thinkTick <= 0) { mob.thinkIndex = mob.mobDef.thinkIndexBase; }
 			else { mob.thinkTick -= delta; }
 		}
@@ -151,7 +152,7 @@ namespace GodotSharpFps.src
 
 		public void ApplyStun(EntMob mob)
 		{
-			Console.WriteLine($"Mob - apply stun");
+			//Console.WriteLine($"Mob - apply stun");
 			mob.thinkIndex = StunThink;
 			mob.thinkTick = mob.mobDef.stuntime;
 		}
@@ -161,6 +162,7 @@ namespace GodotSharpFps.src
 
 			if (mob.thinkIndex < 0) { mob.thinkIndex = 0; }
 			else if (mob.thinkIndex >= LastThinker) { mob.thinkIndex = 0; }
+
 			_thinkers[mob.thinkIndex].Think(mob, delta);
 		}
     }

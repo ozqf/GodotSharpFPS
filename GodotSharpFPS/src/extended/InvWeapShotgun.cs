@@ -7,27 +7,23 @@ namespace GodotSharpFps.src
     public class InvWeapShotgun : IEquippable
     {
         protected Spatial _launchNode;
-        protected PhysicsBody _ignoreBody;
-
+        
         protected WeaponDef _weaponDef;
         protected ProjectileDef _primaryPrjDef;
-        protected ProjectileDef _secondaryPrjDef;
+        protected PatternDef _primaryPatternDef;
+        //protected ProjectileDef _secondaryPrjDef;
 
         protected int _ownerId;
         protected int _primaryOn;
-        protected int _secondaryOn;
+        //protected int _secondaryOn;
         protected float _lastTickMax;
         protected float _tick;
         protected float _primaryRefireTime;
-        protected float _secondaryRefireTime;
+        //protected float _secondaryRefireTime;
         protected bool _isEquipped = false;
 
         protected bool _isReloading = false;
         protected int _roundsLoaded = 1;
-
-
-        protected List<Vector3> _primarySpread = new List<Vector3>();
-        protected List<Vector3> _secondarySpread = new List<Vector3>();
 
         protected List<Transform> _launchTransforms = new List<Transform>();
 
@@ -35,26 +31,26 @@ namespace GodotSharpFps.src
             Spatial launchNode,
             WeaponDef weaponDef,
             ProjectileDef primaryDef,
-            ProjectileDef secondaryDef,
-            PhysicsBody ignoreBody)
+            PatternDef primaryPatternDef)
         {
             weaponDef.Validate();
 
             _launchNode = launchNode;
-            _ignoreBody = ignoreBody;
+            _primaryPatternDef = primaryPatternDef;
+
+            _roundsLoaded = weaponDef.magazineSize;
 
             _weaponDef = weaponDef;
             _primaryPrjDef = primaryDef;
-            _secondaryPrjDef = secondaryDef;
-            for (int i = 0; i < weaponDef.primaryPrjCount; ++i)
-            {
-                _primarySpread.Add(new Vector3());
-            }
-            for (int i = 0; i < weaponDef.secondaryPrjCount; ++i)
-            {
-                _secondarySpread.Add(new Vector3());
-            }
-            _roundsLoaded = weaponDef.magazineSize;
+            //_secondaryPrjDef = secondaryDef;
+            //for (int i = 0; i < weaponDef.primaryPrjCount; ++i)
+            //{
+            //    _primarySpread.Add(new Vector3());
+            //}
+            //for (int i = 0; i < weaponDef.secondaryPrjCount; ++i)
+            //{
+            //    _secondarySpread.Add(new Vector3());
+            //}
         }
 
         virtual public void SetEquipped(bool flag)
@@ -88,7 +84,7 @@ namespace GodotSharpFps.src
 
         virtual public bool CanSwitchAway()
         {
-            if (_primaryRefireTime > 0 || _secondaryRefireTime > 0)
+            if (_primaryRefireTime > 0)
             {
                 return false;
             }
@@ -100,40 +96,15 @@ namespace GodotSharpFps.src
             if (_primaryPrjDef == null) { return; }
             Transform t = _launchNode.GlobalTransform;
 
-            //SpawnPatterns.Cone3DRandom(
-            //    t,
-            //    _launchTransforms,
-            //    _weaponDef.primaryPrjCount,
-            //    _weaponDef.primarySpread.x,
-            //    _weaponDef.primarySpread.y);
+            SpawnPatterns.FillPattern(t, _primaryPatternDef, _launchTransforms);
 
-            SpawnPatterns.VerticalLine(
-                t,
-                _launchTransforms,
-                _weaponDef.primaryPrjCount,
-                6);
-
-            for (int i = 0; i < _weaponDef.primaryPrjCount; ++i)
+            for (int i = 0; i < _primaryPatternDef.count; ++i)
             {
                 Transform launchT = _launchTransforms[i];
                 PointProjectile prj = Main.i.factory.SpawnProjectile(_primaryPrjDef.prefabPath);
                 if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
                 prj.Launch(launchT.origin, -launchT.basis.z, _primaryPrjDef, src.ignoreBody, src.team);
             }
-            /*
-            ZqfGodotUtils.FillSpreadAngles(
-                t, _primarySpread, _weaponDef.primarySpread.x, _weaponDef.primarySpread.y);
-            for (int i = 0; i < _primarySpread.Count; ++i)
-            {
-                PointProjectile prj = Main.i.factory.SpawnProjectile(_primaryPrjDef.prefabPath);
-                if (prj == null) { Console.WriteLine($"Got no prj instance"); return; }
-                //prj.Launch(_launchNode.GlobalTransform, _primaryPrjDef, _ignoreBody);
-
-                prj.Launch(t.origin, _primarySpread[i], _primaryPrjDef, src.ignoreBody, src.team);
-                _tick = _weaponDef.primaryRefireTime;
-                _lastTickMax = _tick;
-            }
-            */
             // check for reload
             //_roundsLoaded--;
             //if (_roundsLoaded <= 0)
@@ -150,7 +121,7 @@ namespace GodotSharpFps.src
 
         virtual public void FireSecondary(AttackSource src)
         {
-            if (_secondaryPrjDef == null) { return; }
+            //if (_secondaryPrjDef == null) { return; }
             /*
             int numShots = _roundsLoaded;
             _roundsLoaded = 0;
@@ -175,8 +146,8 @@ namespace GodotSharpFps.src
         {
             if (primaryOn && _primaryPrjDef != null)
             { FirePrimary(src); }
-            else if (secondaryOn && _secondaryPrjDef != null)
-            { FireSecondary(src); }
+            //else if (secondaryOn && _secondaryPrjDef != null)
+            //{ FireSecondary(src); }
         }
 
         virtual protected void CommonTick(float delta, bool primaryOn, bool secondaryOn, AttackSource src)

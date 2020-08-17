@@ -90,7 +90,7 @@ namespace GodotSharpFps.src.nodes
 
 		public TouchResponseData ActorTouch(TouchData touchData)
 		{
-			Console.WriteLine($"Mob hit for {touchData.damage}");
+			//Console.WriteLine($"Mob hit for {touchData.damage}");
 			if (_dead) { return TouchResponseData.empty; }
 			_health -= touchData.damage;
 
@@ -117,7 +117,7 @@ namespace GodotSharpFps.src.nodes
 				result.responseType = TouchResponseType.Damaged;
 				pushAccumulator.x += -touchData.hitNormal.x * (15 * mobDef.pushMultiplier);
 				pushAccumulator.z += -touchData.hitNormal.z * (15 * mobDef.pushMultiplier);
-				Console.WriteLine($"Push: {pushAccumulator}");
+				//Console.WriteLine($"Push: {pushAccumulator}");
 			}
 			return result;
 		}
