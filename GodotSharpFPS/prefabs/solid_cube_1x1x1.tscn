@@ -5,7 +5,6 @@ size = Vector3( 1, 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=2]
 flags_transparent = true
-flags_unshaded = true
 
 [node name="solid_cube_1x1x1" type="MeshInstance"]
 mesh = SubResource( 1 )
