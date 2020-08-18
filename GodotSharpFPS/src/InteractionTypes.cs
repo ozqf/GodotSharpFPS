@@ -56,6 +56,11 @@ namespace GodotSharpFps.src
         public PhysicsBody ignoreBody;
     }
 
+    public interface ITouchable
+    {
+        TouchResponseData ActorTouch(TouchData touchData);
+    }
+
     /// <summary>
     /// Interface for primary game objects and their interactions
     /// </summary>

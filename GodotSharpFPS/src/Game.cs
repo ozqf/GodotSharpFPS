@@ -134,12 +134,31 @@ namespace GodotSharpFps.src
             if (victim == Team.NonCombatant) { return false; }
             return attacker != victim;
         }
+
+        public static ITouchable ExtractTouchable(object obj)
+        {
+            return obj as ITouchable;
+        }
         
         public static IActor ExtractActor(object obj)
         {
             IActorProvider provider = obj as IActorProvider;
             if (provider == null) { return null; }
             return provider.GetActor();
+        }
+
+        public static IActor DescendTreeToActor(Node node)
+        {
+            Node parent = node.GetParent();
+            while (parent != null)
+            {
+                if (parent is IActor)
+                {
+                    return parent as IActor;
+                }
+                parent = parent.GetParent();
+            }
+            return null;
         }
 
         public bool Cmd_DebugPlayer(string command, string[] tokens)

@@ -25,6 +25,8 @@ public class GameFactory
     public const string Path_EntMobPinkie = "game/mob/ent_mob_pinkie.tscn";
     public const string Path_EntMobTitan = "game/mob/ent_mob_titan.tscn";
 
+    public const string Path_TurretBall = "game/turrets/ball_turret.tscn";
+
     // Mob types
     public const string MobType_Humanoid = "Humanoid";
     public const string MobType_Pinkie = "Pinkie";

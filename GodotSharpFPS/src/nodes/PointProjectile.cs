@@ -72,7 +72,8 @@ public class PointProjectile : Spatial
 			_touch.touchType = TouchType.Projectile;
 			_touch.damageType = _def.damageType;
 
-			IActor actor = Game.ExtractActor(hitResult["collider"]);
+			//IActor actor = Game.ExtractActor(hitResult["collider"]);
+			ITouchable actor = Game.ExtractTouchable(hitResult["collider"]);
 			if (actor != null)
 			{
 				TouchResponseData response = actor.ActorTouch(_touch);
