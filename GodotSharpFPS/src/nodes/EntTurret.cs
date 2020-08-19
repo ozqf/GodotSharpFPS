@@ -13,7 +13,7 @@ namespace GodotSharpFps.src.nodes
         private PatternDef _patternDef;
 
         private float _tick = 1;
-        private float _tickMax = 0.5f;
+        private float _tickMax = 1.5f;
         private List<Transform> _transforms = null;
 
         public override void _Ready()
@@ -29,7 +29,7 @@ namespace GodotSharpFps.src.nodes
 
             _patternDef = new PatternDef();
             _patternDef.count = 8;
-            _patternDef.patternType = PatternType.HorizontalLine;
+            _patternDef.patternType = PatternType.VerticalLine;
             _patternDef.scale = new Vector3(8, 8, 0);
 
             _transforms = new List<Transform>(_patternDef.count);
