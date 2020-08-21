@@ -16,6 +16,7 @@ namespace GodotSharpFps.src.nodes
 		private RayCast _groundCheckCentre = null;
 
 		private int _health = 100;
+		// health reset back to if revived
 		private int _maxHealth = 100;
 		private bool _dead = false;
 
@@ -97,10 +98,5 @@ namespace GodotSharpFps.src.nodes
 
 			return result;
         }
-
-        //public IActor GetActor()
-        //{
-        //	return actor;
-        //}
     }
 }

@@ -73,7 +73,6 @@ namespace GodotSharpFps.src
         void ChildActorRemoved(int id);
         Transform GetTransformForTarget();
         void ActorTeleport(Transform newTransform);
-        TouchResponseData ActorTouch(TouchData touchData);
         void RemoveActor();
         string GetActorDebugText();
     }

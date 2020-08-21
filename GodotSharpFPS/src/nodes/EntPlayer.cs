@@ -185,6 +185,7 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 
 	public void ChildActorRemoved(int id) { }
 
+#if false
 	public TouchResponseData ActorTouch(TouchData touchData)
 	{
 		
@@ -213,4 +214,5 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 		}
 		return result;
 	}
+#endif
 }

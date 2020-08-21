@@ -47,7 +47,8 @@ namespace GodotSharpFps.src.nodes
                 touch.hitPos = (Vector3)hit["position"];
                 touch.hitNormal = (Vector3)hit["normal"];
                 Console.WriteLine($"Hitting actor {a.actorId}");
-                a.ActorTouch(touch);
+                TouchResponseData response = Game.TouchGameObject(touch, hit["collider"]);
+                //a.ActorTouch(touch);
             }
             _hits.Clear();
         }

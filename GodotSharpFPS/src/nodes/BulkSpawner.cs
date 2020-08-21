@@ -34,11 +34,6 @@ namespace GodotSharpFps.src.nodes
 		public void ActorTeleport(Transform t) { GlobalTransform = t; }
 		public void ChildActorRemoved(int id) { _numLiveChildren--; }
 
-		public TouchResponseData ActorTouch(TouchData touchData)
-		{
-			return TouchResponseData.empty;
-		}
-
 		public string GetActorDebugText()
 		{
 			return $"BulkSpawner - Alive: {_numLiveChildren}, Mode {_mode}";

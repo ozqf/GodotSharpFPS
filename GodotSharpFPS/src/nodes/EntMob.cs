@@ -105,10 +105,10 @@ namespace GodotSharpFps.src.nodes
 		{
 			RemoveActor();
 		}
-
+#if false
 		public TouchResponseData ActorTouch(TouchData touchData)
 		{
-#if false
+
 			//Console.WriteLine($"Mob hit for {touchData.damage}");
 			if (_dead) { return TouchResponseData.empty; }
 			_health -= touchData.damage;
@@ -138,10 +138,10 @@ namespace GodotSharpFps.src.nodes
 				//Console.WriteLine($"Push: {pushAccumulator}");
 			}
 			return result;
-#endif
+
 			return TouchResponseData.empty;
 		}
-
+#endif
 		public override void _PhysicsProcess(float delta)
 		{
 			Main.i.mobThink.UpdateMob(this, delta);
