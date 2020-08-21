@@ -3,14 +3,37 @@ using System.Collections.Generic;
 
 namespace GodotSharpFps.src.nodes
 {
-	public class KinematicWrapper : KinematicBody, IActorProvider
+	public class KinematicWrapper : KinematicBody, ITouchable//, IActorProvider
 	{
+		public delegate void HealthChange(int current, int change, TouchData data);
+		public delegate void Death();
+
 		public IActor actor { get; set; }
 
 		// Gather display elements
 		private List<Spatial> _displayNodes = new List<Spatial>();
 		private CollisionShape _shape = null;
 		private RayCast _groundCheckCentre = null;
+
+		private int _health = 100;
+		private int _maxHealth = 100;
+		private bool _dead = false;
+
+		// callbacks
+		private HealthChange _onHealthChange = null;
+		private Death _onDeath = null;
+
+		public void InitHealth(int current, int max)
+        {
+			_health = current;
+			_maxHealth = max;
+        }
+
+		public void SetCallbacks(HealthChange onHealthChange, Death onDeath)
+        {
+			_onHealthChange = onHealthChange;
+			_onDeath = onDeath;
+        }
 
 		public bool IsGrounded()
 		{
@@ -48,9 +71,36 @@ namespace GodotSharpFps.src.nodes
 			_shape = GetNode<CollisionShape>("CollisionShape");
 		}
 
-		public IActor GetActor()
-		{
-			return actor;
-		}
-	}
+        public TouchResponseData Touch(TouchData touchData)
+        {
+			if (_dead) { return TouchResponseData.empty; }
+
+			int previous = _health;
+			_health -= touchData.damage;
+
+			TouchResponseData result;
+			result.damageTaken = touchData.damage;
+			GFXQuick gfx = Main.i.factory.SpawnGFX(GameFactory.Path_GFXBloodImpact);
+			gfx.Spawn(touchData.hitPos, touchData.hitNormal);
+			if (_health <= 0)
+            {
+				_dead = true;
+				result.responseType = TouchResponseType.Killed;
+                _onDeath?.Invoke();
+            }
+			else
+            {
+				int change = _health - previous;
+				result.responseType = TouchResponseType.Damaged;
+				_onHealthChange?.Invoke(_health, change, touchData);
+			}
+
+			return result;
+        }
+
+        //public IActor GetActor()
+        //{
+        //	return actor;
+        //}
+    }
 }

@@ -45,6 +45,8 @@ namespace GodotSharpFps.src.nodes
 			_health = mobDef.defaultHealth;
 			// find Godot scene nodes
 			body = GetNode<KinematicWrapper>("actor_base");
+			body.SetCallbacks(OnHealthChange, OnDeath);
+			body.InitHealth(mobDef.defaultHealth, mobDef.defaultHealth);
 			body.actor = this;
 
 			if (_entId == 0)
@@ -79,7 +81,11 @@ namespace GodotSharpFps.src.nodes
 		public int actorId { get { return _entId; } }
 		public Team GetTeam() { return Team.Mobs; }
 		public Transform GetTransformForTarget() { return body.GetTransformForTarget(); }
-		public void RemoveActor() { this.QueueFree(); }
+		public void RemoveActor()
+		{
+			Main.i.game.DeregisterActor(this);
+			QueueFree();
+		}
 		public void ActorTeleport(Transform t) { body.GlobalTransform = t; }
 
 		public void ChildActorRemoved(int id) { }
@@ -89,8 +95,20 @@ namespace GodotSharpFps.src.nodes
 			return _debugSb.ToString();
 		}
 
+		// body callbacks
+		public void OnHealthChange(int current, int change, TouchData data)
+		{
+			//Console.WriteLine($"Ouch");
+		}
+
+		public void OnDeath()
+		{
+			RemoveActor();
+		}
+
 		public TouchResponseData ActorTouch(TouchData touchData)
 		{
+#if false
 			//Console.WriteLine($"Mob hit for {touchData.damage}");
 			if (_dead) { return TouchResponseData.empty; }
 			_health -= touchData.damage;
@@ -103,8 +121,7 @@ namespace GodotSharpFps.src.nodes
 			{
 				result.responseType = TouchResponseType.Killed;
 				_dead = true;
-				Main.i.game.DeregisterActor(this);
-				QueueFree();
+				RemoveActor();
 			}
 			else
 			{
@@ -121,6 +138,8 @@ namespace GodotSharpFps.src.nodes
 				//Console.WriteLine($"Push: {pushAccumulator}");
 			}
 			return result;
+#endif
+			return TouchResponseData.empty;
 		}
 
 		public override void _PhysicsProcess(float delta)

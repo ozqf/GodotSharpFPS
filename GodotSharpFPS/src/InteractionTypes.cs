@@ -58,7 +58,7 @@ namespace GodotSharpFps.src
 
     public interface ITouchable
     {
-        TouchResponseData ActorTouch(TouchData touchData);
+        TouchResponseData Touch(TouchData touchData);
     }
 
     /// <summary>

@@ -13,6 +13,8 @@ namespace GodotSharpFps.src
         public const int NullActorId = 0;
         public const float MaxActorVelocity = 50;
 
+        #region Instance
+
         private readonly Main _main;
 
         public enum State { Limbo, Pregame, Gamplay, GameOver, PostGame };
@@ -128,39 +130,6 @@ namespace GodotSharpFps.src
             }
         }
 
-        public static bool CheckTeamVsTeam(Team attacker, Team victim)
-        {
-            if (victim == Team.None) { return true; }
-            if (victim == Team.NonCombatant) { return false; }
-            return attacker != victim;
-        }
-
-        public static ITouchable ExtractTouchable(object obj)
-        {
-            return obj as ITouchable;
-        }
-        
-        public static IActor ExtractActor(object obj)
-        {
-            IActorProvider provider = obj as IActorProvider;
-            if (provider == null) { return null; }
-            return provider.GetActor();
-        }
-
-        public static IActor DescendTreeToActor(Node node)
-        {
-            Node parent = node.GetParent();
-            while (parent != null)
-            {
-                if (parent is IActor)
-                {
-                    return parent as IActor;
-                }
-                parent = parent.GetParent();
-            }
-            return null;
-        }
-
         public bool Cmd_DebugPlayer(string command, string[] tokens)
         {
             if (_plyrId == NullActorId)
@@ -206,6 +175,9 @@ namespace GodotSharpFps.src
             }
             return actor;
         }
+
+        #endregion
+
 
         #region Actor Register
 
@@ -277,6 +249,60 @@ namespace GodotSharpFps.src
                 }
             }
             _ents.Remove(actor.actorId);
+        }
+
+        #endregion
+
+
+        #region Static functions
+
+
+        public static bool CheckTeamVsTeam(Team attacker, Team victim)
+        {
+            if (victim == Team.None) { return true; }
+            if (victim == Team.NonCombatant) { return false; }
+            return attacker != victim;
+        }
+
+        public static ITouchable ExtractTouchable(object obj)
+        {
+            return obj as ITouchable;
+        }
+
+        public static IActor ExtractActor(object obj)
+        {
+            IActorProvider provider = obj as IActorProvider;
+            if (provider == null) { return null; }
+            return provider.GetActor();
+        }
+
+        public static IActor DescendTreeToActor(Node node)
+        {
+            Node parent = node.GetParent();
+            while (parent != null)
+            {
+                if (parent is IActor)
+                {
+                    return parent as IActor;
+                }
+                parent = parent.GetParent();
+            }
+            return null;
+        }
+
+        public static TouchResponseData TouchGameObject(TouchData touchData, object subject)
+        {
+            ITouchable touchable = ExtractTouchable(subject);
+            if (touchable != null)
+            {
+                return touchable.Touch(touchData);
+            }
+            /*IActor actor = ExtractActor(subject);
+            if (actor != null)
+            {
+                return actor.ActorTouch(touchData);
+            }*/
+            return TouchResponseData.empty;
         }
 
         #endregion

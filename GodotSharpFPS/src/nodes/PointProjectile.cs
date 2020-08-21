@@ -72,8 +72,10 @@ public class PointProjectile : Spatial
 			_touch.touchType = TouchType.Projectile;
 			_touch.damageType = _def.damageType;
 
-			//IActor actor = Game.ExtractActor(hitResult["collider"]);
-			ITouchable actor = Game.ExtractTouchable(hitResult["collider"]);
+			object obj = hitResult["collider"];
+			/*
+			IActor actor = Game.ExtractActor(obj);
+			//ITouchable actor = Game.ExtractTouchable(obj);
 			if (actor != null)
 			{
 				TouchResponseData response = actor.ActorTouch(_touch);
@@ -83,6 +85,14 @@ public class PointProjectile : Spatial
 					spawnGFX = false;
 				}
 			}
+			*/
+			TouchResponseData response = Game.TouchGameObject(_touch, obj);
+			if (response.responseType != TouchResponseType.None)
+            {
+				// leave spawning particles to the victim
+				spawnGFX = false;
+			}
+
 			if (spawnGFX)
 			{
 				GFXQuick gfx = Main.i.factory.SpawnGFX(impactGFX);
