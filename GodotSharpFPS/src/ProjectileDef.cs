@@ -2,10 +2,13 @@
 
 namespace GodotSharpFps.src
 {
-    public class ProjectileDef
+    public class ProjectileDef : Node
     {
         public enum MoveMode { Basic, Accel };
         public enum DestroyMode { Gfx, Embed };
+
+        public enum PhysicalType { Rod, Ball };
+
 
         public string prefabPath = string.Empty;
         public MoveMode moveMode = MoveMode.Basic;

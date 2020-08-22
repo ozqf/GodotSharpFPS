@@ -30,7 +30,7 @@ namespace GodotSharpFps.src.nodes
 			_patternDef = new PatternDef();
 			_patternDef.count = 8;
 			_patternDef.patternType = PatternType.HorizontalLine;
-			_patternDef.scale = new Vector3(8, 8, 0);
+			_patternDef.scale = new Vector3(4, 8, 0);
 
 			_transforms = new List<Transform>(_patternDef.count);
 

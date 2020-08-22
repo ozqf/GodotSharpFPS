@@ -1,12 +1,14 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://game/world/world_block.tscn" type="PackedScene" id=1]
 [ext_resource path="res://game/spawners/player_start.tscn" type="PackedScene" id=2]
 [ext_resource path="res://environments/env_night.tres" type="Environment" id=3]
+[ext_resource path="res://game/mob/tank_boss.tscn" type="PackedScene" id=4]
 [ext_resource path="res://game/spawners/ent_spawn.tscn" type="PackedScene" id=5]
 [ext_resource path="res://game/spawners/BulkSpawner.tscn" type="PackedScene" id=6]
 [ext_resource path="res://gfx/gfx_bullet_impact.tscn" type="PackedScene" id=7]
 [ext_resource path="res://game/triggers/trigger_touch.tscn" type="PackedScene" id=8]
+[ext_resource path="res://game/info/info_path.tscn" type="PackedScene" id=9]
 
 [node name="map" type="Spatial"]
 
@@ -67,18 +69,6 @@ transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, -24, 0, 24 )
 
 [node name="world_block5" parent="world/geometry" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 5, 0 )
-
-[node name="world_block34" parent="world/geometry" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, 16, 5, -16 )
-
-[node name="world_block35" parent="world/geometry" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, 16, 5, 16 )
-
-[node name="world_block36" parent="world/geometry" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, -16, 5, -16 )
-
-[node name="world_block37" parent="world/geometry" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, -16, 5, 16 )
 
 [node name="world_block13" parent="world/geometry" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, -33, 5, 8 )
@@ -164,7 +154,11 @@ isSpawning = false
 mobType = "Titan"
 
 [node name="player_start" parent="actors" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 0 )
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -7, 1, -8 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 10, 16 )
+visible = false
 
 [node name="ent_spawn" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.15723, 1, -0.28155 )
@@ -175,3 +169,23 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 3, -3 )
 
 [node name="trigger_touch" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 2 )
+
+[node name="tank_boss" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 1, 2.8 )
+firstPathName = "path_a_2"
+
+[node name="path_a_1" parent="." instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 1, -16 )
+nextPathName = "path_a_2"
+
+[node name="path_a_2" parent="." instance=ExtResource( 9 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 16, 1, 16 )
+nextPathName = "path_a_3"
+
+[node name="path_a_3" parent="." instance=ExtResource( 9 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -16, 1, 16 )
+nextPathName = "path_a_4"
+
+[node name="path_a_4" parent="." instance=ExtResource( 9 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -16, 1, -16 )
+nextPathName = "path_a_1"

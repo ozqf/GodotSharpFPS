@@ -2,6 +2,9 @@
 .vscode
 *.csproj.user
 
+# Binary asset files folder
+/asset_source/
+
 # Godot-specific ignores
 # .import/ # fs this is necessary!
 export.cfg

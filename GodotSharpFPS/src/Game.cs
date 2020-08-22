@@ -32,6 +32,7 @@ namespace GodotSharpFps.src
         private List<PlayerStartNode> _playerStarts = new List<PlayerStartNode>();
         private int _plyrId = NullActorId;
         private int _debugActorId = NullActorId;
+        private Dictionary<string, InfoPath> _pathNodes = new Dictionary<string, InfoPath>();
 
         public Game(Main main)
         {
@@ -61,6 +62,20 @@ namespace GodotSharpFps.src
             }
         }
 
+        private void PurgeRegisters()
+        {
+            foreach (int key in _ents.Keys)
+            {
+                IActor a = _ents[key];
+                a.RemoveActor();
+            }
+            _ents.Clear();
+            _playerStarts.Clear();
+            _pathNodes.Clear();
+            _plyrId = NullActorId;
+            _nextEntId = 1;
+        }
+
         public void OnGlobalEvent(GlobalEventType type, object obj)
         {
             switch (type)
@@ -68,15 +83,7 @@ namespace GodotSharpFps.src
                 case GlobalEventType.MapChange:
                     _mapName = obj as string;
                     // Clear any records of entities as they are about to be freed
-                    foreach (int key in _ents.Keys)
-                    {
-                        IActor a = _ents[key];
-                        a.RemoveActor();
-                    }
-                    _ents.Clear();
-                    _playerStarts.Clear();
-                    _plyrId = NullActorId;
-                    _nextEntId = 1;
+                    PurgeRegisters();
                     // Enter a 'no game rules' state.
                     SetGameState(State.Limbo);
                     break;
@@ -179,7 +186,35 @@ namespace GodotSharpFps.src
         #endregion
 
 
-        #region Actor Register
+        #region Game Object Register
+
+        public void RegisterPathNode(InfoPath path)
+        {
+            if (_pathNodes.ContainsKey(path.Name))
+            {
+                Console.WriteLine($"WARNING - already have a path node called {path.Name}");
+                return;
+            }
+            _pathNodes.Add(path.Name, path);
+        }
+
+        public void DeregisterPathNode(InfoPath path)
+        {
+            if (_pathNodes.ContainsKey(path.Name))
+            {
+                _pathNodes.Remove(path.Name);
+            }
+        }
+
+        public InfoPath GetPathNode(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)
+                || !_pathNodes.ContainsKey(name))
+            {
+                return null;
+            }
+            return _pathNodes[name];
+        }
 
         public void RegisterPlayerStart(PlayerStartNode node)
         {

@@ -25,16 +25,16 @@ namespace GodotSharpFps.src.nodes
 		private Death _onDeath = null;
 
 		public void InitHealth(int current, int max)
-        {
+		{
 			_health = current;
 			_maxHealth = max;
-        }
+		}
 
 		public void SetCallbacks(HealthChange onHealthChange, Death onDeath)
-        {
+		{
 			_onHealthChange = onHealthChange;
 			_onDeath = onDeath;
-        }
+		}
 
 		public bool IsGrounded()
 		{
@@ -64,16 +64,28 @@ namespace GodotSharpFps.src.nodes
 
 		public override void _Ready()
 		{
-			_displayNodes.Add(GetNode<Spatial>("MeshInstance"));
-			_displayNodes.Add(GetNode<Spatial>("head/MeshInstance"));
-			_displayNodes.Add(GetNode<Spatial>("weapon/MeshInstance"));
-			_groundCheckCentre = GetNode<RayCast>("ground_check_centre");
+			if (HasNode("MeshInstance"))
+			{
+				_displayNodes.Add(GetNode<Spatial>("MeshInstance"));
+			}
+			if (HasNode("head/MeshInstance"))
+			{
+				_displayNodes.Add(GetNode<Spatial>("head/MeshInstance"));
+			}
+			if (HasNode("weapon/MeshInstance"))
+			{
+				_displayNodes.Add(GetNode<Spatial>("weapon/MeshInstance"));
+			}
+			if (HasNode("ground_check_centre"))
+			{
+				_groundCheckCentre = GetNode<RayCast>("ground_check_centre");
+			}
 			// Need shape so we can report its position.
 			_shape = GetNode<CollisionShape>("CollisionShape");
 		}
 
-        public TouchResponseData Touch(TouchData touchData)
-        {
+		public TouchResponseData Touch(TouchData touchData)
+		{
 			if (_dead) { return TouchResponseData.empty; }
 
 			int previous = _health;
@@ -84,19 +96,19 @@ namespace GodotSharpFps.src.nodes
 			GFXQuick gfx = Main.i.factory.SpawnGFX(GameFactory.Path_GFXBloodImpact);
 			gfx.Spawn(touchData.hitPos, touchData.hitNormal);
 			if (_health <= 0)
-            {
+			{
 				_dead = true;
 				result.responseType = TouchResponseType.Killed;
-                _onDeath?.Invoke();
-            }
+				_onDeath?.Invoke();
+			}
 			else
-            {
+			{
 				int change = _health - previous;
 				result.responseType = TouchResponseType.Damaged;
 				_onHealthChange?.Invoke(_health, change, touchData);
 			}
 
 			return result;
-        }
-    }
+		}
+	}
 }
