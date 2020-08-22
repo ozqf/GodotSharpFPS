@@ -52,7 +52,7 @@ namespace GodotSharpFps.src.nodes
 					// lerp
 					Transform lerpT = from.InterpolateWith(to, _moveTime);
 					// directly lerp rotation and position
-					GlobalTransform = lerpT;
+					_body.GlobalTransform = lerpT;
 
 					// just apply position and look at the target
 					//Transform realT = GlobalTransform;
