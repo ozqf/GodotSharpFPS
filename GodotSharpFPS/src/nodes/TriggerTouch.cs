@@ -14,6 +14,7 @@ namespace GodotSharpFps.src.nodes
         public string message = string.Empty;
 
         //private string[] emitArgs = new string[1];
+        //private bool _active = true;
 
         public override void _Ready()
         {
@@ -34,6 +35,7 @@ namespace GodotSharpFps.src.nodes
             //Console.WriteLine($"Touch trigger actor: {actor.actorId}");
             //EmitSignal(nameof(Triggered), emitArgs);
             EmitSignal(nameof(Triggered));
+            QueueFree();
         }
     }
 }

@@ -1,16 +1,16 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://src/nodes/EntTurret.cs" type="Script" id=1]
 [ext_resource path="res://src/nodes/EntTank.cs" type="Script" id=2]
 [ext_resource path="res://src/nodes/KinematicWrapper.cs" type="Script" id=3]
+[ext_resource path="res://assets/meshes/mlrs_turret.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/meshes/mlrs_base.tscn" type="PackedScene" id=5]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 5, 2, 10 )
 
 [sub_resource type="CubeMesh" id=2]
 size = Vector3( 10, 4, 20 )
-
-[sub_resource type="CubeMesh" id=3]
 
 [node name="tank_boss" type="Spatial"]
 script = ExtResource( 2 )
@@ -25,21 +25,20 @@ shape = SubResource( 1 )
 [node name="display" type="Spatial" parent="body"]
 
 [node name="MeshInstance" type="MeshInstance" parent="body/display"]
+visible = false
 mesh = SubResource( 2 )
 material/0 = null
 
+[node name="mlrs_base" parent="body/display" instance=ExtResource( 5 )]
+
 [node name="turret_a" type="Spatial" parent="body/display"]
-transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 4, 0, 4.5, 5.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 5.5 )
 script = ExtResource( 1 )
 
-[node name="MeshInstance" type="MeshInstance" parent="body/display/turret_a"]
-mesh = SubResource( 3 )
-material/0 = null
+[node name="mlrs_turret" parent="body/display/turret_a" instance=ExtResource( 4 )]
 
 [node name="turret_b" type="Spatial" parent="body/display"]
-transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 4, 0, 4.5, -5.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, -5.5 )
 script = ExtResource( 1 )
 
-[node name="MeshInstance" type="MeshInstance" parent="body/display/turret_b"]
-mesh = SubResource( 3 )
-material/0 = null
+[node name="mlrs_turret" parent="body/display/turret_b" instance=ExtResource( 4 )]
