@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GodotSharpFps.src.nodes
 {
-	public class KinematicWrapper : KinematicBody, ITouchable//, IActorProvider
+	public class KinematicWrapper : KinematicBody, ITouchable, IActorProvider
 	{
 		public delegate void HealthChange(int current, int change, TouchData data);
 		public delegate void Death();
@@ -109,6 +109,11 @@ namespace GodotSharpFps.src.nodes
 			}
 
 			return result;
+		}
+
+		public IActor GetActor()
+		{
+			return actor;
 		}
 	}
 }

@@ -9,6 +9,12 @@ namespace GodotSharpFps.src.nodes
 {
 	public class EntTurret : Spatial
 	{
+		public enum State { Idle, Attacking };
+		//[Signal]
+		//public delegate void Trigger(string message);
+
+		private State _state = State.Idle;
+
 		private ProjectileDef _prjDef;
 		private PatternDef _patternDef;
 
@@ -16,16 +22,24 @@ namespace GodotSharpFps.src.nodes
 		private float _tickMax = 1.5f;
 		private List<Transform> _transforms = null;
 
+		private Transform _idleLocalTransform;
+
 		public override void _Ready()
 		{
+			_idleLocalTransform = Transform;
+
 			_prjDef = new ProjectileDef();
 			_prjDef.damage = 10;
-			_prjDef.launchSpeed = 100;
 			_prjDef.prefabPath = GameFactory.Path_PointProjectile;
-			_prjDef.moveMode = ProjectileDef.MoveMode.Accel;
-			_prjDef.maxSpeed = 100;
-			_prjDef.minSpeed = 10;
-			_prjDef.accelPerSecond = -300;
+
+			_prjDef.moveMode = ProjectileDef.MoveMode.Basic;
+			_prjDef.launchSpeed = 15;
+
+			//_prjDef.moveMode = ProjectileDef.MoveMode.Accel;
+			//_prjDef.launchSpeed = 100;
+			//_prjDef.maxSpeed = 100;
+			//_prjDef.minSpeed = 10;
+			//_prjDef.accelPerSecond = -300;
 
 			_patternDef = new PatternDef();
 			_patternDef.count = 8;
@@ -41,6 +55,22 @@ namespace GodotSharpFps.src.nodes
 			}
 		}
 
+		public void Trigger(string message)
+        {
+
+        }
+
+		public void StartTurret()
+        {
+			_state = State.Attacking;
+        }
+
+		public void StopTurret()
+        {
+			_state = State.Idle;
+			Transform = _idleLocalTransform;
+		}
+
 		private void Shoot()
 		{
 			SpawnPatterns.FillPattern(GlobalTransform, _patternDef, _transforms);
@@ -51,8 +81,8 @@ namespace GodotSharpFps.src.nodes
 			}
 		}
 
-		public override void _PhysicsProcess(float delta)
-		{
+		private void TickAttacking(float delta)
+        {
 			IActor actor = Main.i.game.CheckTarget(0, Team.Mobs);
 			if (actor == null) { return; }
 
@@ -67,6 +97,16 @@ namespace GodotSharpFps.src.nodes
 			{
 				_tick -= delta;
 			}
+		}
+
+		public override void _PhysicsProcess(float delta)
+		{
+			switch (_state)
+            {
+				case State.Attacking:
+					TickAttacking(delta);
+					break;
+            }
 		}
 	}
 }

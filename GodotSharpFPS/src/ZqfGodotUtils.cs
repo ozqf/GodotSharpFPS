@@ -1,4 +1,5 @@
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using Godot;
 
@@ -78,6 +79,17 @@ public class ZqfGodotUtils
 			return default(T);
 		}
 	}
+
+	public static void AddChildNodeToList<T>(Node parent, List<T> list, string path)
+    {
+		if (!parent.HasNode(path)) { return; }
+		var typ = typeof(T);
+		object obj = parent.GetNode(path);
+		if (obj is T)
+        {
+			list.Add((T)obj);
+        }
+    }
 
 	public static void SwapSpatialParent(Spatial child, Spatial newParent)
 	{

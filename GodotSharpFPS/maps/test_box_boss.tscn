@@ -189,3 +189,4 @@ nextPathName = "path_a_4"
 [node name="path_a_4" parent="." instance=ExtResource( 9 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -16, 1, -16 )
 nextPathName = "path_a_1"
+[connection signal="Triggered" from="trigger_touch" to="tank_boss" method="OnTrigger"]
