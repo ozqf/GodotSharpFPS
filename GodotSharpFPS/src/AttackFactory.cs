@@ -33,8 +33,8 @@ namespace GodotSharpFps.src
 
 			ProjectileDef primaryPrjDef = new ProjectileDef();
 			primaryPrjDef.damage = 12;
-			primaryPrjDef.launchSpeed = 40;
-			primaryPrjDef.timeToLive = 4f;// 0.1f;
+			primaryPrjDef.launchSpeed = 100;
+			primaryPrjDef.timeToLive = 2f;// 0.1f;
 
 			PatternDef pattern = new PatternDef();
 			pattern.patternType = PatternType.Cone3DRandom;

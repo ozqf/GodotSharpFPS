@@ -95,6 +95,7 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 		_inventory.AddWeapon(AttackFactory.CreateStakegun(_head, _body));
 		_inventory.AddWeapon(AttackFactory.CreateLauncher(_head, _body));
 		_inventory.AddWeapon(new InvWeapGodhand(_head, _laserDot));
+		_inventory.SelectWeaponByIndex(1);
 
 		_main.cam.AttachToTarget(_head, GameCamera.ParentType.Player);
 

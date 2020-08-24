@@ -6,7 +6,7 @@ namespace GodotSharpFps.src.extended
 {
     public class InvWeapGodhand : IEquippable
     {
-        public enum Mode { Deathray, DebugTag, Spawn, Last }
+        public enum Mode { Deathray, DebugTag, Spawn, CycleSpawn, Last }
         private Mode _mode = Mode.Deathray;
         private bool _equipped = false;
         private Spatial _launchNode;
@@ -14,8 +14,10 @@ namespace GodotSharpFps.src.extended
         private string _displayName = string.Empty;
         private int _aimActorId = Game.NullActorId;
         private ProjectileDef _riflePrjDef;
+
         private string[] _mobTypes;
-        private string _mobSpawnType = string.Empty;
+        private int _mobTypeIndex = 0;
+        //private string _mobSpawnType = string.Empty;
 
         public InvWeapGodhand(
             Spatial launchNode,
@@ -28,7 +30,8 @@ namespace GodotSharpFps.src.extended
             _riflePrjDef.launchSpeed = 1000;
             _mobTypes = Main.i.factory.GetMobTypeList();
             //_mobSpawnType = _mobTypes[0];
-            _mobSpawnType = GameFactory.MobType_Titan;
+            _mobTypeIndex = 0;
+            //_mobSpawnType = GameFactory.MobType_Titan;
             UpdateDisplayName();
         }
 
@@ -42,9 +45,13 @@ namespace GodotSharpFps.src.extended
                     _displayName += $" - actor {_aimActorId}";
                 }
             }
-            if (_mode == Mode.Spawn)
+            else if (_mode == Mode.Spawn)
             {
-                _displayName += $" - {_mobSpawnType}";
+                _displayName += $" - {_mobTypes[_mobTypeIndex]}";
+            }
+            else if (_mode == Mode.CycleSpawn)
+            {
+                _displayName += $" - {_mobTypes[_mobTypeIndex]}";
             }
         }
 
@@ -90,7 +97,7 @@ namespace GodotSharpFps.src.extended
 
         private void SpawnMob(Vector3 pos)
         {
-            EntMob mob = Main.i.factory.SpawnMob(_mobSpawnType);
+            EntMob mob = Main.i.factory.SpawnMob(_mobTypes[_mobTypeIndex]);
             ZqfGodotUtils.Teleport(mob, pos);
         }
 
@@ -117,6 +124,17 @@ namespace GodotSharpFps.src.extended
                         }
                         Vector3 pos = _aimLaserNode.GlobalTransform.origin;
                         SpawnMob(pos);
+                    }
+                    break;
+                case Mode.CycleSpawn:
+                    if (info.primaryWasOn)
+                    {
+                        _mobTypeIndex++;
+                        if (_mobTypeIndex >= _mobTypes.Length)
+                        {
+                            _mobTypeIndex = 0;
+                        }
+                        UpdateDisplayName();
                     }
                     break;
                 case Mode.DebugTag:
