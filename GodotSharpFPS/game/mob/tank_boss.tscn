@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/nodes/EntTurret.cs" type="Script" id=1]
 [ext_resource path="res://src/nodes/EntTank.cs" type="Script" id=2]
+[ext_resource path="res://prefabs/ball_turret.tscn" type="PackedScene" id=3]
 [ext_resource path="res://prefabs/mlrs_turret.tscn" type="PackedScene" id=4]
 [ext_resource path="res://prefabs/mlrs_base.tscn" type="PackedScene" id=5]
 
@@ -12,7 +13,7 @@ script = ExtResource( 2 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
 
 [node name="turret_a" type="Spatial" parent="body"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 5.5 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 4.5, 5.5 )
 script = ExtResource( 1 )
 
 [node name="mlrs_turret" parent="body/turret_a" instance=ExtResource( 4 )]
@@ -22,3 +23,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, -5.5 )
 script = ExtResource( 1 )
 
 [node name="mlrs_turret" parent="body/turret_b" instance=ExtResource( 4 )]
+
+[node name="turret_c" type="Spatial" parent="body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, -9.9 )
+
+[node name="ball_turret" parent="body/turret_c" instance=ExtResource( 3 )]
+
+[node name="turret_d" type="Spatial" parent="body"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.7, 10.3 )
+
+[node name="ball_turret" parent="body/turret_d" instance=ExtResource( 3 )]
