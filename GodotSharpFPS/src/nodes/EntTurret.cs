@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GodotSharpFps.src.nodes
 {
-	public class EntTurret : Spatial
+	public class EntTurret : Spatial, ITouchable
 	{
 		public enum State { Idle, Attacking };
 		//[Signal]
@@ -108,5 +108,11 @@ namespace GodotSharpFps.src.nodes
 					break;
             }
 		}
+
+		public TouchResponseData Touch(TouchData touchData)
+        {
+			Console.WriteLine($"Touch turret");
+			return TouchResponseData.empty;
+        }
 	}
 }

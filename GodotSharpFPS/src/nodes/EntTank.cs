@@ -27,8 +27,9 @@ namespace GodotSharpFps.src.nodes
 		{
 			_body = GetNode<KinematicWrapper>("body");
 			_bodyOffset = _body.GlobalTransform.origin - GlobalTransform.origin;
-			ZqfGodotUtils.AddChildNodeToList(this, _turrets, "body/turret_a");
-			ZqfGodotUtils.AddChildNodeToList(this, _turrets, "body/turret_b");
+			//ZqfGodotUtils.AddChildNodeToList(this, _turrets, "body/turret_a");
+			//ZqfGodotUtils.AddChildNodeToList(this, _turrets, "body/turret_b");
+			ZqfGodotUtils.GetAllChildrenOfType(_body, _turrets);
 			Console.WriteLine($"Tank has {_turrets.Count} turrets");
 		}
 

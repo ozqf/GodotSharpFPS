@@ -61,6 +61,11 @@ namespace GodotSharpFps.src
         TouchResponseData Touch(TouchData touchData);
     }
 
+    public interface ITouchProvider
+    {
+        ITouchable GetTouchable();
+    }
+
     /// <summary>
     /// Interface for primary game objects and their interactions
     /// </summary>

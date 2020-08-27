@@ -91,6 +91,20 @@ public class ZqfGodotUtils
         }
     }
 
+	public static void GetAllChildrenOfType<T>(Node parent, List<T> list)
+    {
+		Godot.Collections.Array arr = parent.GetChildren();
+		int len = arr.Count;
+		for (int i = 0; i < len; ++i)
+        {
+			object child = arr[i];
+			if (child is T)
+            {
+				list.Add((T)child);
+            }
+        }
+    }
+
 	public static void SwapSpatialParent(Spatial child, Spatial newParent)
 	{
 		Transform t = child.GlobalTransform;

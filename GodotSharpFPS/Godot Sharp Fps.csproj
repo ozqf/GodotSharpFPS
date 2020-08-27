@@ -86,6 +86,7 @@
     <Compile Include="src\nodes\SwordThrowProjectile.cs" />
     <Compile Include="src\nodes\KinematicWrapper.cs" />
     <Compile Include="src\nodes\LaserDot.cs" />
+    <Compile Include="src\nodes\TouchProvider.cs" />
     <Compile Include="src\nodes\TriggerTouch.cs" />
     <Compile Include="src\nodes\ViewModel.cs" />
     <Compile Include="src\ProjectileDef.cs" />
