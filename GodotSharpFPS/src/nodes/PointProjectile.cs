@@ -88,7 +88,7 @@ public class PointProjectile : Spatial
 			*/
 			TouchResponseData response = Game.TouchGameObject(_touch, obj);
 			if (response.responseType != TouchResponseType.None)
-            {
+			{
 				// leave spawning particles to the victim
 				spawnGFX = false;
 			}

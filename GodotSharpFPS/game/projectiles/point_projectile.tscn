@@ -14,3 +14,4 @@ material/0 = null
 script = ExtResource( 2 )
 
 [node name="OmniLight" type="OmniLight" parent="."]
+visible = false

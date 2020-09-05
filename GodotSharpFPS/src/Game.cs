@@ -226,7 +226,7 @@ namespace GodotSharpFps.src
                 SetGameState(State.Pregame);
                 if (_main.cam.GetParentType() != GameCamera.ParentType.Player)
                 {
-                    _main.cam.AttachToTarget(node, GameCamera.ParentType.Misc);
+                    _main.cam.AttachToTarget(node, new Vector3(0, 1, 0), GameCamera.ParentType.Misc);
                 }
             }
         }

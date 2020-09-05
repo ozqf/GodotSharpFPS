@@ -24,7 +24,7 @@ public class GameCamera : Camera
 		if (_currentParent != null && _currentParent != _originalParent)
 		{
 			Transform t = GlobalTransform;
-			AttachToTarget(_originalParent, ParentType.None);
+			AttachToTarget(_originalParent, Vector3.Zero, ParentType.None);
 			GlobalTransform = t;
 		}
 	}
@@ -35,7 +35,8 @@ public class GameCamera : Camera
 		Transform = Transform.Identity;
 	}
 
-	public void AttachToTarget(Node newParent, ParentType parentType = ParentType.Misc)
+	public void AttachToTarget(
+		Node newParent, Vector3 offset, ParentType parentType = ParentType.Misc)
 	{
 		if (newParent == _currentParent) { return; }
 
@@ -43,7 +44,9 @@ public class GameCamera : Camera
 		parent.RemoveChild(this);
 		newParent.AddChild(this);
 		_currentParent = newParent;
-		Transform = Transform.Identity;
+		Transform t = Transform.Identity;
+		t.origin += offset;
+		Transform = t;
 		_parentType = parentType;
 	}
 }

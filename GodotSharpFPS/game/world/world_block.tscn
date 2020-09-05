@@ -9,7 +9,7 @@ albedo_color = Color( 0.313726, 0.313726, 0.313726, 1 )
 metallic = 0.53
 roughness = 0.75
 
-[node name="world_block" type="KinematicBody"]
+[node name="world_block" type="StaticBody"]
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 1 )

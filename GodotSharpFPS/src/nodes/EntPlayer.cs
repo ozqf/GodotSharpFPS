@@ -97,7 +97,7 @@ public class EntPlayer : Spatial, IActor, IActorProvider
 		_inventory.AddWeapon(new InvWeapGodhand(_head, _laserDot));
 		_inventory.SelectWeaponByIndex(1);
 
-		_main.cam.AttachToTarget(_head, GameCamera.ParentType.Player);
+		_main.cam.AttachToTarget(_head, Vector3.Zero, GameCamera.ParentType.Player);
 
 		if (_entId == 0)
 		{

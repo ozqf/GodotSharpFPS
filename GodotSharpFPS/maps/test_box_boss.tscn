@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://game/world/world_block.tscn" type="PackedScene" id=1]
 [ext_resource path="res://game/spawners/player_start.tscn" type="PackedScene" id=2]
@@ -9,6 +9,11 @@
 [ext_resource path="res://gfx/gfx_bullet_impact.tscn" type="PackedScene" id=7]
 [ext_resource path="res://game/triggers/trigger_touch.tscn" type="PackedScene" id=8]
 [ext_resource path="res://game/info/info_path.tscn" type="PackedScene" id=9]
+[ext_resource path="res://prefabs/solid_cube_1x1x1.tscn" type="PackedScene" id=10]
+[ext_resource path="res://prefabs/mlrs_turret.tscn" type="PackedScene" id=11]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.5, 0.5, 0.5 )
 
 [node name="map" type="Spatial"]
 
@@ -68,7 +73,7 @@ transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, -24, 0, 8 )
 transform = Transform( 8, 0, 0, 0, 1, 0, 0, 0, 8, -24, 0, 24 )
 
 [node name="world_block5" parent="world/geometry" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 5, 0 )
+transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 13, 0 )
 
 [node name="world_block13" parent="world/geometry" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 8, -33, 5, 8 )
@@ -171,7 +176,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 3, -3 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 2 )
 
 [node name="tank_boss" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 1, 2.8 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 17, 1, 14 )
 firstPathName = "path_a_2"
 
 [node name="path_a_1" parent="." instance=ExtResource( 9 )]
@@ -189,4 +194,15 @@ nextPathName = "path_a_4"
 [node name="path_a_4" parent="." instance=ExtResource( 9 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -16, 1, -16 )
 nextPathName = "path_a_1"
+
+[node name="mlrs_turret" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 9, -24 )
+
+[node name="Rigidbody" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 5, -8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Rigidbody"]
+shape = SubResource( 1 )
+
+[node name="solid_cube_1x1x1" parent="Rigidbody" instance=ExtResource( 10 )]
 [connection signal="Triggered" from="trigger_touch" to="tank_boss" method="OnTrigger"]

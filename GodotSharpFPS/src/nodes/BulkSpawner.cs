@@ -1,14 +1,14 @@
-﻿using Godot;
+using Godot;
 using System;
 
 namespace GodotSharpFps.src.nodes
 {
-    public class BulkSpawner : Spatial, IActor, IActorProvider
-    {
+	public class BulkSpawner : Spatial, IActor, IActorProvider
+	{
 		public enum SpawnMode { Burst, Trickle };
 
 		//private int _patternIndex = 0;
-        private int _entId = 0;
+		private int _entId = 0;
 		//private int _maxLiveChildren = 1;
 		private int _numLiveChildren = 0;
 		private float _tick = 0;
