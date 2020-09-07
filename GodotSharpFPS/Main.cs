@@ -60,8 +60,9 @@ public class Main : Spatial
 		cam = GetNode<GameCamera>("game_camera");
 		ui = GetNode<UI>("/root/ui");
 		Input.SetMouseMode(Input.MouseMode.Captured);
-		game = new Game(this);
 		mobThink = new MobThink();
+
+		game = new Game(this, GetNode<Spatial>("game"));
 
 		// test stuff
 		ZqfXml.ListAllAssemblyResources(Assembly.GetExecutingAssembly());
@@ -183,7 +184,7 @@ public class Main : Spatial
 		ui.SetDebugtext(txt);
 	}
 
-    private void TestReadTextFile()
+	private void TestReadTextFile()
 	{
 		// Ready from Godot asset file
 		/*

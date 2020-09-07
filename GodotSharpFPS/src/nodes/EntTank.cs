@@ -30,7 +30,17 @@ namespace GodotSharpFps.src.nodes
 			//ZqfGodotUtils.AddChildNodeToList(this, _turrets, "body/turret_a");
 			//ZqfGodotUtils.AddChildNodeToList(this, _turrets, "body/turret_b");
 			ZqfGodotUtils.GetAllChildrenOfType(_body, _turrets);
-			Console.WriteLine($"Tank has {_turrets.Count} turrets");
+			int len = _turrets.Count;
+			for (int i = 0; i < len; ++i)
+			{
+				EntTurret tur = _turrets[i];
+				tur.SetDeathCallback(OnTurretDied);
+			}
+		}
+
+		public void OnTurretDied(EntTurret turret)
+		{
+			Console.WriteLine($"Boss turret {turret.Name} died");
 		}
 
 		public void OnTrigger()

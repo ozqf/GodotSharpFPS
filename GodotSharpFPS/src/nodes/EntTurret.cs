@@ -1,14 +1,15 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GodotSharpFps.src.nodes
 {
 	public class EntTurret : Spatial, ITouchable
 	{
+		public delegate void TurretDied(EntTurret turret);
+
+		private TurretDied _diedCallback;
+
 		public enum State { Idle, Attacking };
 		//[Signal]
 		//public delegate void Trigger(string message);
@@ -24,8 +25,19 @@ namespace GodotSharpFps.src.nodes
 
 		private Transform _idleLocalTransform;
 
+		private RigidBody _body;
+		private Health _hpArea;
+
 		public override void _Ready()
 		{
+			_body = ZqfGodotUtils.GetNodeSafe<RigidBody>(this, "mlrs_turret");
+			_hpArea = ZqfGodotUtils.GetNodeSafe<Health>(this, "mlrs_turret/area");
+			if (_hpArea != null)
+            {
+				_hpArea.SetCallbacks(OnHealthChange, OnDeath);
+				_hpArea.SetHealth(400, 400);
+			}
+
 			_idleLocalTransform = Transform;
 
 			_prjDef = new ProjectileDef();
@@ -53,6 +65,39 @@ namespace GodotSharpFps.src.nodes
 			{
 				Console.WriteLine($"Turret found parent actor {actorParent.actorId}");
 			}
+		}
+
+		public void SetDeathCallback(TurretDied msg)
+        {
+			_diedCallback = msg;
+		}
+
+		// body callbacks
+		public void OnHealthChange(int current, int change, TouchData data)
+		{
+			Console.WriteLine($"Hurt turret");
+		}
+
+		public void OnDeath()
+        {
+			Console.WriteLine($"Killed turret");
+			if (_body != null)
+            {
+				ZqfGodotUtils.SwapSpatialParent(_body, Main.i.game.root);
+				_body.Mode = RigidBody.ModeEnum.Rigid;
+				_body.GetNode<CollisionShape>("CollisionShape").Disabled = false;
+				_body.AddCentralForce(new Vector3(0, ZqfGodotUtils.RandomRange(20, 40), 0));
+				
+				_body.AngularVelocity = new Vector3(
+					ZqfGodotUtils.RandomRange(-10, 10),
+					ZqfGodotUtils.RandomRange(-10, 10),
+					ZqfGodotUtils.RandomRange(-10, 10));
+			}
+			
+			if (_diedCallback != null)
+            {
+				_diedCallback.Invoke(this);
+            }
 		}
 
 		public void Trigger(string message)

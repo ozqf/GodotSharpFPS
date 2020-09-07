@@ -149,6 +149,10 @@ slot_8={
 3d_physics/layer_1="world"
 3d_physics/layer_2="ents"
 
+[physics]
+
+3d/default_gravity=16.0
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"

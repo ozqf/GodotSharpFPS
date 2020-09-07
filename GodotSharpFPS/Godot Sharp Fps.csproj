@@ -80,6 +80,7 @@
     <Compile Include="src\nodes\EntTurret.cs" />
     <Compile Include="src\nodes\GameCamera.cs" />
     <Compile Include="src\nodes\GFXQuick.cs" />
+    <Compile Include="src\nodes\Health.cs" />
     <Compile Include="src\nodes\InfoPath.cs" />
     <Compile Include="src\nodes\MeleeHitVolume.cs" />
     <Compile Include="src\nodes\PlayerStartNode.cs" />

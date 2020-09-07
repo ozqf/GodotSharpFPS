@@ -3,6 +3,9 @@ using Godot;
 
 namespace GodotSharpFps.src
 {
+    public delegate void HealthChange(int current, int change, TouchData data);
+    public delegate void Death();
+
     public enum Team { None, Player, Mobs, NonCombatant };
 
     public enum TouchType

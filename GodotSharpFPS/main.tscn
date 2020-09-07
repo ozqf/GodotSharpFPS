@@ -10,3 +10,5 @@ script = ExtResource( 1 )
 fov = 85.0
 far = 1000.0
 script = ExtResource( 2 )
+
+[node name="game" type="Spatial" parent="."]

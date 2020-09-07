@@ -34,9 +34,13 @@ namespace GodotSharpFps.src
         private int _debugActorId = NullActorId;
         private Dictionary<string, InfoPath> _pathNodes = new Dictionary<string, InfoPath>();
 
-        public Game(Main main)
+        private Spatial _gameRoot;
+        public Spatial root { get { return _gameRoot; } }
+
+        public Game(Main main, Spatial gameRootNode)
         {
             _main = main;
+            _gameRoot = gameRootNode;
             _main.AddObserver(OnGlobalEvent, this, false, "GameController");
             _main.console.AddCommand("actors", "", "Print actor list", Cmd_PrintActorRegister);
             _main.console.AddCommand("god", "", "Toggle invulnerable player", Cmd_God);
@@ -86,6 +90,11 @@ namespace GodotSharpFps.src
                     PurgeRegisters();
                     // Enter a 'no game rules' state.
                     SetGameState(State.Limbo);
+                    // Remove all children from game root node
+                    for (int i = root.GetChildCount() - 1; i >= 0; --i)
+                    {
+                        root.GetChild(i).QueueFree();
+                    }
                     break;
                 case GlobalEventType.PlayerDied:
                     _main.cam.DetachFromCustomParent();
@@ -299,18 +308,6 @@ namespace GodotSharpFps.src
             return attacker != victim;
         }
 
-        public static ITouchable ExtractTouchable(object obj)
-        {
-            return obj as ITouchable;
-        }
-
-        public static IActor ExtractActor(object obj)
-        {
-            IActorProvider provider = obj as IActorProvider;
-            if (provider == null) { return null; }
-            return provider.GetActor();
-        }
-
         public static IActor DescendTreeToActor(Node node)
         {
             Node parent = node.GetParent();
@@ -323,6 +320,18 @@ namespace GodotSharpFps.src
                 parent = parent.GetParent();
             }
             return null;
+        }
+
+        public static IActor ExtractActor(object obj)
+        {
+            IActorProvider provider = obj as IActorProvider;
+            if (provider == null) { return null; }
+            return provider.GetActor();
+        }
+
+        public static ITouchable ExtractTouchable(object obj)
+        {
+            return obj as ITouchable;
         }
 
         public static TouchResponseData TouchGameObject(TouchData touchData, object subject)

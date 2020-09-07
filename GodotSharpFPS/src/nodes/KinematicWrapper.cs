@@ -5,9 +5,6 @@ namespace GodotSharpFps.src.nodes
 {
 	public class KinematicWrapper : KinematicBody, ITouchable, IActorProvider
 	{
-		public delegate void HealthChange(int current, int change, TouchData data);
-		public delegate void Death();
-
 		public IActor actor { get; set; }
 
 		// Gather display elements

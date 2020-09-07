@@ -20,7 +20,7 @@ public class ZqfGodotUtils
 		}
 		PhysicsDirectSpaceState space = worldSourceNode.GetWorld().DirectSpaceState;
 		
-		return space.IntersectRay(origin, target, ignoreBodies, mask);
+		return space.IntersectRay(origin, target, ignoreBodies, mask, true, true);
 	}
 
 	public static float Capf(float value, float min, float max)
@@ -79,6 +79,24 @@ public class ZqfGodotUtils
 			return default(T);
 		}
 	}
+
+	/// <summary>
+	/// Returns null if node isn't found
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="parent"></param>
+	/// <param name="path"></param>
+	/// <returns></returns>
+	public static T GetNodeSafe<T>(Node parent, string path)
+    {
+		if (!parent.HasNode(path)) { return default(T); }
+		Node n = parent.GetNode(path);
+		if (n is T)
+        {
+			return (T)Convert.ChangeType(n, typeof(T));
+        }
+		return default(T);
+    }
 
 	public static void AddChildNodeToList<T>(Node parent, List<T> list, string path)
     {
