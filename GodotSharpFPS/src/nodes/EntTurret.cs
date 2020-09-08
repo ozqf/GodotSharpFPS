@@ -10,7 +10,7 @@ namespace GodotSharpFps.src.nodes
 
 		private TurretDied _diedCallback;
 
-		public enum State { Idle, Attacking };
+		public enum State { Idle, Attacking, Dead };
 		//[Signal]
 		//public delegate void Trigger(string message);
 
@@ -27,9 +27,11 @@ namespace GodotSharpFps.src.nodes
 
 		private RigidBody _body;
 		private Health _hpArea;
+		private MeshInstance _model;
 
 		public override void _Ready()
 		{
+			_model = ZqfGodotUtils.GetNodeSafe<MeshInstance>(this, "mlrs_turret/Cube");
 			_body = ZqfGodotUtils.GetNodeSafe<RigidBody>(this, "mlrs_turret");
 			_hpArea = ZqfGodotUtils.GetNodeSafe<Health>(this, "mlrs_turret/area");
 			if (_hpArea != null)
@@ -67,6 +69,18 @@ namespace GodotSharpFps.src.nodes
 			}
 		}
 
+		public void Resurrect()
+        {
+			if (_hpArea != null)
+            {
+				_hpArea.Resurrect();
+            }
+			if (_model != null)
+            {
+				_model.Show();
+            }
+        }
+
 		public void SetDeathCallback(TurretDied msg)
         {
 			_diedCallback = msg;
@@ -80,20 +94,21 @@ namespace GodotSharpFps.src.nodes
 
 		public void OnDeath()
         {
-			Console.WriteLine($"Killed turret");
-			if (_body != null)
-            {
-				ZqfGodotUtils.SwapSpatialParent(_body, Main.i.game.root);
-				_body.Mode = RigidBody.ModeEnum.Rigid;
-				_body.GetNode<CollisionShape>("CollisionShape").Disabled = false;
-				_body.AddCentralForce(new Vector3(0, ZqfGodotUtils.RandomRange(20, 40), 0));
-				
-				_body.AngularVelocity = new Vector3(
-					ZqfGodotUtils.RandomRange(-10, 10),
-					ZqfGodotUtils.RandomRange(-10, 10),
-					ZqfGodotUtils.RandomRange(-10, 10));
+			if (_state == State.Dead) { return; }
+			_state = State.Dead;
+			// - disable display here
+			// - create debris
+			if (_model != null)
+			{
+				_model.Hide();
 			}
-			
+
+			Console.WriteLine($"Spawn MLRS debris");
+			Debris debris = Main.i.factory.Spawn<Debris>(GameFactory.Path_MLRS_Debris);
+			debris.GlobalTransform = GlobalTransform;
+			debris.LaunchUp();
+			ZqfGodotUtils.SwapSpatialParent(debris, Main.i.game.root);
+
 			if (_diedCallback != null)
             {
 				_diedCallback.Invoke(this);
@@ -107,6 +122,10 @@ namespace GodotSharpFps.src.nodes
 
 		public void StartTurret()
         {
+			if (_state == State.Dead)
+            {
+				Resurrect();
+			}
 			_state = State.Attacking;
         }
 

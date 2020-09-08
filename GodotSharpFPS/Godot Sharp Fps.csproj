@@ -61,6 +61,7 @@
     <Compile Include="src\IEquippable.cs" />
     <Compile Include="src\MobDef.cs" />
     <Compile Include="src\MobThink.cs" />
+    <Compile Include="src\nodes\Debris.cs" />
     <Compile Include="src\nodes\EmptyMap.cs" />
     <Compile Include="src\ActorInventory.cs" />
     <Compile Include="src\AttackFactory.cs" />

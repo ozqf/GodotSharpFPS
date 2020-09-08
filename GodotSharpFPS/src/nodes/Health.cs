@@ -13,7 +13,13 @@ namespace GodotSharpFps.src.nodes
         // callbacks
         private HealthChange _onHealthChange = null;
         private Death _onDeath = null;
-
+        
+        public void Resurrect()
+        {
+            _health = _maxHealth;
+            _dead = false;
+        }
+        
         public void SetHealth(int current, int max)
         {
             _health = current;

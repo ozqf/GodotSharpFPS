@@ -17,6 +17,9 @@ public class GameFactory
     public const string Path_GFXBulletImpact = "res://gfx/gfx_bullet_impact.tscn";
     public const string Path_GFXBloodImpact = "res://gfx/gfx_blood_impact.tscn";
 
+    // Physics debris
+    public const string Path_MLRS_Debris = "res://prefabs/mlrs_turret_debris.tscn";
+
     // Player
     private const string Path_EntPlayer = "game/player/ent_player.tscn";
 
@@ -122,6 +125,13 @@ public class GameFactory
         mob.SetMobType(mobType);
         _root.AddChild(mob);
         return mob;
+    }
+
+    public T Spawn<T>(string path)
+    {
+        T obj = ZqfGodotUtils.CreateInstance<T>(path);
+        _root.AddChild(obj as Node);
+        return obj;
     }
 
     public PointProjectile SpawnProjectile(string path, bool addToTree = true, Node overrideParent = null)
