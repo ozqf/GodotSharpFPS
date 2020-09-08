@@ -15,7 +15,7 @@ namespace GodotSharpFps.src
 
     public enum TouchResponseType
     {
-        None, Damaged, Killed
+        None, Blocked, Damaged, Killed
     }
 
     public enum DamageType
@@ -46,6 +46,18 @@ namespace GodotSharpFps.src
                 return new TouchResponseData
                 {
                     responseType = TouchResponseType.None,
+                    damageTaken = 0
+                };
+            }
+        }
+
+        public static TouchResponseData block
+        {
+            get
+            {
+                return new TouchResponseData
+                {
+                    responseType = TouchResponseType.Blocked,
                     damageTaken = 0
                 };
             }

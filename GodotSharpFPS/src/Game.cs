@@ -346,7 +346,7 @@ namespace GodotSharpFps.src
             {
                 return actor.ActorTouch(touchData);
             }*/
-            return TouchResponseData.empty;
+            return TouchResponseData.block;
         }
 
         #endregion

@@ -37,7 +37,7 @@ namespace GodotSharpFps.src.nodes
 			if (_hpArea != null)
             {
 				_hpArea.SetCallbacks(OnHealthChange, OnDeath);
-				_hpArea.SetHealth(400, 400);
+				_hpArea.OverrideStats(Team.Mobs, 400, 400);
 			}
 
 			_idleLocalTransform = Transform;

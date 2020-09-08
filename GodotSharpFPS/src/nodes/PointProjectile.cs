@@ -63,60 +63,70 @@ public class PointProjectile : Spatial
 
 		Dictionary hitResult = ZqfGodotUtils.CastRay(this, origin, dest, mask, _ignoreBody);
 		bool spawnGFX = true;
-		if (hitResult.Keys.Count > 0)
-		{
-			_touch.hitPos = (Vector3)hitResult["position"];
-			_touch.hitNormal = (Vector3)hitResult["normal"];
-			_touch.damage = _def.damage;
-			_touch.teamId = 0;
-			_touch.touchType = TouchType.Projectile;
-			_touch.damageType = _def.damageType;
 
-			object obj = hitResult["collider"];
-			/*
-			IActor actor = Game.ExtractActor(obj);
-			//ITouchable actor = Game.ExtractTouchable(obj);
-			if (actor != null)
-			{
-				TouchResponseData response = actor.ActorTouch(_touch);
-				if (response.responseType != TouchResponseType.None)
-				{
-					// leave spawning particles to the victim
-					spawnGFX = false;
-				}
-			}
-			*/
-			TouchResponseData response = Game.TouchGameObject(_touch, obj);
+		// no hits, just move and leave
+		if (hitResult.Keys.Count <= 0)
+		{
+			t.origin = dest;
+			GlobalTransform = t;
+			return;
+		}
+
+		_touch.hitPos = (Vector3)hitResult["position"];
+		_touch.hitNormal = (Vector3)hitResult["normal"];
+		_touch.damage = _def.damage;
+		_touch.teamId = _team;
+		_touch.touchType = TouchType.Projectile;
+		_touch.damageType = _def.damageType;
+
+		object obj = hitResult["collider"];
+		/*
+		IActor actor = Game.ExtractActor(obj);
+		//ITouchable actor = Game.ExtractTouchable(obj);
+		if (actor != null)
+		{
+			TouchResponseData response = actor.ActorTouch(_touch);
 			if (response.responseType != TouchResponseType.None)
 			{
 				// leave spawning particles to the victim
 				spawnGFX = false;
 			}
-
-			if (spawnGFX)
-			{
-				GFXQuick gfx = Main.i.factory.SpawnGFX(impactGFX);
-				gfx.Spawn(_touch.hitPos, _touch.hitNormal);
-			}
-			if (_def.impactDef != null)
-			{
-				RunImpactDef(_touch.hitPos, _def.impactDef);
-			}
-			if (_def.destroyMode == ProjectileDef.DestroyMode.Embed)
-			{
-				_state = State.Embedded;
-				t.origin = _touch.hitPos;
-				_tick = 3;
-				GlobalTransform = t;
-			}
-			else
-			{
-				Die();
-			}
+		}
+		*/
+		TouchResponseData response = Game.TouchGameObject(_touch, obj);
+		if (response.responseType == TouchResponseType.None)
+		{
+			t.origin = dest;
+			GlobalTransform = t;
 			return;
 		}
-		t.origin = dest;
-		GlobalTransform = t;
+		if (response.responseType != TouchResponseType.None)
+		{
+			// leave spawning particles to the victim
+			spawnGFX = false;
+		}
+
+		if (spawnGFX)
+		{
+			GFXQuick gfx = Main.i.factory.SpawnGFX(impactGFX);
+			gfx.Spawn(_touch.hitPos, _touch.hitNormal);
+		}
+		if (_def.impactDef != null)
+		{
+			RunImpactDef(_touch.hitPos, _def.impactDef);
+		}
+		if (_def.destroyMode == ProjectileDef.DestroyMode.Embed)
+		{
+			_state = State.Embedded;
+			t.origin = _touch.hitPos;
+			_tick = 3;
+			GlobalTransform = t;
+		}
+		else
+		{
+			Die();
+		}
+		return;
 	}
 
 	public override void _PhysicsProcess(float delta)
