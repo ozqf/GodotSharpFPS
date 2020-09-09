@@ -60,7 +60,7 @@ namespace GodotSharpFps.src.nodes
 			prjDef.damage = 10;
 			prjDef.launchSpeed = 100;
 			prjDef.prefabPath = GameFactory.Path_PointProjectile;
-			prjDef.moveMode = ProjectileDef.MoveMode.Accel;
+			prjDef.speedMode = ProjectileDef.SpeedMode.Accel;
 			prjDef.maxSpeed = 100;
 			prjDef.minSpeed = 10;
 			prjDef.accelPerSecond = -300;

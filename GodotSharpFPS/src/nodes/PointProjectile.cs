@@ -15,7 +15,9 @@ public class PointProjectile : Spatial
 	private float _tick = 0;
 	private float _speed = 0;
 	private bool _isDead = false;
+
 	private Team _team = Team.None;
+	private int _targetActorId = Game.NullActorId;
 
 	private int _hideTicksMax = 3;
 	private int _hideTicks = 2;
@@ -44,14 +46,24 @@ public class PointProjectile : Spatial
 
 	private void MoveAsRay(float delta)
 	{
-		if (_def.moveMode == ProjectileDef.MoveMode.Accel)
+		Transform t = GlobalTransform;
+
+		// apply move effects
+		if (_def.speedMode == ProjectileDef.SpeedMode.Accel)
 		{
 			_speed += _def.accelPerSecond * delta;
 			_speed = ZqfGodotUtils
 				.Capf(_speed, _def.minSpeed, _def.maxSpeed);
 		}
 
-		Transform t = GlobalTransform;
+		if (_def.guideMode == ProjectileDef.GuideMode.Turn
+			&& _targetActorId != Game.NullActorId)
+        {
+			IActor actor = Main.i.game.GetActor(_targetActorId);
+			// TODO lerp rotation toward target
+			Transform turnTarget = actor.GetTransformForTarget();
+		}
+
 		Vector3 origin = t.origin;
 		Vector3 forward = -t.basis.z;
 		Vector3 dest = origin;
@@ -150,7 +162,8 @@ public class PointProjectile : Spatial
 		Vector3 forward,
 		ProjectileDef def,
 		PhysicsBody ignoreBody,
-		Team team)
+		Team team,
+		int targetActorId = Game.NullActorId)
 	{
 		_ignoreBody = ignoreBody;
 		_def = def;
@@ -167,6 +180,7 @@ public class PointProjectile : Spatial
 		_tick = def.timeToLive;
 		_speed = def.launchSpeed;
 		_team = team;
+		_targetActorId = targetActorId;
 		_hideTicks = _hideTicksMax;
 		Hide();
 	}

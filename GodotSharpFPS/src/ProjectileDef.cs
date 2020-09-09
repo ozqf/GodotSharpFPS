@@ -4,14 +4,17 @@ namespace GodotSharpFps.src
 {
     public class ProjectileDef : Node
     {
-        public enum MoveMode { Basic, Accel };
+        public enum SpeedMode { Basic, Accel };
+        // using a guide mode will require a specific target for the projectile
+        public enum GuideMode { None, Turn };
         public enum DestroyMode { Gfx, Embed };
 
         public enum PhysicalType { Rod, Ball };
 
 
         public string prefabPath = string.Empty;
-        public MoveMode moveMode = MoveMode.Basic;
+        public SpeedMode speedMode = SpeedMode.Basic;
+        public GuideMode guideMode = GuideMode.None;
         public float launchSpeed = 20;
         public float maxSpeed = 999f;
         public float minSpeed = 0;
