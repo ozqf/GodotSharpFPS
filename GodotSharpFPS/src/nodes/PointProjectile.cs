@@ -58,7 +58,7 @@ public class PointProjectile : Spatial
 
 		if (_def.guideMode == ProjectileDef.GuideMode.Turn
 			&& _targetActorId != Game.NullActorId)
-        {
+		{
 			IActor actor = Main.i.game.GetActor(_targetActorId);
 			// TODO lerp rotation toward target
 			Transform turnTarget = actor.GetTransformForTarget();
